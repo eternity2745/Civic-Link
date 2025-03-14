@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:sizer/sizer.dart';
+import 'package:userapp/screens/signup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -400,7 +401,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),),
               GestureDetector(
                 onTap: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: ((context) =>  RegistrationScreen())));
+                  Navigator.push(context, MaterialPageRoute(builder: ((context) =>  SignUpScreen())));
                 },
                 child: Text("Sign Up Now!", 
                 style: TextStyle(fontSize: 0.36.dp, color: Colors.blue.shade200),),
