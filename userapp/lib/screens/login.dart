@@ -23,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool obscureText = true;
   bool error = false;
+  bool emailError = false;
+  bool passError = false;
 
   String passerrorText = 'Invalid Password';
   String emailerrorText = "Invalid Email Id";
@@ -92,17 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
     isChecking?.change(false);
     isHandsUp?.change(false);
 
-    if (emailController.text == "example@gmail.com" && passController.text == "pass") {
+    if (emailController.text.isNotEmpty && passController.text.isNotEmpty) {
       successTrigger?.fire();
+      passError = false;
+      emailError = false;
       setState(() {
-        error = false;
       });
     } else {
       failTrigger?.fire();
       setState(() {
-        error = true;
-        passerrorText = (passController.text.isEmpty? "Password cannot be empty": "Invalid Password");
-        emailerrorText = (emailController.text.isEmpty? "Email cannot be empty": "Invalid Email");
+        emailError = emailController.text.isEmpty ? true : false; 
+        passError = passController.text.isEmpty ? true : false;
+        passerrorText = (passController.text.isEmpty? "Password cannot be empty": "");
+        emailerrorText = (emailController.text.isEmpty? "Email cannot be empty": "");
       });
     }
   }
@@ -184,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                         children: [
                           SizedBox(
-                            height: 8.h,
+                            height: 10.h,
                             child: TextField(
                             controller: emailController,
                             style: TextStyle(
@@ -206,11 +210,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
                                 borderRadius: BorderRadius.circular(15)
                               ),
-                              // border: OutlineInputBorder(
-                              //   borderSide: BorderSide(color: Colors.blue),
-                              //   borderRadius: BorderRadius.circular(15)
-                              // ),
-                              errorText: error?emailerrorText:null
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              errorText: emailError?emailerrorText:null
                             ),
                             onTap: lookAround,
                             onTapOutside: (event) {
@@ -230,8 +234,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             }
                             ,
-                            // onChanged: (value) {
-                            //   moveEyes(value);
+                            onChanged: (value) {
+                               moveEyes(value);
+                            }
                             //   int l = value.length;
                             //   if(l>0 && !emailheight){
                             //     emailheight = true;
@@ -250,9 +255,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             // },
                             ),
                           ),
-                        SizedBox(height: 3.h,),
+                        SizedBox(height: 1.h,),
                         SizedBox(
-                          height: 8.h,
+                          height: 10.h,
                           child: TextField(              
                             style: TextStyle(
                               fontSize: 0.3.dp,
@@ -263,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                            decoration: InputDecoration(
                               hintText: "Password",
                               prefixIcon: Icon(Icons.key_outlined, color: Color(int.parse('0xffECE3CE'))),
-                              errorText: error? passerrorText: null,
+                              errorText: passError? passerrorText: null,
                               suffixIcon: GestureDetector(
                               onTap: () {
                                                   
@@ -293,6 +298,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
                                 borderRadius: BorderRadius.circular(15)
                               ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
                               ),
                             onTap: lookAround,
                             onTapOutside: (event) {
@@ -311,8 +320,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   currentFocus.unfocus();
                               }
                             },
-                            // onChanged: (value) {
-                            //   moveEyes(value);
+                            onChanged: (value) {
+                               moveEyes(value);
+                            }
                             //   int l = value.length;
                             //   if(l>0 && !passheight){
                             //     passheight = true;
@@ -332,7 +342,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             
                           ),
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: 0.1.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -346,6 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         SizedBox(height: 3.h),
                         ElevatedButton(onPressed: () => {
+                          loginClick()
                           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()))
                         }, 
                         style: ButtonStyle(
@@ -378,7 +389,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         SizedBox(height: 3.h),
-                        ElevatedButton(onPressed: () => {}, 
+                        ElevatedButton(onPressed: () => {
+
+                        }, 
                         style: ButtonStyle(
                           shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                           padding: WidgetStateProperty.all(EdgeInsets.only(top: 2.h, bottom: 2.h, left: 5.w, right: 5.w))
