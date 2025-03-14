@@ -396,7 +396,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                           padding: WidgetStateProperty.all(EdgeInsets.only(top: 2.h, bottom: 2.h, left: 5.w, right: 5.w))
                         ),
-                        child: Image.network('http://pngimg.com/uploads/google/google_PNG19635.png', fit: BoxFit.fitHeight, height: 5.h,)
+                        child: Image.asset('assets/google.png', fit: BoxFit.fitHeight, height: 5.h,)
                         ),
                         ]
                       ),
