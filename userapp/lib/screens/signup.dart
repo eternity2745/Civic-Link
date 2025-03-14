@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:userapp/screens/login.dart';
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -91,306 +89,339 @@ class _SignUpScreenState extends State<SignUpScreen> {
               AnimatedContainer(
                   duration: Duration(milliseconds: 500),
                   height: 30.h,
-                  width: MediaQuery.of(context).size.width,
+                  width: 100.w,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [Colors.deepPurple.shade600, Colors.pink.shade300], begin: Alignment.bottomCenter, end: Alignment.topRight),
+                    gradient: LinearGradient(colors: [Color(int.parse('0xffECE3CE')),Color(int.parse('0xff739072')),], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(70), bottomRight: Radius.circular(70),)
                   ),
                   child: SafeArea(child:
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                      Center(
-                        child: Text(
-                          "Create A New Account",
-                          style: TextStyle(
-                            letterSpacing: 2.0,
-                            fontSize: 0.36.dp,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 3.h),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                        Center(
+                          child: Text(
+                            "Create A New Account",
+                            style: TextStyle(
+                              letterSpacing: 2.0,
+                              fontSize: 0.36.dp,
+                              fontWeight: FontWeight.w600,
+                              color: Color(int.parse('0xff739072'))
+                            ),
+                            )
+                        ),
+                        Center(
+                          child: Text(
+                            "With Us",
+                            style: TextStyle(
+                              letterSpacing: 5.0,
+                              fontSize: 0.36.dp,
+                              fontWeight: FontWeight.w900,
+                              color: Color(int.parse('0xff739072'))
+                            ),
                           )
-                      ),
-                      Center(
-                        child: Text(
-                          "With Us",
-                          style: TextStyle(
-                            letterSpacing: 5.0,
-                            fontSize: 0.36.dp,
-                            fontWeight: FontWeight.w900
-                          ),
                         )
-                      )
-                    ],
+                      ],
+                      ),
                     )
                   ),
               ),
             Container(
-              margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 30.h),
-              height: MediaQuery.of(context).size.height/1.5,
+              margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 20.h),
+              height: 65.h,
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [Colors.purple.shade900, Colors.purple.shade700, Colors.purple.shade800], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                gradient: LinearGradient(colors: [Color(int.parse('0xff4F6F52')),Color(int.parse('0xff3A4D39'))], begin: Alignment.topLeft, end: Alignment.bottomRight),
                 borderRadius: BorderRadius.circular(25),
-                boxShadow: [BoxShadow(color: Colors.black, blurRadius: 12)]
+                boxShadow: [BoxShadow(color: Colors.black, blurRadius: 5)]
               ),
-              child: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top:constraints.maxHeight/13, bottom: constraints.maxHeight/100),
-                    child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: constraints.maxHeight>501? constraints.maxHeight/6: (constraints.maxHeight>497?constraints.maxHeight/6:constraints.maxHeight/6),
-                                child: TextField(
-                                controller: usernameController,
-                                maxLength: 20,
-                                style: TextStyle(
-                                  fontSize: 20
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: "Username",
-                                  errorText: errorname? errornameText: null,
-                                  prefixIcon: Icon(Icons.person_outline_rounded, color: Colors.blue.shade100),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey.shade400, fontSize: 18, letterSpacing:2 
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                    borderRadius: BorderRadius.circular(15)
-                                  )
-                                ),
-                                onTapOutside: (event) {
-                                FocusScopeNode currentFocus = FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                    currentFocus.unfocus();
-                                }
-                                },
-                                onChanged: (value) {
-                                int l = value.length;
-                                if(l>0 && !usernameheight){
-                                  usernameheight = true;
-                                  // height = height - 0.69;
-                                  setState(() {
-                                    
-                                  });
-                                }else if(l==0 && usernameheight){
-                                  usernameheight = false;
-                                  // height = height + 0.69;
-                                  setState(() {
-                                    
-                                  });
-                          
-                                }
-                                }
-                                                          ),
-                              ),
-                            SizedBox(height: constraints.maxHeight>501? constraints.maxHeight/30: constraints.maxHeight/30,),
-                              SizedBox(
-                                height: constraints.maxHeight>501? constraints.maxHeight/6: (constraints.maxHeight>497?constraints.maxHeight/6:constraints.maxHeight/6),
-                                child: TextField(
-                                controller: emailController,
-                                style: TextStyle(
-                                  fontSize: 0.3.dp
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: "Email",
-                                  errorText: errorEmail? erroremailText: null,
-                                  prefixIcon: Icon(Icons.email_outlined, color: Colors.blue.shade100),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey.shade400, fontSize: 0.3.dp, letterSpacing:2 
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                    borderRadius: BorderRadius.circular(15)
-                                  )
-                                ),
-                                
-                                onTapOutside: (event) {
-                                FocusScopeNode currentFocus = FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                    currentFocus.unfocus();
-                                }
-                                },
-                                onChanged: (value) {
-                                int l = value.length;
-                                if(l>0 && !emailheight){
-                                  emailheight = true;
-                                  // height = height - 0.69;
-                                  setState(() {
-                                    
-                                  });
-                                }else if(l==0 && emailheight){
-                                  emailheight = false;
-                                  // height = height + 0.69;
-                                  setState(() {
-                                    
-                                  });
-                          
-                                }
-                                }
-                              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 5.h, bottom: 5.h),
+                child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10.h,
+                            child: TextField(
+                            controller: usernameController,
+                            maxLength: 20,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color(int.parse('0xffECE3CE'))
                             ),
-                            SizedBox(height: constraints.maxHeight>501? constraints.maxHeight/30: constraints.maxHeight/20,),
-                            SizedBox(
-                              height: constraints.maxHeight>501? constraints.maxHeight/6: (constraints.maxHeight>497?constraints.maxHeight/6:constraints.maxHeight/6),
-                              child: TextField(
-                                controller: passController,
-                                maxLength: 20,
-                                style: TextStyle(
-                                  fontSize: 0.3.dp
-                                ),
-                               decoration: InputDecoration(
-                                  hintText: "Password",
-                                  errorText: errorPass? errorpassText: null,
-                                  prefixIcon: Icon(Icons.key_outlined, color: Colors.blue.shade100),
-                                  suffixIcon: GestureDetector(
-                                  onTap: () {
-                                  if (hidePass == Icons.visibility_off_outlined) {
-                                    setState(() {
-                                      hidePass = Icons.visibility_rounded;
-                                      obscurePass = false;
-                                    });
-                                  }else{
-                                    setState(() {
-                                      hidePass = Icons.visibility_off_outlined;
-                                      obscurePass = true;
-                                    });
-                                  }
-                                },
-                                  child: Icon(hidePass, color: Colors.blue.shade100)
-                                  ),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey.shade400, fontSize: 18, letterSpacing:2 
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                    borderRadius: BorderRadius.circular(15)
-                                  )
-                                ),
-                                obscureText: obscurePass,
-                              
-                                onTapOutside: (event) {
-                                
-                                FocusScopeNode currentFocus = FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                    currentFocus.unfocus();
-                                }
-                                },
-                                onChanged: (value) {
-                                int l = value.length;
-                                if(l>0 && !passheight){
-                                  passheight = true;
-                                  // height = height - 0.69;
-                                  setState(() {
-                                    
-                                  });
-                                }else if(l==0 && passheight){
-                                  passheight = false;
-                                  // height = height + 0.69;
-                                  setState(() {
-                                    
-                                  });
-                          
-                                }
-                                }
+                            decoration: InputDecoration(
+                              hintText: "Username",
+                              errorText: errorname? errornameText: null,
+                              prefixIcon: Icon(Icons.person_outline_rounded, color: Color(int.parse('0xffECE3CE'))),
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400, fontSize: 18, letterSpacing:2 
                               ),
-                            ),
-                            SizedBox(height: constraints.maxHeight>501? constraints.maxHeight/30: constraints.maxHeight/30,),
-                            SizedBox(
-                              height: constraints.maxHeight>501? constraints.maxHeight/6: (constraints.maxHeight>497?constraints.maxHeight/6:constraints.maxHeight/6),
-                              child: TextField(
-                                controller: confpassController,
-                                maxLength: 20,
-                                style: TextStyle(
-                                  fontSize: 20
-                                ),
-                                obscureText: obscureConfPass,
-                                decoration: InputDecoration(
-                                  hintText: "Confirm Password",
-                                  errorText: confpassError? confpasserrorText: null,
-                                  prefixIcon: Icon(Icons.key_outlined, color: Colors.blue.shade100),
-                                  suffixIcon: GestureDetector(
-                                  onTap: () {
-                                  if (hideConfPass == Icons.visibility_off_outlined) {
-                                    setState(() {
-                                      hideConfPass = Icons.visibility_rounded;
-                                      obscureConfPass = false;
-                                    });
-                                  }else{
-                                    setState(() {
-                                      hideConfPass = Icons.visibility_off_outlined;
-                                      obscureConfPass = true;
-                                    });
-                                  }
-                                },
-                                  child: Icon(hideConfPass, color: Colors.blue.shade100)
-                                  ),
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey.shade400, fontSize: 18, letterSpacing:2 
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                    borderRadius: BorderRadius.circular(15)
-                                  )
-                                ),
-                                
-                                onTapOutside: (event) {
-                                FocusScopeNode currentFocus = FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                    currentFocus.unfocus();
-                                }
-                                },
-                                onChanged: (value) {
-                                int l = value.length;
-                                if(l>0 && !confpassheight){
-                                  confpassheight = true;
-                                  // height = height - 0.69;
-                                  setState(() {
-                                    
-                                  });
-                                }else if(l==0 && confpassheight){
-                                  confpassheight = false;
-                                  // height = height + 0.69;
-                                  setState(() {
-                                    
-                                  });
-                          
-                                }
-                                }
-                              ),
-                            ),
-                            SizedBox(height: constraints.maxHeight>501? constraints.maxHeight/14: constraints.maxHeight/17,),
-                            ElevatedButton(onPressed: () => {
-                              accountVerification()
-                            }, 
-                            style: ButtonStyle(
-                              textStyle: WidgetStateProperty.all(TextStyle(
-                                fontSize: constraints.maxHeight>501? constraints.maxHeight/27: constraints.maxHeight/22,
-                                letterSpacing: 3
-                              )),
-                              elevation: WidgetStateProperty.all(7),
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
                                 borderRadius: BorderRadius.circular(15)
-                              )),
-                              padding: WidgetStateProperty.all(EdgeInsets.only(left: 40, right: 40, top:constraints.maxHeight>501? constraints.maxHeight/37: constraints.maxHeight/40, bottom: constraints.maxHeight>501? constraints.maxHeight/37: constraints.maxHeight/40)),
-                              backgroundColor: WidgetStateProperty.all(Colors.blue.withGreen(100))
-                            ),
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                color: Colors.white
                               ),
-                            )
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
                             ),
-                            ]
+                            onTapOutside: (event) {
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                            }
+                            },
+                            onChanged: (value) {
+                            int l = value.length;
+                            if(l>0 && !usernameheight){
+                              usernameheight = true;
+                              // height = height - 0.69;
+                              setState(() {
+                                
+                              });
+                            }else if(l==0 && usernameheight){
+                              usernameheight = false;
+                              // height = height + 0.69;
+                              setState(() {
+                                
+                              });
+                      
+                            }
+                            }
+                                                      ),
                           ),
-                        );
-                      }
-                    ),
-                  );
-                }
+                        SizedBox(height: 2.h,),
+                          SizedBox(
+                            height: 10.h,
+                            child: TextField(
+                            controller: emailController,
+                            style: TextStyle(
+                              fontSize: 0.3.dp,
+                              color: Color(int.parse('0xffECE3CE'))
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "Email",
+                              errorText: errorEmail? erroremailText: null,
+                              prefixIcon: Icon(Icons.email_outlined, color: Color(int.parse('0xffECE3CE'))),
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400, fontSize: 0.3.dp, letterSpacing:2 
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                            ),
+                            
+                            onTapOutside: (event) {
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                            }
+                            },
+                            onChanged: (value) {
+                            int l = value.length;
+                            if(l>0 && !emailheight){
+                              emailheight = true;
+                              // height = height - 0.69;
+                              setState(() {
+                                
+                              });
+                            }else if(l==0 && emailheight){
+                              emailheight = false;
+                              // height = height + 0.69;
+                              setState(() {
+                                
+                              });
+                      
+                            }
+                            }
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        SizedBox(
+                          height: 10.h,
+                          child: TextField(
+                            controller: passController,
+                            maxLength: 20,
+                            style: TextStyle(
+                              fontSize: 0.3.dp,
+                              color: Color(int.parse('0xffECE3CE'))
+                            ),
+                           decoration: InputDecoration(
+                              hintText: "Password",
+                              errorText: errorPass? errorpassText: null,
+                              prefixIcon: Icon(Icons.key_outlined, color: Color(int.parse('0xffECE3CE'))),
+                              suffixIcon: GestureDetector(
+                              onTap: () {
+                              if (hidePass == Icons.visibility_off_outlined) {
+                                setState(() {
+                                  hidePass = Icons.visibility_rounded;
+                                  obscurePass = false;
+                                });
+                              }else{
+                                setState(() {
+                                  hidePass = Icons.visibility_off_outlined;
+                                  obscurePass = true;
+                                });
+                              }
+                            },
+                              child: Icon(hidePass, color: Color(int.parse('0xffECE3CE')))
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400, fontSize: 18, letterSpacing:2 
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                            ),
+                            obscureText: obscurePass,
+                          
+                            onTapOutside: (event) {
+                            
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                            }
+                            },
+                            onChanged: (value) {
+                            int l = value.length;
+                            if(l>0 && !passheight){
+                              passheight = true;
+                              // height = height - 0.69;
+                              setState(() {
+                                
+                              });
+                            }else if(l==0 && passheight){
+                              passheight = false;
+                              // height = height + 0.69;
+                              setState(() {
+                                
+                              });
+                      
+                            }
+                            }
+                          ),
+                        ),
+                        SizedBox(height: 2.h,),
+                        SizedBox(
+                          height: 10.h,
+                          child: TextField(
+                            controller: confpassController,
+                            maxLength: 20,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color(int.parse('0xffECE3CE'))
+                            ),
+                            obscureText: obscureConfPass,
+                            decoration: InputDecoration(
+                              hintText: "Confirm Password",
+                              errorText: confpassError? confpasserrorText: null,
+                              prefixIcon: Icon(Icons.key_outlined, color: Color(int.parse('0xffECE3CE'))),
+                              suffixIcon: GestureDetector(
+                              onTap: () {
+                              if (hideConfPass == Icons.visibility_off_outlined) {
+                                setState(() {
+                                  hideConfPass = Icons.visibility_rounded;
+                                  obscureConfPass = false;
+                                });
+                              }else{
+                                setState(() {
+                                  hideConfPass = Icons.visibility_off_outlined;
+                                  obscureConfPass = true;
+                                });
+                              }
+                            },
+                              child: Icon(hideConfPass, color: Color(int.parse('0xffECE3CE')))
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400, fontSize: 18, letterSpacing:2 
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(int.parse('0xffECE3CE'))),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                            ),
+                            
+                            onTapOutside: (event) {
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                            }
+                            },
+                            onChanged: (value) {
+                            int l = value.length;
+                            if(l>0 && !confpassheight){
+                              confpassheight = true;
+                              // height = height - 0.69;
+                              setState(() {
+                                
+                              });
+                            }else if(l==0 && confpassheight){
+                              confpassheight = false;
+                              // height = height + 0.69;
+                              setState(() {
+                                
+                              });
+                      
+                            }
+                            }
+                          ),
+                        ),
+                        SizedBox(height: 2.h,),
+                        ElevatedButton(onPressed: () => {
+                          accountVerification()
+                        }, 
+                        style: ButtonStyle(
+                          textStyle: WidgetStateProperty.all(TextStyle(
+                            fontSize: 0.3.dp,
+                            letterSpacing: 3,
+                          )),
+                          elevation: WidgetStateProperty.all(7),
+                          shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          )),
+                          padding: WidgetStateProperty.all(EdgeInsets.only(left: 22.w, right: 22.w, top:2.h, bottom: 2.h)),
+                          backgroundColor: WidgetStateProperty.all(Color(int.parse('0xffECE3CE')))
+                        ),
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold
+                          ),
+                        )
+                        ),
+                        ]
+                      ),
+                    
               )
             ),
             ],
@@ -405,8 +436,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),),
               GestureDetector(
                 onTap: () {
-                  Navigator.push
-                  (context, MaterialPageRoute(builder: ((context) =>  LoginScreen())));
+                  Navigator.pop(context);
                 },
                 child: Text("Sign In!", 
                 style: TextStyle(fontSize: 25, color: Colors.blue.shade200),),
