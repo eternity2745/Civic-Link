@@ -38,10 +38,10 @@ class _LandingScreenState extends State<LandingScreen> {
                       Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
                     },
                     child: Container(
-                    height: 30.h,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade900
-                    ),
+                    // height: 30.h,
+                    // decoration: BoxDecoration(
+                    //   color: Colors.grey.shade900
+                    // ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
                       child: Column(
@@ -120,7 +120,8 @@ class _LandingScreenState extends State<LandingScreen> {
                     ),
                                     ),
                   ),
-                SizedBox(height: 2.h,)
+                // SizedBox(height: 1.h,)
+                Divider(thickness: 0.8,)
                 ]
               );
             },

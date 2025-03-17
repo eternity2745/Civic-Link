@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/screens/home.dart';
 import 'package:userapp/screens/login.dart';
+import 'package:userapp/screens/post.dart';
 
 void main() {
   runApp(const MyApp());
