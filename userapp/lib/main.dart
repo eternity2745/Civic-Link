@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/screens/home.dart';
 import 'package:userapp/screens/login.dart';
 
 void main() {
@@ -31,11 +32,11 @@ class MyApp extends StatelessWidget {
           //
           // This works for code too, not just values: Most code changes can be
           // tested with just a hot reload.
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(int.parse('0xffECE3CE'))),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(int.parse('0xffECE3CE')), brightness: Brightness.dark),
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
+        home: const HomeScreen(),
         );
       }
     );
