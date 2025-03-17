@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/screens/progress.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -117,20 +118,38 @@ class _PostScreenState extends State<PostScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Row(
-                            spacing: 3.w,
+                          Column(
                             children: [
-                              Text(
-                                "Action Taken", 
-                                style: TextStyle(
-                                  fontSize: 0.3.dp
-                                ),
-                                ),
-                              Icon(Icons.check_rounded, color: Colors.green,)
+                              Row(
+                                spacing: 3.w,
+                                children: [
+                                  Text(
+                                    "Action Taken", 
+                                    style: TextStyle(
+                                      fontSize: 0.3.dp
+                                    ),
+                                    ),
+                                  Icon(Icons.check_rounded, color: Colors.green,)
+                                ],
+                              ),
+                              Row(
+                                spacing: 7.w,
+                                children: [
+                                  Text(
+                                    "Completed", 
+                                    style: TextStyle(
+                                      fontSize: 0.3.dp
+                                    ),
+                                    ),
+                                  Icon(Icons.check_rounded, color: Colors.green,)
+                                ],
+                              ),
                             ],
                           ),
                           TextButton(
-                            onPressed: () {}, 
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProgressScreen()));
+                            }, 
                             child: Text("View Progress",
                             style: TextStyle(color: Colors.blue),
                             )
@@ -202,7 +221,8 @@ class _PostScreenState extends State<PostScreen> {
                             child: RichText(
                               text: TextSpan(text: "Hello tehre huuaefuaieb efgagyug feaggfeg ef7agfeg87 eg7g8ef7agf efa7g87efagea7 ea7g87fe78a u8agf8aeg g8efag98f efa...",
                               style: TextStyle(
-                                fontSize: 0.28.dp
+                                fontSize: 0.28.dp,
+                                // color: Colors.white
                               ),
                               children: [
                                 TextSpan(

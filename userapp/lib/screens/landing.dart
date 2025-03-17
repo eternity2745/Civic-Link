@@ -10,6 +10,14 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+
+  List<List<String>> details = [
+    [
+      "assets/google.png",
+      "assets/"
+    ]
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +64,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                   CircleAvatar(
                                     radius: 15,
                                     backgroundColor: Colors.transparent,
-                                    child: Image.asset("assets/google.png"),
+                                    child: Image.asset("assets/Civic Link.png"),
                                   ),
                                   Text(
                                     "Google India",

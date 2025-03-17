@@ -36,6 +36,7 @@ dependencies:
   flutter_animate: ^4.5.2
   flutter_launcher_icons: ^0.14.3
   salomon_bottom_bar: ^3.3.2
+  timelines_plus: ^1.0.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

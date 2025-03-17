@@ -21,13 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: SalomonBottomBar(
-        backgroundColor: Colors.green,
-        selectedItemColor: Colors.amber.shade800,
-        unselectedItemColor: Colors.amber.shade400,
+        backgroundColor: Colors.green.shade900,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
         items: [
           SalomonBottomBarItem(icon: Icon(Icons.home), title: Text("Home")),
           SalomonBottomBarItem(icon: Icon(Icons.add), title: Text("Create")),
-          SalomonBottomBarItem(icon: Icon(Icons.person_outline_rounded), title: Text("Create")),
+          SalomonBottomBarItem(icon: Icon(Icons.person_outline_rounded), title: Text("Profile")),
         ],
         currentIndex: selectedIndex,
         onTap: (index) {
