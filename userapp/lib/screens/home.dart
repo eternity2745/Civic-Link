@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/screens/landing.dart';
-import 'package:userapp/screens/post.dart';
+import 'package:userapp/screens/createPost.dart';
 import 'package:userapp/screens/profile.dart';
 
 class HomeScreen extends StatefulWidget {
