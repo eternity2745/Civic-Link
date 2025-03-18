@@ -14,7 +14,8 @@ class _LandingScreenState extends State<LandingScreen> {
   List<List<String>> details = [
     [
       "assets/google.png",
-      "assets/"
+      "Google India",
+      ""
     ]
   ];
 
@@ -45,6 +46,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
                     },
+                    // ignore: avoid_unnecessary_containers
                     child: Container(
                     // height: 30.h,
                     // decoration: BoxDecoration(
@@ -87,7 +89,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           Padding(
                             padding: EdgeInsets.only(left: 5.w),
                             child: RichText(
-                              text: TextSpan(text: "Hello tehre huuaefuaieb efgagyug feaggfeg ef7agfeg87 eg7g8ef7agf efa7g87efagea7 ea7g87fe78a u8agf8aeg g8efag98f efa...",
+                              text: TextSpan(text: "Hello tehre huuaefuaieb efgagyug feaggfeg ef7agfeg87 eg7g8ef7agf efa7g87efagea7 ea7g87fe78a u8agf8aeg g8efag98f efa...", // 115
                               style: TextStyle(
                                 fontSize: 0.3.dp
                               ),
