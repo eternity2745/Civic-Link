@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:userapp/screens/landing.dart';
 import 'package:userapp/screens/createPost.dart';
 import 'package:userapp/screens/profile.dart';
+import 'package:userapp/screens/search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,8 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.white70,
         items: [
           SalomonBottomBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          SalomonBottomBarItem(icon: Icon(Icons.search_rounded), title: Text("Search")),
           SalomonBottomBarItem(icon: Icon(Icons.add), title: Text("Create")),
           SalomonBottomBarItem(icon: Icon(Icons.person_outline_rounded), title: Text("Profile")),
+          
         ],
         currentIndex: selectedIndex,
         onTap: (index) {
@@ -40,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: PageView(
           physics: NeverScrollableScrollPhysics(),
           controller: _pageController,
-          children: [LandingScreen(), PostCreateScreen(), ProfileScreen()],
+          children: [LandingScreen(), SearchScreen(), PostCreateScreen(), ProfileScreen()],
         
         ),
     );
