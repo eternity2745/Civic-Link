@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            Divider(thickness: 0.8,),
+            Divider(thickness: 3,),
             SizedBox(height: 3.h,),
             Padding(
                 padding: EdgeInsets.only(left: 5.w),

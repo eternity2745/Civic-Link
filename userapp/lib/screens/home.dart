@@ -36,10 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.white70,
         
         items: [
-          SalomonBottomBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          SalomonBottomBarItem(icon: selectedIndex == 0? Icon(Icons.home) : Icon(Icons.home_outlined), title: Text("Home")),
           SalomonBottomBarItem(icon: Icon(Icons.search_rounded), title: Text("Search")),
-          SalomonBottomBarItem(icon: Icon(Icons.add), title: Text("Create")),
-          SalomonBottomBarItem(icon: Icon(Icons.person_outline_rounded), title: Text("Profile"), activeIcon: Image.asset("assets/google.png", width: 4.w, height: 3.h,)),
+          SalomonBottomBarItem(icon: selectedIndex == 2? Icon(Icons.add_box_rounded) : Icon(Icons.add_box_outlined), title: Text("Create")),
+          SalomonBottomBarItem(icon: Image.asset("assets/google.png", width: 5.w, height: 3.h,), title: Text("Profile")),
           
         ],
         currentIndex: selectedIndex,

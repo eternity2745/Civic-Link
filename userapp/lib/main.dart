@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/screens/home.dart';
 import 'package:userapp/screens/login.dart';
@@ -8,6 +9,7 @@ import 'package:userapp/screens/post.dart';
 void main() {
   
   WidgetsFlutterBinding.ensureInitialized();
+  RiveFile.initialize();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
         // highContrastDarkTheme: ThemeData.dark(),
         theme: ThemeData(
 
-          
+          // primaryColor: Colors.green.shade900,
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,

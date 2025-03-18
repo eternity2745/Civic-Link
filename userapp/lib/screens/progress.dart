@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sizer/sizer.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
@@ -54,11 +55,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
               builder: TimelineTileBuilder.connectedFromStyle(
               contentsAlign: ContentsAlign.basic,
               oppositeContentsBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(2.h),
               child: Text('${progress[index][0]}\n${progress[index][1]}'),
               ),
               contentsBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(2.h),
               child: Text(progress[index][2],
                           style: TextStyle(
                             fontSize: 0.3.dp
