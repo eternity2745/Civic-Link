@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:sizer/sizer.dart';
+import 'package:userapp/screens/home.dart';
 import 'package:userapp/screens/signup.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -99,6 +100,11 @@ class _LoginScreenState extends State<LoginScreen> {
       passError = false;
       emailError = false;
       setState(() {
+      });
+      Future.delayed(Duration(seconds: 1), () {
+        if (context.mounted) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        }
       });
     } else {
       failTrigger?.fire();
