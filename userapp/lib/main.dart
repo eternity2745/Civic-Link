@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
     return Sizer(builder: (context, orientation, screenType) {
       return MaterialApp(
         title: 'Civic Link',
+        darkTheme: ThemeData.dark(),
+        // highContrastDarkTheme: ThemeData.dark(),
         theme: ThemeData(
+
           // This is the theme of your application.
           //
           // TRY THIS: Try running your application with "flutter run". You'll see
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
           //
           // This works for code too, not just values: Most code changes can be
           // tested with just a hot reload.
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(int.parse('0xffECE3CE')), brightness: Brightness.dark),
+          // colorScheme: ColorScheme.fromSeed(seedColor: Colors.black, brightness: Brightness.dark),
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,

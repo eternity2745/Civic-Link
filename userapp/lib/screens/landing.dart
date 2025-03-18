@@ -22,6 +22,7 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: Text(

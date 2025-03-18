@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/screens/landing.dart';
@@ -17,12 +18,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _pageController = PageController();
 
+  @override
+  void initState() {
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
+
+    super.initState();
+  }
+
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       bottomNavigationBar: SalomonBottomBar(
-        backgroundColor: Colors.green.shade900,
+        backgroundColor: Colors.black,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         items: [
