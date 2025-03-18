@@ -30,7 +30,7 @@ class _PostScreenState extends State<PostScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                  padding: EdgeInsets.only(left: 5.w, top: 3.h, right: 5.w, bottom: 1.5.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -146,26 +146,35 @@ class _PostScreenState extends State<PostScreen> {
                               ),
                             ],
                           ),
-                          TextButton(
+                          ElevatedButton(
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => ProgressScreen()));
                             }, 
-                            child: Text("View Progress",
-                            style: TextStyle(color: Colors.blue),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(color: Colors.green.shade900))
+                            ),
+                            child: Row(
+                              spacing: 2.w,
+                              children: [
+                                Icon(Icons.show_chart_rounded, color: Colors.white,),
+                                Text("Progress",
+                                style: TextStyle(color: Colors.white),
+                                ),
+                              ],
                             )
                             )
                         ],
                       ),
-                      Divider(thickness: 0.8,),
                     ]
                   )
               ),
+              Divider(thickness: 3,),
               Padding(
-                padding: EdgeInsets.only(left: 5.w),
+                padding: EdgeInsets.only(left: 5.w, top: 2.h),
                 child: Text(
                   "Comments",
                   style: TextStyle(
-                    fontSize: 0.36.dp,
+                    fontSize: 0.38.dp,
                     fontWeight: FontWeight.bold
                   ),
                   ),
