@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+// import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sizer/sizer.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 

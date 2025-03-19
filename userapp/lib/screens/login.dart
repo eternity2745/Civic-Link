@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:sizer/sizer.dart';
-import 'package:userapp/screens/home.dart';
-import 'package:userapp/screens/signup.dart';
+import 'package:userapp/Database/methods.dart';
+import 'package:userapp/Screens/home.dart';
+import 'package:userapp/Screens/signup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -91,21 +92,36 @@ class _LoginScreenState extends State<LoginScreen> {
     isChecking?.change(true);
   }
 
-  void loginClick() {
+  void loginClick() async {
     isChecking?.change(false);
     isHandsUp?.change(false);
 
     if (emailController.text.isNotEmpty && passController.text.isNotEmpty) {
-      successTrigger?.fire();
-      passError = false;
-      emailError = false;
-      setState(() {
-      });
-      Future.delayed(Duration(seconds: 1), () {
-        if (context.mounted) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      bool result = await DatabaseMethods().signIn(emailController.text, passController.text);
+
+      if(result) {
+        successTrigger?.fire();
+        passError = false;
+        emailError = false;
+        setState(() {
+        });
+        Future.delayed(Duration(seconds: 1), () {
+          if (context.mounted) {
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          }
+        });
+      } else {
+        failTrigger?.fire();
+        passError = false;
+        emailError = false;
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: (Text("Inavild Email or Password Entered"))));
         }
-      });
+        setState(() {
+          
+        });
+      }
     } else {
       failTrigger?.fire();
       setState(() {

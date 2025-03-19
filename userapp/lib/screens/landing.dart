@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:userapp/screens/post.dart';
+import 'package:userapp/Screens/post.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -9,7 +9,7 @@ class LandingScreen extends StatefulWidget {
   State<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin {
 
   List<List<String>> details = [
     [
@@ -20,7 +20,11 @@ class _LandingScreenState extends State<LandingScreen> {
   ];
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       
       appBar: AppBar(

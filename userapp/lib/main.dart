@@ -1,15 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
-import 'package:userapp/screens/home.dart';
-import 'package:userapp/screens/login.dart';
-import 'package:userapp/screens/post.dart';
+import 'package:userapp/Screens/home.dart';
+import 'package:userapp/Screens/login.dart';
+import 'package:userapp/Screens/post.dart';
+import 'package:userapp/firebase_options.dart';
 
-void main() {
+void main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
   RiveFile.initialize();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(

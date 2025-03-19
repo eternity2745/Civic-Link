@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Database/methods.dart';
+import 'package:userapp/Screens/home.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -32,7 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var usernameController = TextEditingController();
   var confpassController = TextEditingController();
 
-  void accountVerification() {
+  void accountVerification() async {
     if (usernameController.text.isEmpty) {
       errorname = true;
       errornameText = "Username Cant Be Empty";
@@ -46,10 +51,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (emailController.text.isEmpty){
       errorEmail = true;
       erroremailText = "Email Cannot Be Empty";
-    }
-    else if (emailController.text != 'example@gmail.com') {
-      errorEmail = true;
-      erroremailText = "Invalid Email Id";
     }else{
       errorEmail = false;
     }
@@ -75,6 +76,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       
     });
+    if (!errorname && !errorEmail && !errorPass && !confpassError) {
+      String email = emailController.text;
+      String password = passController.text;
+      String username = usernameController.text;
+      bool result = await DatabaseMethods().signUp(email, password);
+      if(result) {
+        Map<String, dynamic> userInfo = {
+          "email" : email,
+          "displayname": username,
+          "username" : email.split("@")[0],
+          "profilePic" : "https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900",
+          "reports" : 0,
+          "posts" : 0,
+          "ranking" : 0,
+          "id" : DateTime.now().millisecondsSinceEpoch
+        };
+        await DatabaseMethods().addUserInfo(userInfo);
+        if(mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()), 
+            (Route<dynamic> route) => false
+            );
+        }
+      }
+    }
+
+  }
+
+  void signUp() async {
+    
   }
 
 

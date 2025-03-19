@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sizer/sizer.dart';
-import 'package:userapp/screens/landing.dart';
-import 'package:userapp/screens/createPost.dart';
-import 'package:userapp/screens/profile.dart';
-import 'package:userapp/screens/search.dart';
+import 'package:userapp/Screens/landing.dart';
+import 'package:userapp/Screens/createPost.dart';
+import 'package:userapp/Screens/profile.dart';
+import 'package:userapp/Screens/search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
