@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hidable/hidable.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/screens/landing.dart';
@@ -17,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final _pageController = PageController();
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
