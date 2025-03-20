@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Screens/home.dart';
 import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Screens/post.dart';
+import 'package:userapp/Utilities/state.dart';
 import 'package:userapp/firebase_options.dart';
 
 void main() async {
@@ -34,20 +36,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, orientation, screenType) {
-      return MaterialApp(
-        title: 'Civic Link',
-        darkTheme: ThemeData.dark(),
-        // highContrastDarkTheme: ThemeData.dark(),
-        theme: ThemeData(
-
-          // primaryColor: Colors.green.shade900,
-          useMaterial3: true,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
-        );
-      }
+    return ChangeNotifierProvider(
+      create: (context) => StateManagement(),
+      child: Sizer(builder: (context, orientation, screenType) {
+        return MaterialApp(
+          title: 'Civic Link',
+          darkTheme: ThemeData.dark(),
+          // highContrastDarkTheme: ThemeData.dark(),
+          theme: ThemeData(
+      
+            // primaryColor: Colors.green.shade900,
+            useMaterial3: true,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const LoginScreen(),
+          );
+        }
+      ),
     );
   }
 }

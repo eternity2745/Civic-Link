@@ -1,13 +1,16 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/home.dart';
 import 'package:userapp/Screens/signup.dart';
+import 'package:userapp/Utilities/state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -101,16 +104,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if(result) {
         successTrigger?.fire();
+        QuerySnapshot details = await DatabaseMethods().getUserInfo(emailController.text);
+        String username = "${details.docs[0]["username"]}";
+        String displayname = "${details.docs[0]["displayname"]}";
+        String email = "${details.docs[0]["email"]}";
+        String profilePic = "${details.docs[0]["profilePic"]}";
+        int userID= details.docs[0]['id'];
+        int posts = details.docs[0]['posts'];
+        int reports = details.docs[0]['reports'];
+        int ranking = details.docs[0]['ranking'];
         passError = false;
         emailError = false;
         setState(() {
         });
-        Future.delayed(Duration(seconds: 1), () {
-          if (context.mounted) {
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-          }
-        });
+        if (mounted) {
+          Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        }
+        
       } else {
         failTrigger?.fire();
         passError = false;

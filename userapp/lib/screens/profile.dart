@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Utilities/state.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -47,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                           backgroundColor: Colors.transparent,
                           maxRadius: 35,
                           minRadius: 35,
-                          backgroundImage: NetworkImage("https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900"),
+                          backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
                           // child: Image.network("https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900"),
                         ),
                       ),
@@ -55,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Devanarayan V S",
+                            Provider.of<StateManagement>(context).displayname,
                             style: TextStyle(
                               fontSize: 0.36.dp,
                               fontWeight: FontWeight.bold,
@@ -63,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                             ),
                             ),
                             Text(
-                            "@devanarayanvs",
+                            Provider.of<StateManagement>(context).username,
                             style: TextStyle(
                               fontSize: 0.3.dp,
                               fontWeight: FontWeight.bold,
@@ -80,15 +82,15 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                     children: [
                       Icon(Icons.leaderboard_rounded),
                       SizedBox(width: 1.w,),
-                      Text("20"),
+                      Text(Provider.of<StateManagement>(context).ranking.toString()),
                       SizedBox(width: 10.w),
                       Icon(Icons.edit_document),
                       SizedBox(width: 1.w,),
-                      Text("10"),
+                      Text(Provider.of<StateManagement>(context).posts.toString()),
                       SizedBox(width: 10.w),
                       Icon(Icons.report_problem_rounded),
                       SizedBox(width: 1.w,),
-                      Text("0"),
+                      Text(Provider.of<StateManagement>(context).reports.toString()),
                     ],
                   ),
                 ],
