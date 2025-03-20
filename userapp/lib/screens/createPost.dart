@@ -1,4 +1,9 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
 class PostCreateScreen extends StatefulWidget {
@@ -9,6 +14,63 @@ class PostCreateScreen extends StatefulWidget {
 }
 
 class _PostCreateScreenState extends State<PostCreateScreen> {
+
+  final TextEditingController _postController = TextEditingController();
+  int location = 0;
+  String imagePath = "";
+
+  void createPost() {
+    if(_postController.text != "" && location != 0) {
+
+    }else if(_postController.text == "") {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Error"),
+          content: Text("Post cannot be empty"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("Ok"),
+            )
+          ],
+        )
+      );
+    }else if(location == 0) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Error"),
+          content: Text("Location of the issue is needed to create a post"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("Ok"),
+            )
+          ],
+        )
+      );
+    }
+  }
+
+  Future<void> setImage() async {
+    var status = await Permission.mediaLibrary.status;
+    if(status.isGranted) {
+      final ImagePicker imagePicker = ImagePicker();
+
+      final XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if(image != null) {
+        imagePath = image.path;
+        setState(() {
+          
+        });
+      }
+    }else{
+      await Permission.mediaLibrary.request();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,15 +91,19 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: () {}, 
-              icon: Icon(Icons.image_outlined)
+              onPressed: () {
+                setImage();
+              }, 
+              icon: Icon(Icons.add_photo_alternate_outlined)
               ),
             IconButton(
               onPressed: () {}, 
               icon: Icon(Icons.add_location_alt_outlined)
               ),
             ElevatedButton(
-              onPressed: () {}, 
+              onPressed: () {
+                createPost();
+              }, 
               style: ElevatedButton.styleFrom(
                 enableFeedback: true,
                 backgroundColor: Colors.green.shade900,
@@ -64,6 +130,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
           child: Column(
             children: [
               TextField(
+                controller: _postController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.edit),
                   hintText: "Write about the issue...",
@@ -72,7 +139,52 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
                 cursorColor: Colors.green.shade500,
                 maxLines: null,
               ),
-              // SizedBox(height: 3.h,),
+              SizedBox(height: 1.h,),
+              if(imagePath != "")...{
+                Container(
+                  // height: 35.h,
+                  // width: 85.w,
+                  constraints: BoxConstraints(
+                    maxWidth: 95.w,
+                    maxHeight: 42.h
+                  ),
+                  decoration: BoxDecoration(
+                    // image: DecorationImage(image: FileImage(File(imagePath)), fit: BoxFit.fill),
+                    borderRadius: BorderRadius.circular(10),
+                    // border: Border.all(color: Colors.grey.shade900)
+                  ),
+                  child:
+                      ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                            Image.file(File(imagePath), fit: BoxFit.cover,),
+                            IconButton.filledTonal(
+                              onPressed: () {
+                                imagePath = "";
+                                setState(() {
+                                  
+                                });
+                              }, 
+                              icon: Icon(Icons.close, size: 0.34.dp,), 
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(Colors.black.withValues(alpha: 0.65)),
+                                fixedSize: WidgetStateProperty.all(Size(1.w, 3.h))
+                              ),
+                              color: Colors.red,
+                              // alignment: Alignment.topRight,
+                              // constraints: BoxConstraints(
+                              //   maxHeight: 10.h,
+                              //   maxWidth: 20.w
+                              // ),
+                              ),
+                                ]
+                        )
+                      )
+                ),
+                SizedBox(height: 3.h,),
+              }
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceAround,
               //   children: [
