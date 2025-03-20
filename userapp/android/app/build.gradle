@@ -8,6 +8,16 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+import java.util.Properties
+
+def loadEnv() {
+    Properties properties = new Properties()
+    file("C:\\Dart\\Civic Link\\userapp\\.env").withInputStream { properties.load(it) }
+    return properties
+}
+
+def env = loadEnv()
+
 android {
     namespace = "com.example.userapp"
     compileSdk = flutter.compileSdkVersion
@@ -31,6 +41,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        resValue "string", "google_maps_api_key", env['API']
     }
 
     buildTypes {

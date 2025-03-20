@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Utilities/mapLocationPicker.dart';
 
 class PostCreateScreen extends StatefulWidget {
   const PostCreateScreen({super.key});
@@ -97,7 +98,9 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
               icon: Icon(Icons.add_photo_alternate_outlined)
               ),
             IconButton(
-              onPressed: () {}, 
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MapLocationPicker()));
+              }, 
               icon: Icon(Icons.add_location_alt_outlined)
               ),
             ElevatedButton(

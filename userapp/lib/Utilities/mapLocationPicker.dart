@@ -8,16 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart' as l;
 import 'package:map_picker/map_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:userapp/Utilities/state.dart';
 
-class MapSample extends StatefulWidget {
-  const MapSample({super.key});
+class MapLocationPicker extends StatefulWidget {
+  const MapLocationPicker({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _MapSampleState createState() => _MapSampleState();
+  _MapLocationPickerState createState() => _MapLocationPickerState();
 }
 
-class _MapSampleState extends State<MapSample> {
+class _MapLocationPickerState extends State<MapLocationPicker> {
   final _controller = Completer<GoogleMapController>();
   MapPickerController mapPickerController = MapPickerController();
 
@@ -31,9 +32,10 @@ class _MapSampleState extends State<MapSample> {
           );
       var first = addresses.first;
       if (mounted) {
-       Provider.of<StateManagement>(context, listen: false).setReportLocationAddress("${first.street}, ${first.locality}, ${first.country}");
-       Provider.of<StateManagement>(context, listen: false).setReportLocationCoordinates([latitude, longitude]);
-       Navigator.of(context).pop();
+      //  Provider.of<StateManagement>(context, listen: false).setReportLocationAddress("${first.street}, ${first.locality}, ${first.country}");
+      //  Provider.of<StateManagement>(context, listen: false).setReportLocationCoordinates([latitude, longitude]);
+        log("$first");
+        Navigator.of(context).pop();
       }
     }
 
@@ -42,11 +44,14 @@ class _MapSampleState extends State<MapSample> {
     l.PermissionStatus permissionGranted;
 
     l.Location location = l.Location();
-
+    log("1");
     serviceEnabled = await location.serviceEnabled();
+    log("$serviceEnabled");
     if (!serviceEnabled) {
+      log("ENTERED");
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
+        log("HHEE");
         return;
       }
     }
