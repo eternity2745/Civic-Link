@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Screens/landing.dart';
 import 'package:userapp/Screens/createPost.dart';
 import 'package:userapp/Screens/profile.dart';
 import 'package:userapp/Screens/search.dart';
+import 'package:userapp/Utilities/state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SalomonBottomBarItem(icon: selectedIndex == 0? Icon(Icons.home) : Icon(Icons.home_outlined), title: Text("Home")),
           SalomonBottomBarItem(icon: Icon(Icons.search_rounded), title: Text("Search")),
           SalomonBottomBarItem(icon: selectedIndex == 2? Icon(Icons.add_box_rounded) : Icon(Icons.add_box_outlined), title: Text("Create")),
-          SalomonBottomBarItem(icon: Image.asset("assets/google.png", width: 5.w, height: 3.h,), title: Text("Profile")),
+          SalomonBottomBarItem(icon: CircleAvatar(backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic), maxRadius: 10, minRadius: 10,), title: Text("Profile")),
           
         ],
         currentIndex: selectedIndex,

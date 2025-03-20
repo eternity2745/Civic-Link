@@ -20,7 +20,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
             fontSize: 0.4.dp,
             fontWeight: FontWeight.bold
           ),
-          ),
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         height: 8.h,

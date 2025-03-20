@@ -41,4 +41,13 @@ class DatabaseMethods {
   Future<QuerySnapshot> getUserInfo(String email) async {
     return await database.collection("users").where("email", isEqualTo: email).get();
   }
+
+  Future createPost(Map<String, dynamic> post) async {
+    try {
+      await database.collection("posts").add(post);
+      return true;
+    }catch(e) {
+      return false;
+    }
+  }
 }
