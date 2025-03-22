@@ -154,8 +154,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
               ),
             ElevatedButton(
               onPressed: () {
-                log(_postController.text);
-                // createPost();
+                createPost();
               }, 
               style: ElevatedButton.styleFrom(
                 enableFeedback: true,
