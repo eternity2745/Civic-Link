@@ -43,9 +43,10 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
       bool result = await DatabaseMethods().createPost(post);
       if (result) {
         if(mounted) {
-          Provider.of<StateManagement>(context, listen: false).resetReportLocationAddress();
           _postController.text = "";
           imagePath = "";
+          Provider.of<StateManagement>(context, listen: false).setUserPosts(post: post);
+          Provider.of<StateManagement>(context, listen: false).resetReportLocationAddress();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: 
             Text(

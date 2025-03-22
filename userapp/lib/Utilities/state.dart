@@ -16,6 +16,8 @@ class StateManagement with ChangeNotifier {
   String addressName = "";
   String reportAdministrativeArea = "";
 
+  List<Map<String, dynamic>> userPosts = [{}];
+
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id) {
     this.username = username;
     this.displayname = displayname;
@@ -41,6 +43,15 @@ class StateManagement with ChangeNotifier {
     reportLocality = "";
     addressName = "";
     reportAdministrativeArea = "";
+    notifyListeners();
+  }
+
+  void setUserPosts({List<Map<String, dynamic>>? posts, Map<String, dynamic>? post}) {
+    if(post != null) {
+      userPosts.add(post);
+    }else{
+      userPosts = posts!;
+    }
     notifyListeners();
   }
 

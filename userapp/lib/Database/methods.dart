@@ -50,4 +50,8 @@ class DatabaseMethods {
       return false;
     }
   }
+
+  Future<QuerySnapshot> getUserPosts(int userID) async {
+    return await database.collection("posts").where("userID", isEqualTo: userID).get();
+  }
 }

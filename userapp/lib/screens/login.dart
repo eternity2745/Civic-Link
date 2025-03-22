@@ -118,8 +118,15 @@ class _LoginScreenState extends State<LoginScreen> {
         emailError = false;
         setState(() {
         });
+        QuerySnapshot result = await DatabaseMethods().getUserPosts(userID);
+        List<Map<String, dynamic>> userPosts = [];
+        for(var doc in result.docs) {
+          userPosts.add(doc.data() as Map<String, dynamic>);
+        }
+        log("$userPosts");
         if (mounted) {
           Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID);
+          Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
         
