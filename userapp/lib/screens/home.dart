@@ -40,16 +40,20 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           SalomonBottomBarItem(icon: selectedIndex == 0? Icon(Icons.home) : Icon(Icons.home_outlined), title: Text("Home")),
           SalomonBottomBarItem(icon: Icon(Icons.search_rounded), title: Text("Search")),
-          SalomonBottomBarItem(icon: selectedIndex == 2? Icon(Icons.add_box_rounded) : Icon(Icons.add_box_outlined), title: Text("Create")),
+          SalomonBottomBarItem(icon: Icon(Icons.add_box_rounded), title: Text("Create")),
           SalomonBottomBarItem(icon: CircleAvatar(backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic), maxRadius: 10, minRadius: 10,), title: Text("Profile")),
           
         ],
         currentIndex: selectedIndex,
         onTap: (index) {
-          _pageController.jumpToPage(index);
-          setState(() {
+          if(index == 2) {
+            Navigator.push(context, MaterialPageRoute(builder: ((context) => PostCreateScreen())));
+          }else{
+            _pageController.jumpToPage(index);
+            setState(() {
             selectedIndex = index;
           });
+          }
       },
         ),
         body: PageView(
