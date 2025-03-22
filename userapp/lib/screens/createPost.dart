@@ -36,7 +36,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
         "reports" : 0,
         "likes" : 0,
         "likesId" : [],
-        "dateTime" : FieldValue.serverTimestamp(),
+        "dateTime" : Timestamp.now(),
         "action" : false,
         "completed" : false,
       };

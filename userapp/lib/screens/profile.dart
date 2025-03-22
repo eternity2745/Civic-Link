@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Utilities/dateTimeHandler.dart';
 import 'package:userapp/Utilities/descriptionTrimmer.dart';
 import 'package:userapp/Utilities/state.dart';
 
@@ -166,8 +167,10 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                     ),
                                     Column(
                                       children: [
-                                        Text("${value.userPosts[index]['dateTime'].toDate().day}/${value.userPosts[index]['dateTime'].toDate().month}/${value.userPosts[index]['dateTime'].toDate().year}"),
-                                        Text("${value.userPosts[index]['dateTime'].toDate().hour}:${value.userPosts[index]['dateTime'].toDate().minute}")
+                                        Text(DateTimeHandler.getFormattedDate(value.userPosts[index]['dateTime'])),
+                                        Text(DateTimeHandler.getFormattedTime(value.userPosts[index]['dateTime']))
+                                        // Text(value.userPosts[index]['dateTime'].runtimeType.toString()),
+                                        // Text(value.userPosts[index]['dateTime'].runtimeType.toString())
                                       ],
                                     )
                                   ],
@@ -203,11 +206,11 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                     children: [
                                       Icon(Icons.favorite_border_rounded),
                                       SizedBox(width: 1.w,),
-                                      Text("143"),
+                                      Text(value.userPosts[index]['likes'].toString()),
                                       SizedBox(width: 8.w,),
                                       Icon(Icons.mode_comment_outlined),
                                       SizedBox(width: 1.w,),
-                                      Text("20"),
+                                      Text(value.userPosts[index]['comments'].toString()),
                                       SizedBox(width: 8.w,),
                                       Icon(Icons.bookmark_border_rounded),
                                       // SizedBox(width: 1.w,),

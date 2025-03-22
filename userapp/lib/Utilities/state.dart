@@ -48,7 +48,7 @@ class StateManagement with ChangeNotifier {
 
   void setUserPosts({List<Map<String, dynamic>>? posts, Map<String, dynamic>? post}) {
     if(post != null) {
-      userPosts.add(post);
+      userPosts.insert(0, post);
     }else{
       userPosts = posts!;
     }
