@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Utilities/mapLocationPicker.dart';
 import 'package:userapp/Utilities/state.dart';
 
@@ -19,12 +21,56 @@ class PostCreateScreen extends StatefulWidget {
 class _PostCreateScreenState extends State<PostCreateScreen> {
 
   final TextEditingController _postController = TextEditingController();
-  int location = 0;
   String imagePath = "";
 
-  void createPost() {
-    if(_postController.text != "" && location != 0) {
-
+  void createPost() async {
+    if(_postController.text != "" && Provider.of<StateManagement>(context, listen: false).reportCoordinates.isNotEmpty) {
+      GeoPoint location = GeoPoint(Provider.of<StateManagement>(context, listen: false).reportCoordinates[0], Provider.of<StateManagement>(context, listen: false).reportCoordinates[1]);
+      Map<String, dynamic> post = {
+        "userID" : Provider.of<StateManagement>(context, listen: false).id,
+        "description" : _postController.text,
+        "location" : location,
+        "locality" : Provider.of<StateManagement>(context, listen: false).reportLocality,
+        "image" : "",
+        "comments" : 0,
+        "reports" : 0,
+        "likes" : 0,
+        "likesId" : [],
+        "dateTime" : FieldValue.serverTimestamp(),
+        "action" : false,
+        "completed" : false,
+      };
+      bool result = await DatabaseMethods().createPost(post);
+      if (result) {
+        if(mounted) {
+          Provider.of<StateManagement>(context, listen: false).resetReportLocationAddress();
+          _postController.text = "";
+          imagePath = "";
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: 
+            Text(
+              "Post Created Successfully",
+              style: TextStyle(
+                color: Colors.green
+              ),
+              ),
+            )
+            );
+        }
+        }else{
+          if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: 
+            Text(
+              "Issue in creating post! Try Again!!",
+              style: TextStyle(
+                color: Colors.red
+              ),
+              ),
+            )
+          );
+        }
+      }
     }else if(_postController.text == "") {
       showDialog(
         context: context,
@@ -39,7 +85,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
           ],
         )
       );
-    }else if(location == 0) {
+    }else if(Provider.of<StateManagement>(context, listen: false).reportCoordinates.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -55,6 +101,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
       );
     }
   }
+  
 
   Future<void> setImage() async {
     var status = await Permission.mediaLibrary.status;
@@ -107,7 +154,8 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
               ),
             ElevatedButton(
               onPressed: () {
-                createPost();
+                log(_postController.text);
+                // createPost();
               }, 
               style: ElevatedButton.styleFrom(
                 enableFeedback: true,
