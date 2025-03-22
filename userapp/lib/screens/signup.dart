@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:random_string/random_string.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/home.dart';

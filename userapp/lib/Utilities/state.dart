@@ -18,6 +18,9 @@ class StateManagement with ChangeNotifier {
 
   List<Map<String, dynamic>> userPosts = [{}];
 
+  List<Map<String, dynamic>>? mainPosts = [{}];
+  bool mainPostsLoading = true;
+
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id) {
     this.username = username;
     this.displayname = displayname;
@@ -52,6 +55,12 @@ class StateManagement with ChangeNotifier {
     }else{
       userPosts = posts!;
     }
+    notifyListeners();
+  }
+
+  void setPosts(List<Map<String, dynamic>>? posts) {
+    mainPosts = posts;
+    mainPostsLoading = false;
     notifyListeners();
   }
 

@@ -54,4 +54,9 @@ class DatabaseMethods {
   Future<QuerySnapshot> getUserPosts(int userID) async {
     return await database.collection("posts").where("userID", isEqualTo: userID).orderBy("dateTime", descending: true).get();
   }
+
+  Future<QuerySnapshot> getMainPosts() async {
+    return await database.collection("posts").orderBy("dateTime", descending: true).limit(5).get();
+  }
+
 }
