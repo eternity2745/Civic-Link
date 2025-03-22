@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -45,29 +46,21 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
         if(mounted) {
           Provider.of<StateManagement>(context, listen: false).setUserPosts(post: post);
           Provider.of<StateManagement>(context, listen: false).resetReportLocationAddress();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: 
-            Text(
-              "Post Created Successfully",
-              style: TextStyle(
-                color: Colors.green
-              ),
-              ),
-            )
-            );
+          IconSnackBar.show(
+            context,
+            label: "Post Created Successfully",
+            snackBarType: SnackBarType.success,
+            labelTextStyle: TextStyle(color: Colors.white)
+          );
           Navigator.of(context).pop();
         }
         }else{
           if(mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: 
-            Text(
-              "Issue in creating post! Try Again!!",
-              style: TextStyle(
-                color: Colors.red
-              ),
-              ),
-            )
+            IconSnackBar.show(
+            context,
+            label: "Issue in creating post! Try Again!!",
+            snackBarType: SnackBarType.fail,
+            labelTextStyle: TextStyle(color: Colors.white)
           );
         }
       }

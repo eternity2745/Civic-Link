@@ -18,13 +18,10 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin {
 
-  // ignore: prefer_final_fields
-  bool _loading = true;
-
   @override
   bool get wantKeepAlive => true;
 
-  void getPosts() async{
+  void getPosts() async {
     QuerySnapshot posts = await DatabaseMethods().getMainPosts();
     List<Map<String, dynamic>> mainPosts = [];
     for(var doc in posts.docs) {
@@ -101,11 +98,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                         CircleAvatar(
                                           radius: 15,
                                           backgroundColor: Colors.transparent,
-                                          backgroundImage: NetworkImage(value.mainPosts![index]['profilePic']),
+                                          backgroundImage: value.mainPostsLoading ? null : NetworkImage(value.mainPosts![index]['profilePic']),
                                           // child: Image.asset("assets/Civic Link.png"),
                                         ),
                                         Text(
-                                          value.mainPosts![index]['username'],
+                                          value.mainPostsLoading ? "" : value.mainPosts![index]['username'],
                                           style: TextStyle(
                                             fontSize: 0.36.dp,
                                             fontWeight: FontWeight.bold
@@ -115,8 +112,8 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                     ),
                                     Column(
                                       children: [
-                                        Text(DateTimeHandler.getFormattedDate(value.mainPosts![index]['timestamp'])),
-                                        Text(DateTimeHandler.getFormattedTime(value.mainPosts![index]['timestamp']))
+                                        Text(value.mainPostsLoading ? "" : DateTimeHandler.getFormattedDate(value.mainPosts![index]['dateTime'])),
+                                        Text(value.mainPostsLoading ? "" : DateTimeHandler.getFormattedTime(value.mainPosts![index]['dateTime']))
                                       ],
                                     )
                                   ],
@@ -125,11 +122,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: RichText(
-                                    text: TextSpan(text: DescriptionTrimmer.trimDescription(value.mainPosts![index]['description'], 400), // 115
+                                    text: TextSpan(text: value.mainPostsLoading ? "" : DescriptionTrimmer.trimDescription(value.mainPosts![index]['description'], 390), // 115
                                     style: TextStyle(
                                       fontSize: 0.3.dp
                                     ),
-                                    children: [
+                                    children: value.mainPostsLoading ? [] : value.mainPosts![index]['description'].length < 410 ? [] : [
                                       TextSpan(
                                         text: "See More",
                                         style: TextStyle(
@@ -150,11 +147,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                       children: [
                                         Icon(Icons.favorite_border_rounded),
                                         SizedBox(width: 1.w,),
-                                        Text(value.mainPosts![index]['likes'].toString()),
+                                        Text(value.mainPostsLoading ? "" : value.mainPosts![index]['likes'].toString()),
                                         SizedBox(width: 8.w,),
                                         Icon(Icons.mode_comment_outlined),
                                         SizedBox(width: 1.w,),
-                                        Text(value.mainPosts![index]['comments'].toString()),
+                                        Text(value.mainPostsLoading ? "" : value.mainPosts![index]['comments'].toString()),
                                         SizedBox(width: 8.w,),
                                         Icon(Icons.bookmark_border_rounded),
                                         // SizedBox(width: 1.w,),
