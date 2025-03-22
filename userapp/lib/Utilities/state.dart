@@ -11,6 +11,9 @@ class StateManagement with ChangeNotifier {
   int posts = 0;
   int id = 0;
 
+  List<double> reportCoordinates = [];
+  String reportLocality = "";
+
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id) {
     this.username = username;
     this.displayname = displayname;
@@ -23,5 +26,10 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void setReportLocationAddress(List<double> coordinates, String locality) {
+    reportCoordinates = coordinates;
+    reportLocality = locality;
+    notifyListeners();
+  }
 
 }

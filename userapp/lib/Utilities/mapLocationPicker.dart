@@ -31,10 +31,11 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
           latitude, longitude
           );
       var first = addresses.first;
+      // log("$addresses");
       if (mounted) {
-      //  Provider.of<StateManagement>(context, listen: false).setReportLocationAddress("${first.street}, ${first.locality}, ${first.country}");
-      //  Provider.of<StateManagement>(context, listen: false).setReportLocationCoordinates([latitude, longitude]);
-        log("$first");
+      log("$first");
+      String? locality = first.subAdministrativeArea != "" ? first.subAdministrativeArea : first.subLocality != "" ? first.subLocality : first.locality != "" ? first.locality : first.administrativeArea;
+      Provider.of<StateManagement>(context, listen: false).setReportLocationAddress([latitude, longitude], locality!);
         Navigator.of(context).pop();
       }
     }
@@ -125,6 +126,10 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
             width: MediaQuery.of(context).size.width - 50,
             height: 50,
             child: TextFormField(
+              style: TextStyle(
+                color: Colors.green.shade600,
+                fontWeight: FontWeight.bold
+              ),
               maxLines: 3,
               textAlign: TextAlign.center,
               readOnly: true,

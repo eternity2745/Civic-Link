@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -14,6 +16,13 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    log(Provider.of<StateManagement>(context, listen:false).profilePic);
+    log(Provider.of<StateManagement>(context, listen:false).username);
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {

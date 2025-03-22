@@ -1,10 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/home.dart';
+import 'package:userapp/Utilities/state.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -81,6 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       String password = passController.text;
       String username = usernameController.text;
       bool result = await DatabaseMethods().signUp(email, password);
+      int id = DateTime.now().millisecondsSinceEpoch;
       if(result) {
         Map<String, dynamic> userInfo = {
           "email" : email,
@@ -90,10 +93,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "reports" : 0,
           "posts" : 0,
           "ranking" : 0,
-          "id" : DateTime.now().millisecondsSinceEpoch
+          "id" : id
         };
         await DatabaseMethods().addUserInfo(userInfo);
         if(mounted) {
+          Provider.of<StateManagement>(context, listen: false).setProfile(email.split("@")[0], username, email, "https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900", 0, 0, 0, id);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()), 
             (Route<dynamic> route) => false

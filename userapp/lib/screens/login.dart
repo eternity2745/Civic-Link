@@ -105,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if(result) {
         successTrigger?.fire();
         QuerySnapshot details = await DatabaseMethods().getUserInfo(emailController.text);
+        log("${details.docs[0]}");
         String username = "${details.docs[0]["username"]}";
         String displayname = "${details.docs[0]["displayname"]}";
         String email = "${details.docs[0]["email"]}";
