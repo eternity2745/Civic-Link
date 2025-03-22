@@ -35,7 +35,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
       if (mounted) {
       log("$first");
       String? locality = first.subAdministrativeArea != "" ? first.subAdministrativeArea : first.subLocality != "" ? first.subLocality : first.locality != "" ? first.locality : first.administrativeArea;
-      Provider.of<StateManagement>(context, listen: false).setReportLocationAddress([latitude, longitude], locality!);
+      Provider.of<StateManagement>(context, listen: false).setReportLocationAddress([latitude, longitude], locality!, first.thoroughfare != "" ? first.thoroughfare! : first.name!, first.administrativeArea!);
         Navigator.of(context).pop();
       }
     }

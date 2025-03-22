@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Utilities/mapLocationPicker.dart';
+import 'package:userapp/Utilities/state.dart';
 
 class PostCreateScreen extends StatefulWidget {
   const PostCreateScreen({super.key});
@@ -187,59 +189,36 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
                       )
                 ),
                 SizedBox(height: 3.h,),
-              }
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //   children: [
-              //     ElevatedButton(
-              //       onPressed: () {}, 
-              //       child: Row(
-              //         spacing: 2.w,
-              //         children: [
-              //           Icon(Icons.image_outlined),
-              //           Text("Add Image")
-              //         ],
-              //       )
-              //       ),
-              //       ElevatedButton(
-              //       onPressed: () {}, 
-              //       child: Row(
-              //         spacing: 2.w,
-              //         children: [
-              //           Icon(Icons.add_location_alt_outlined),
-              //           Text("Add Location")
-              //         ],
-              //       )
-              //       )
-              //   ],
-              // ),
-              // SizedBox(height: 2.h,),
-              // Center(
-              //   child: ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(8)
-              //       )
-              //     ),
-              //     onPressed: () {}, 
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       spacing: 2.w,
-              //       children: [
-              //         Icon(
-              //           Icons.add,
-              //           size: 0.33.dp,
-              //           ),
-              //         Text(
-              //           "Publish Post",
-              //           style: TextStyle(
-              //             fontSize: 0.3.dp
-              //           ),
-              //           )
-              //       ],
-              //     )
-              //     ),
-              // ),
+              },
+              Consumer<StateManagement>(
+                builder: (context, value, child) {
+                  if (value.reportLocality != "" || value.reportCoordinates.isNotEmpty) {
+                    String address = "${value.addressName}, ${value.reportLocality}, ${value.reportAdministrativeArea}";
+                    return Column(
+                      children: [
+                        Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey.shade900,
+                          // boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 2)]
+                        ),
+                        child: Row(
+                          spacing: 2.w,
+                          children: [
+                            Icon(Icons.location_on),
+                            Expanded(child: Text(address)),
+                            IconButton(onPressed: () {value.resetReportLocationAddress();}, icon: Icon(Icons.delete))
+                          ],
+                          ),
+                        ),
+                        SizedBox(height: 2.h,)
+                      ],
+                    );
+                  }else{
+                    return SizedBox(height: 0.1.h,);
+                  }
+                },
+              )
             ]
         ),
       ),

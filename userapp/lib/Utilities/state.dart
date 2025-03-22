@@ -13,6 +13,8 @@ class StateManagement with ChangeNotifier {
 
   List<double> reportCoordinates = [];
   String reportLocality = "";
+  String addressName = "";
+  String reportAdministrativeArea = "";
 
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id) {
     this.username = username;
@@ -26,9 +28,19 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
-  void setReportLocationAddress(List<double> coordinates, String locality) {
+  void setReportLocationAddress(List<double> coordinates, String locality, String name, String administrativeArea) {
     reportCoordinates = coordinates;
     reportLocality = locality;
+    addressName = name;
+    reportAdministrativeArea = administrativeArea;
+    notifyListeners();
+  }
+
+  void resetReportLocationAddress() {
+    reportCoordinates.clear();
+    reportLocality = "";
+    addressName = "";
+    reportAdministrativeArea = "";
     notifyListeners();
   }
 
