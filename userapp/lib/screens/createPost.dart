@@ -244,6 +244,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
                     return Column(
                       children: [
                         Container(
+                        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.grey.shade900,
@@ -252,9 +253,9 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
                         child: Row(
                           spacing: 2.w,
                           children: [
-                            Icon(Icons.location_on),
+                            Icon(Icons.location_on,),
                             Expanded(child: Text(address)),
-                            IconButton(onPressed: () {value.resetReportLocationAddress();}, icon: Icon(Icons.delete))
+                            IconButton(onPressed: () {value.resetReportLocationAddress();}, icon: Icon(Icons.delete, color: Colors.red,))
                           ],
                           ),
                         ),
