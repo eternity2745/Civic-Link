@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool emailError = false;
   bool passError = false;
   bool signInPressed = false;
+  bool passObfuscate = true;
 
   String passerrorText = 'Invalid Password';
   String emailerrorText = "Invalid Email Id";
@@ -78,23 +79,30 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
   void lookAround() {
-    isChecking?.change(true);
-    isHandsUp?.change(false);
-    lookNum?.change(0);
+    if(passObfuscate) { 
+      isChecking?.change(true);
+      isHandsUp?.change(false);
+      lookNum?.change(0);
+    }
   }
 
   void moveEyes(value) {
-    lookNum?.change((value.length+30.0).toDouble());
+    if(passObfuscate) {
+      log('hhhh');
+      lookNum?.change((value.length+30.0).toDouble());
+    }
   }
 
   void handsUpOnEyes() {
     isHandsUp?.change(true);
     isChecking?.change(false);
+    passObfuscate = false;
   }
 
   void handsDownFromEyes() {
     isHandsUp?.change(false);
     isChecking?.change(true);
+    passObfuscate = true;
   }
 
   void loginClick() async {
@@ -223,8 +231,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   log("EVENT CALLED");
                                   handsUpOnEyes();
                                 },
-                                onLongPressUp: () {
-                                  handsDownFromEyes();
+                                onTapDown: (de) {
+                                  log('$passObfuscate ');
+                                  if(passObfuscate == true) {
+                                    handsDownFromEyes();
+                                  }
                                 },
                               child: Container(
                                 margin: EdgeInsets.only(top: 7.5.h),
