@@ -24,8 +24,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
   void getPosts() async {
     QuerySnapshot posts = await DatabaseMethods().getMainPosts();
     List<Map<String, dynamic>> mainPosts = [];
+    int i = 0;
     for(var doc in posts.docs) {
       mainPosts.add(doc.data() as Map<String, dynamic>);
+      mainPosts[i]['postID'] = doc.id;
+      i++;
     }
 
     if(mounted) {
@@ -74,6 +77,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
+                            Provider.of<StateManagement>(context, listen: false).mainPostID = index;
                             Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
                           },
                       child: Column(
@@ -121,11 +125,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                 Padding(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: RichText(
-                                    text: TextSpan(text: value.mainPostsLoading ? "" : DescriptionTrimmer.trimDescription(value.mainPosts![index]['description'], 390), // 115
+                                    text: TextSpan(text: value.mainPostsLoading ? "" : DescriptionTrimmer.trimDescription(value.mainPosts![index]['description'], 390),
                                     style: TextStyle(
                                       fontSize: 0.3.dp
                                     ),
-                                    children: value.mainPostsLoading ? [] : value.mainPosts![index]['description'].length < 410 ? [] : [
+                                    children: value.mainPostsLoading ? [] : value.mainPosts![index]['description'].length < 390 ? [] : [
                                       TextSpan(
                                         text: "See More",
                                         style: TextStyle(

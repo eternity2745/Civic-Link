@@ -60,4 +60,13 @@ class DatabaseMethods {
     return await database.collection("posts").orderBy("dateTime", descending: true).limit(5).get();
   }
 
+  Future addComment(Map<String, dynamic> comment, String postID) async {
+    try{
+      await database.collection("posts").doc(postID).collection("comment").add(comment);
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
 }

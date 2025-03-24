@@ -21,6 +21,7 @@ class StateManagement with ChangeNotifier {
 
   List<Map<String, dynamic>>? mainPosts = [{}];
   bool mainPostsLoading = true;
+  int mainPostID = -1;
 
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {
     this.username = username;
