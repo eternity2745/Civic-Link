@@ -122,8 +122,16 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
               Consumer<StateManagement>(
                 builder: (context, value, child) {
                   if (value.userPosts.isEmpty) {
-                    return Center(
-                      child: Text("No Posts Yet"),
+                    return Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: Center(
+                        child: Text(
+                          "No Posts Yet",
+                          style: TextStyle(
+                            fontSize: 0.4.dp
+                          )
+                          ),
+                      ),
                     );
                   }else{
                     return ListView.builder(

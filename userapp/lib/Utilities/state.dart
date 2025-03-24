@@ -10,6 +10,7 @@ class StateManagement with ChangeNotifier {
   int reports = 0;
   int posts = 0;
   int id = 0;
+  String docID = "";
 
   List<double> reportCoordinates = [];
   String reportLocality = "";
@@ -21,7 +22,7 @@ class StateManagement with ChangeNotifier {
   List<Map<String, dynamic>>? mainPosts = [{}];
   bool mainPostsLoading = true;
 
-  void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id) {
+  void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {
     this.username = username;
     this.displayname = displayname;
     this.email = email;
@@ -30,6 +31,7 @@ class StateManagement with ChangeNotifier {
     this.reports = reports;
     this.posts = posts;
     this.id = id;
+    this.docID = docID;
     notifyListeners();
   }
 

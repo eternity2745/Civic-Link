@@ -124,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
         int posts = details.docs[0]['posts'];
         int reports = details.docs[0]['reports'];
         int ranking = details.docs[0]['ranking'];
+        String docID = details.docs[0].id;
         passError = false;
         emailError = false;
         QuerySnapshot result = await DatabaseMethods().getUserPosts(userID);
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
         });
         if (mounted) {
-          Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID);
+          Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
           Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }

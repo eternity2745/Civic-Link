@@ -72,14 +72,13 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
+                    return GestureDetector(
+                      onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
                           },
-                          // ignore: avoid_unnecessary_containers
-                          child: Container(
+                      child: Column(
+                        children: [
+                          Container(
                           // height: 30.h,
                           // decoration: BoxDecoration(
                           //   color: Colors.grey.shade900
@@ -164,10 +163,10 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                             ),
                           ),
                                           ),
-                        ),
-                      // SizedBox(height: 1.h,)
-                      Divider(thickness: 0.8,)
-                      ]
+                        // SizedBox(height: 1.h,)
+                        Divider(thickness: 0.8,)
+                        ]
+                      ),
                     );
                   },
                   ),

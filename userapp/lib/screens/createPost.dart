@@ -41,10 +41,11 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
         "action" : false,
         "completed" : false,
       };
-      bool result = await DatabaseMethods().createPost(post);
+      bool result = await DatabaseMethods().createPost(post, Provider.of<StateManagement>(context, listen: false).docID);
       if (result) {
         if(mounted) {
           Provider.of<StateManagement>(context, listen: false).setUserPosts(post: post);
+          Provider.of<StateManagement>(context, listen: false).posts += 1; 
           Provider.of<StateManagement>(context, listen: false).resetReportLocationAddress();
           IconSnackBar.show(
             context,

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
@@ -94,13 +95,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "ranking" : 0,
           "id" : id
         };
-        await DatabaseMethods().addUserInfo(userInfo);
-        if(mounted) {
-          Provider.of<StateManagement>(context, listen: false).setProfile(email.split("@")[0], username, email, "https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900", 0, 0, 0, id);
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomeScreen()), 
-            (Route<dynamic> route) => false
+        var result = await DatabaseMethods().addUserInfo(userInfo);
+        if(result != null) {
+          String docID = result;
+          if(mounted) {
+            Provider.of<StateManagement>(context, listen: false).setProfile(email.split("@")[0], username, email, "https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900", 0, 0, 0, id, docID);
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomeScreen()), 
+              (Route<dynamic> route) => false
+              );
+          }
+        }else{
+          if(mounted) {
+            IconSnackBar.show(
+              context,
+              label: "Unable to sign up at the moment",
+              snackBarType: SnackBarType.fail,
+              labelTextStyle: TextStyle(color: Colors.white)
             );
+          }
         }
       }
     }

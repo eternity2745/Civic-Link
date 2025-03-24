@@ -31,10 +31,10 @@ class DatabaseMethods {
   Future addUserInfo(Map<String, dynamic> userInfo) async {
     try {
       log("Adding");
-      await database.collection("users").add(userInfo);
-      return true;
+      var info = await database.collection("users").add(userInfo);
+      return info.id;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 
@@ -42,9 +42,10 @@ class DatabaseMethods {
     return await database.collection("users").where("email", isEqualTo: email).get();
   }
 
-  Future createPost(Map<String, dynamic> post) async {
+  Future createPost(Map<String, dynamic> post, String id) async {
     try {
       await database.collection("posts").add(post);
+      await database.collection("users").doc(id).update({"posts" : FieldValue.increment(1)});
       return true;
     }catch(e) {
       return false;
