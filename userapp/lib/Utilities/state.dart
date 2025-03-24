@@ -18,11 +18,11 @@ class StateManagement with ChangeNotifier {
   String reportAdministrativeArea = "";
 
   List<Map<String, dynamic>> userPosts = [{}];
-  int userPostsID = -1;
+  int userPostsID = 0;
 
   List<Map<String, dynamic>>? mainPosts = [{}];
   bool mainPostsLoading = true;
-  int mainPostID = -1;
+  int mainPostID = 0;
 
   List<Map<String, dynamic>>? comments = [{}];
   bool commentsLoading = true;

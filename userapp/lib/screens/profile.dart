@@ -30,8 +30,16 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
   }
 
   void getComments() async {
-    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
-    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
+    String postID = "";
+    int mainPostID = -1;
+    if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
+      mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
+      postID = Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['postID'];
+    }else{
+      mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+      postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    }
 
     QuerySnapshot result = await DatabaseMethods().getComments(postID);
     List<Map<String, dynamic>> comments = [];
