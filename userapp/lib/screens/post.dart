@@ -19,13 +19,21 @@ class PostScreen extends StatefulWidget {
   State<PostScreen> createState() => _PostScreenState();
 }
 
-class _PostScreenState extends State<PostScreen> {
+class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMixin{
 
   final TextEditingController _commentController = TextEditingController();
+  int fakeCounter = 0;
 
   void addCommment() async {
-    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
-    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    String postID = "";
+    int mainPostID = -1;
+    if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
+      mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
+      postID = Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['postID'];
+    }else{
+      mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+      postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    }
 
     Map<String, dynamic> comment = {
       "description" : _commentController.text,
@@ -44,6 +52,7 @@ class _PostScreenState extends State<PostScreen> {
         Provider.of<StateManagement>(context, listen: false).addUserComment(comment);
         _commentController.clear();
         Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['comments'] += 1;
+        Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['comments'] += 1;
       }else{
         IconSnackBar.show(
           context,
@@ -56,8 +65,16 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void getComments() async {
-    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
-    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
+    String postID = "";
+    int mainPostID = -1;
+    if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
+      mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
+      postID = Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['postID'];
+    }else{
+      mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+      postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    }
 
     QuerySnapshot result = await DatabaseMethods().getComments(postID);
     List<Map<String, dynamic>> comments = [];
@@ -73,17 +90,23 @@ class _PostScreenState extends State<PostScreen> {
     }
   }
 
-  // @override
-  // bool get wantKeepAlive => true;
-
   @override
-  void initState() {
-    super.initState();
-  }
+  bool get wantKeepAlive => true;
+
+  // @override
+  // void initState() {
+  //   log("INIT STATE");
+  //   if(fakeCounter != 0) {
+  //     getComments();
+  //   }else{
+  //     fakeCounter++;
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -108,6 +131,14 @@ class _PostScreenState extends State<PostScreen> {
                         padding: EdgeInsets.only(left: 5.w, top: 3.h, right: 5.w, bottom: 1.5.h),
                         child: Consumer<StateManagement>(
                           builder: (context, value, child) {
+                          // String postID = "";
+                          // int mainPostID = -1;
+                          Map<String, dynamic> posts = {};
+                          if(value.mainPostID == -1) {
+                            posts = value.userPosts[value.userPostsID];
+                          }else{
+                            posts = value.mainPosts![value.mainPostID];
+                          }
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -120,10 +151,10 @@ class _PostScreenState extends State<PostScreen> {
                                         CircleAvatar(
                                           radius: 15,
                                           backgroundColor: Colors.transparent,
-                                          backgroundImage: NetworkImage(value.mainPosts![value.mainPostID]['profilePic']),
+                                          backgroundImage: NetworkImage(posts['profilePic']),
                                         ),
                                         Text(
-                                          value.mainPosts![value.mainPostID]['username'],
+                                          posts['username'],
                                           style: TextStyle(
                                             fontSize: 0.36.dp,
                                             fontWeight: FontWeight.bold
@@ -133,15 +164,15 @@ class _PostScreenState extends State<PostScreen> {
                                     ),
                                     Column(
                                       children: [
-                                        Text(DateTimeHandler.getFormattedDate(value.mainPosts![value.mainPostID]['dateTime'])),
-                                        Text(DateTimeHandler.getFormattedTime(value.mainPosts![value.mainPostID]['dateTime']))
+                                        Text(DateTimeHandler.getFormattedDate(posts['dateTime'])),
+                                        Text(DateTimeHandler.getFormattedTime(posts['dateTime']))
                                       ],
                                     )
                                   ],
                                 ),
                                 SizedBox(height: 3.h,),
                                 Text(
-                                  value.mainPosts![value.mainPostID]['description'],
+                                  posts['description'],
                                   style: TextStyle(
                                     fontSize: 0.28.dp,
                                     color: Colors.white
@@ -159,7 +190,7 @@ class _PostScreenState extends State<PostScreen> {
                                         onPressed: () {}, 
                                         icon: Icon(Icons.favorite_border_rounded)
                                         ),
-                                      Text(value.mainPosts![value.mainPostID]['likes'].toString())
+                                      Text(posts['likes'].toString())
                                     ], 
                                   ),
                                   Row(
@@ -168,7 +199,7 @@ class _PostScreenState extends State<PostScreen> {
                                         onPressed: () {}, 
                                         icon: Icon(Icons.mode_comment_outlined)
                                         ),
-                                      Text(value.mainPosts![value.mainPostID]['comments'].toString())
+                                      Text(posts['comments'].toString())
                                     ],
                                     
                                   ),
@@ -206,7 +237,7 @@ class _PostScreenState extends State<PostScreen> {
                                                 fontSize: 0.3.dp
                                               ),
                                               ),
-                                            Icon(value.mainPosts![value.mainPostID]['action'] ? Icons.check_rounded : Icons.close_rounded, color: value.mainPosts![value.mainPostID]['action'] ? Colors.green : Colors.red,)
+                                            Icon(posts['action'] ? Icons.check_rounded : Icons.close_rounded, color: posts['action'] ? Colors.green : Colors.red,)
                                           ],
                                         ),
                                         Row(
@@ -218,7 +249,7 @@ class _PostScreenState extends State<PostScreen> {
                                                 fontSize: 0.3.dp
                                               ),
                                               ),
-                                            Icon(value.mainPosts![value.mainPostID]['completed'] ? Icons.check_rounded : Icons.close_rounded, color: value.mainPosts![value.mainPostID]['completed'] ? Colors.green : Colors.red,)
+                                            Icon(posts['completed'] ? Icons.check_rounded : Icons.close_rounded, color: posts['completed'] ? Colors.green : Colors.red,)
                                           ],
                                         ),
                                       ],
@@ -258,39 +289,39 @@ class _PostScreenState extends State<PostScreen> {
                         ),
                         ),
                     ),
-                    Consumer<StateManagement>(
-                      builder: (context, value, child) {
-                        log("COMMENTS: ${value.comments!}");
-                        if(value.comments!.isEmpty) {
-                          return Padding(
-                            padding: EdgeInsets.only(top: 3.5.h),
-                            child: Center(
-                              child: Text(
-                                "No Comments Yet",
-                                style: TextStyle(
-                                  fontSize: 0.36.dp,
-                                  color: Colors.grey
-                                ),
-                              ),
-                            ),
-                          );
-                        }else{
-                          log(value.comments!.length.toString());
-                          return ListView.builder(
-                            itemCount: value.comments!.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder:(context, index) {
-                              return Skeletonizer(
-                                effect: ShimmerEffect(
+                    Skeletonizer(
+                      effect: ShimmerEffect(
                                   duration: Duration(seconds: 1),
                                   baseColor: Colors.grey.shade700,
                                   highlightColor: Colors.grey,
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight
                                 ),
-                                enabled: value.commentsLoading,
-                                child: Column(
+                      enabled: Provider.of<StateManagement>(context).commentsLoading,
+                      child: Consumer<StateManagement>(
+                        builder: (context, value, child) {
+                          log("COMMENTS: ${value.comments!}");
+                          if(value.comments!.isEmpty) {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 3.5.h),
+                              child: Center(
+                                child: Text(
+                                  "No Comments Yet",
+                                  style: TextStyle(
+                                    fontSize: 0.36.dp,
+                                    color: Colors.grey
+                                  ),
+                                ),
+                              ),
+                            );
+                          }else{
+                            log(value.comments!.length.toString());
+                            return ListView.builder(
+                              itemCount: value.comments!.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder:(context, index) {
+                                return Column(
                                   children: [
                                   // ignore: avoid_unnecessary_containers
                                   Container(
@@ -376,12 +407,12 @@ class _PostScreenState extends State<PostScreen> {
                                 ),
                                 Divider(thickness: 0.8,)
                                   ],
-                                ),
-                              );
-                            },
-                          );
+                                );
+                              },
+                            );
+                          }
                         }
-                      }
+                      ),
                     )
                   ],
                 ),

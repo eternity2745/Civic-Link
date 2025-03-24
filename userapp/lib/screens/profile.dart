@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Database/methods.dart';
+import 'package:userapp/Screens/post.dart';
 import 'package:userapp/Utilities/dateTimeHandler.dart';
 import 'package:userapp/Utilities/descriptionTrimmer.dart';
 import 'package:userapp/Utilities/state.dart';
@@ -24,6 +27,25 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
     log(Provider.of<StateManagement>(context, listen:false).profilePic);
     log(Provider.of<StateManagement>(context, listen:false).username);
     super.initState();
+  }
+
+  void getComments() async {
+    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+
+    QuerySnapshot result = await DatabaseMethods().getComments(postID);
+    List<Map<String, dynamic>> comments = [];
+    int i = 0;
+    for(var doc in result.docs) {
+      comments.add(doc.data() as Map<String, dynamic>);
+      comments[i]['commentID'] = doc.id;
+      i++;
+    }
+
+    if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).setComments(comments);
+      Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+    }
   }
   
   @override
@@ -139,99 +161,107 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder:(context, index) {
-                        return Column(
-                          children: [
-                          // ignore: avoid_unnecessary_containers
-                          Container(
-                          // height: 30.h,
-                          // decoration: BoxDecoration(
-                          //   color: Colors.grey.shade900
-                          // ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      spacing: 4.w,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 15,
-                                          backgroundColor: Colors.transparent,
-                                          backgroundImage: NetworkImage(value.profilePic),
-                                          // child: Image.network(value.profilePic),
-                                        ),
-                                        Text(
-                                          value.displayname,
-                                          style: TextStyle(
-                                            fontSize: 0.36.dp,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                          )
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(DateTimeHandler.getFormattedDate(value.userPosts[index]['dateTime'])),
-                                        Text(DateTimeHandler.getFormattedTime(value.userPosts[index]['dateTime']))
-                                        // Text(value.userPosts[index]['dateTime'].runtimeType.toString()),
-                                        // Text(value.userPosts[index]['dateTime'].runtimeType.toString())
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 3.h),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: RichText(
-                                    text: TextSpan(text: DescriptionTrimmer.trimDescription(value.userPosts[index]['description'], 430),
-                                    style: TextStyle(
-                                      fontSize: 0.28.dp,
-                                      // color: Colors.white
-                                    ),
-                                    children: value.userPosts[index]['description'].length > 430
-                                      ? [
-                                          TextSpan(
-                                            text: " See More",
-                                            style: TextStyle(
-                                              fontSize: 0.3.dp,
-                                              color: Colors.blue
-                                            ), 
-                                          )
-                                        ]
-                                      : [],
-                                    ),
-                                    textAlign: TextAlign.start,
-                                    ),
-                                ),
-                                SizedBox(height: 2.h,),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Row(
+                        return GestureDetector(
+                          onTap: () {
+                            Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
+                            Provider.of<StateManagement>(context, listen: false).userPostsID = index;
+                            Provider.of<StateManagement>(context, listen: false).mainPostID = -1;
+                            getComments();
+                          },
+                          child: Column(
+                            children: [
+                            // ignore: avoid_unnecessary_containers
+                            Container(
+                            // height: 30.h,
+                            // decoration: BoxDecoration(
+                            //   color: Colors.grey.shade900
+                            // ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Icon(Icons.favorite_border_rounded),
-                                      SizedBox(width: 1.w,),
-                                      Text(value.userPosts[index]['likes'].toString()),
-                                      SizedBox(width: 8.w,),
-                                      Icon(Icons.mode_comment_outlined),
-                                      SizedBox(width: 1.w,),
-                                      Text(value.userPosts[index]['comments'].toString()),
-                                      SizedBox(width: 8.w,),
-                                      Icon(Icons.bookmark_border_rounded),
-                                      // SizedBox(width: 1.w,),
-                                      // Text("143"),
+                                      Row(
+                                        spacing: 4.w,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 15,
+                                            backgroundColor: Colors.transparent,
+                                            backgroundImage: NetworkImage(value.profilePic),
+                                            // child: Image.network(value.profilePic),
+                                          ),
+                                          Text(
+                                            value.displayname,
+                                            style: TextStyle(
+                                              fontSize: 0.36.dp,
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                            )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(DateTimeHandler.getFormattedDate(value.userPosts[index]['dateTime'])),
+                                          Text(DateTimeHandler.getFormattedTime(value.userPosts[index]['dateTime']))
+                                          // Text(value.userPosts[index]['dateTime'].runtimeType.toString()),
+                                          // Text(value.userPosts[index]['dateTime'].runtimeType.toString())
+                                        ],
+                                      )
                                     ],
                                   ),
-                                )
-                              ],
+                                  SizedBox(height: 3.h),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: RichText(
+                                      text: TextSpan(text: DescriptionTrimmer.trimDescription(value.userPosts[index]['description'], 430),
+                                      style: TextStyle(
+                                        fontSize: 0.28.dp,
+                                        // color: Colors.white
+                                      ),
+                                      children: value.userPosts[index]['description'].length > 430
+                                        ? [
+                                            TextSpan(
+                                              text: " See More",
+                                              style: TextStyle(
+                                                fontSize: 0.3.dp,
+                                                color: Colors.blue
+                                              ), 
+                                            )
+                                          ]
+                                        : [],
+                                      ),
+                                      textAlign: TextAlign.start,
+                                      ),
+                                  ),
+                                  SizedBox(height: 2.h,),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.favorite_border_rounded),
+                                        SizedBox(width: 1.w,),
+                                        Text(value.userPosts[index]['likes'].toString()),
+                                        SizedBox(width: 8.w,),
+                                        Icon(Icons.mode_comment_outlined),
+                                        SizedBox(width: 1.w,),
+                                        Text(value.userPosts[index]['comments'].toString()),
+                                        SizedBox(width: 8.w,),
+                                        Icon(Icons.bookmark_border_rounded),
+                                        // SizedBox(width: 1.w,),
+                                        // Text("143"),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Divider(thickness: 0.8,)
-                          ],
+                          Divider(thickness: 0.8,)
+                            ],
+                          ),
                         );
                       },
                       );
