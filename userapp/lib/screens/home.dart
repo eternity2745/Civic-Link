@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:sizer/sizer.dart';
 import 'package:userapp/Screens/landing.dart';
 import 'package:userapp/Screens/createPost.dart';
 import 'package:userapp/Screens/profile.dart';

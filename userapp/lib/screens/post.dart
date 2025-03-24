@@ -1,8 +1,15 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/progress.dart';
 import 'package:userapp/Utilities/dateTimeHandler.dart';
+import 'package:userapp/Utilities/descriptionTrimmer.dart';
 import 'package:userapp/Utilities/state.dart';
 
 class PostScreen extends StatefulWidget {
@@ -12,20 +19,71 @@ class PostScreen extends StatefulWidget {
   State<PostScreen> createState() => _PostScreenState();
 }
 
-class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMixin {
+class _PostScreenState extends State<PostScreen> {
 
   final TextEditingController _commentController = TextEditingController();
 
   void addCommment() async {
-    
+    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+
+    Map<String, dynamic> comment = {
+      "description" : _commentController.text,
+      "username" : Provider.of<StateManagement>(context, listen: false).displayname,
+      "profilePic" : Provider.of<StateManagement>(context, listen: false).profilePic,
+      "userID" : Provider.of<StateManagement>(context, listen: false).id,
+      "replies" : 0,
+      "dateTime" : Timestamp.now(),
+      "likes" : 0,
+      "likesID" : [],
+    };
+
+    var result = await DatabaseMethods().addComment(comment, postID);
+    if(mounted) {
+      if(result) {
+        Provider.of<StateManagement>(context, listen: false).addUserComment(comment);
+        _commentController.clear();
+        Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['comments'] += 1;
+      }else{
+        IconSnackBar.show(
+          context,
+          label: "Unable to add new comment",
+          snackBarType: SnackBarType.fail,
+          labelTextStyle: TextStyle(color: Colors.white)
+        );
+      }
+    }
+  }
+
+  void getComments() async {
+    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+
+    QuerySnapshot result = await DatabaseMethods().getComments(postID);
+    List<Map<String, dynamic>> comments = [];
+    int i = 0;
+    for(var doc in result.docs) {
+      comments.add(doc.data() as Map<String, dynamic>);
+      comments[i]['commentID'] = doc.id;
+      i++;
+    }
+
+    if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).setComments(comments);
+    }
+  }
+
+  // @override
+  // bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
+    // super.build(context);
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -202,7 +260,8 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                     ),
                     Consumer<StateManagement>(
                       builder: (context, value, child) {
-                        if(value.mainPosts![value.mainPostID]['comments'] == 0) {
+                        log("COMMENTS: ${value.comments!}");
+                        if(value.comments!.isEmpty) {
                           return Padding(
                             padding: EdgeInsets.only(top: 3.5.h),
                             child: Center(
@@ -216,98 +275,108 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                             ),
                           );
                         }else{
+                          log(value.comments!.length.toString());
                           return ListView.builder(
-                            itemCount: value.mainPosts![value.mainPostID]['comments'],
+                            itemCount: value.comments!.length,
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder:(context, index) {
-                              return Column(
-                                children: [
-                                Container(
-                                // height: 30.h,
-                                // decoration: BoxDecoration(
-                                //   color: Colors.grey.shade900
-                                // ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            spacing: 4.w,
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 15,
-                                                backgroundColor: Colors.transparent,
-                                                child: Image.asset("assets/google.png"),
-                                              ),
-                                              Text(
-                                                "Google India",
-                                                style: TextStyle(
-                                                  fontSize: 0.36.dp,
-                                                  fontWeight: FontWeight.bold
+                              return Skeletonizer(
+                                effect: ShimmerEffect(
+                                  duration: Duration(seconds: 1),
+                                  baseColor: Colors.grey.shade700,
+                                  highlightColor: Colors.grey,
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight
+                                ),
+                                enabled: value.commentsLoading,
+                                child: Column(
+                                  children: [
+                                  // ignore: avoid_unnecessary_containers
+                                  Container(
+                                  // height: 30.h,
+                                  // decoration: BoxDecoration(
+                                  //   color: Colors.grey.shade900
+                                  // ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              spacing: 4.w,
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 15,
+                                                  backgroundColor: Colors.transparent,
+                                                  backgroundImage: value.commentsLoading ? null : NetworkImage(value.comments![index]['profilePic']),
                                                 ),
-                                                )
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text("25/03/2025"),
-                                              Text("4:00 PM")
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(height: 3.h),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5.w),
-                                        child: RichText(
-                                          text: TextSpan(text: "Hello tehre huuaefuaieb efgagyug feaggfeg ef7agfeg87 eg7g8ef7agf efa7g87efagea7 ea7g87fe78a u8agf8aeg g8efag98f efa...",
-                                          style: TextStyle(
-                                            fontSize: 0.28.dp,
-                                            // color: Colors.white
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: "See More",
-                                              style: TextStyle(
-                                                fontSize: 0.3.dp,
-                                                color: Colors.blue
-                                          ), 
+                                                Text(
+                                                  value.commentsLoading ? "" : value.comments![index]['username'],
+                                                  style: TextStyle(
+                                                    fontSize: 0.36.dp,
+                                                    fontWeight: FontWeight.bold
+                                                  ),
+                                                  )
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(value.commentsLoading ? "" : DateTimeHandler.getFormattedDate(value.comments![index]['dateTime'])),
+                                                Text(value.commentsLoading ? "" : DateTimeHandler.getFormattedTime(value.comments![index]['dateTime']))
+                                              ],
                                             )
-                                          ]
-                                          ),
-                                          textAlign: TextAlign.start,
-                                          ),
-                                      ),
-                                      SizedBox(height: 2.h,),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5.w),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.favorite_border_rounded),
-                                            SizedBox(width: 1.w,),
-                                            Text("143"),
-                                            SizedBox(width: 8.w,),
-                                            Icon(Icons.mode_comment_outlined),
-                                            SizedBox(width: 1.w,),
-                                            Text("20"),
-                                            SizedBox(width: 8.w,),
-                                            Icon(Icons.bookmark_border_rounded),
-                                            // SizedBox(width: 1.w,),
-                                            // Text("143"),
                                           ],
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(height: 3.h),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: RichText(
+                                            text: TextSpan(text: value.commentsLoading ? "" :  DescriptionTrimmer.trimDescription(value.comments![index]['description'], 400),
+                                            style: TextStyle(
+                                              fontSize: 0.28.dp,
+                                              // color: Colors.white
+                                            ),
+                                            children: value.commentsLoading ? [] : value.comments![index]['description'].length < 400 ? [] : [
+                                              TextSpan(
+                                                text: "See More",
+                                                style: TextStyle(
+                                                  fontSize: 0.3.dp,
+                                                  color: Colors.blue
+                                            ), 
+                                              )
+                                            ]
+                                            ),
+                                            textAlign: TextAlign.start,
+                                            ),
+                                        ),
+                                        SizedBox(height: 2.h,),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.favorite_border_rounded),
+                                              SizedBox(width: 1.w,),
+                                              Text(value.commentsLoading ? "" : value.comments![index]['likes'].toString()),
+                                              SizedBox(width: 8.w,),
+                                              Icon(Icons.keyboard_return_rounded),
+                                              SizedBox(width: 1.w,),
+                                              Text(value.commentsLoading ? "" : value.comments![index]['replies'].toString()),
+                                              // SizedBox(width: 1.w,),
+                                              // Text("143"),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Divider(thickness: 0.8,)
-                                ],
+                                Divider(thickness: 0.8,)
+                                  ],
+                                ),
                               );
                             },
                           );
@@ -326,6 +395,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
               maxLines: 5,
               minLines: 1,
               decoration: InputDecoration(
+                suffixIcon: IconButton(onPressed: () {addCommment();}, icon: Icon(Icons.send)),
                 hintText: "Enter Comment...",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15)

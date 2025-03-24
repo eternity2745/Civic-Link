@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +35,29 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
 
     if(mounted) {
       Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
+      Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+    }
+    
+  }
+
+  void getComments() async {
+    int mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+    String postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+
+    QuerySnapshot result = await DatabaseMethods().getComments(postID);
+    List<Map<String, dynamic>> comments = [];
+    int i = 0;
+    for(var doc in result.docs) {
+      comments.add(doc.data() as Map<String, dynamic>);
+      comments[i]['commentID'] = doc.id;
+      i++;
+    }
+    log("COMMENTS 3: $comments");
+
+    if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).setComments(comments);
+      log("COMMENTS 2: ${Provider.of<StateManagement>(context, listen:false).comments}");
+      Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
     }
   }
 
@@ -78,10 +103,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                     return GestureDetector(
                       onTap: () {
                             Provider.of<StateManagement>(context, listen: false).mainPostID = index;
-                            Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+                            getComments();
                           },
                       child: Column(
                         children: [
+                          // ignore: avoid_unnecessary_containers
                           Container(
                           // height: 30.h,
                           // decoration: BoxDecoration(

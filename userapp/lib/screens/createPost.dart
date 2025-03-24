@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
@@ -40,6 +38,8 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
         "dateTime" : Timestamp.now(),
         "action" : false,
         "completed" : false,
+        "username" : Provider.of<StateManagement>(context, listen: false).displayname,
+        "profilePic" : Provider.of<StateManagement>(context, listen: false).profilePic
       };
       bool result = await DatabaseMethods().createPost(post, Provider.of<StateManagement>(context, listen: false).docID);
       if (result) {

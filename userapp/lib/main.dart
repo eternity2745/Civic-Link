@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
-import 'package:userapp/Screens/home.dart';
 import 'package:userapp/Screens/login.dart';
-import 'package:userapp/Screens/post.dart';
 import 'package:userapp/Utilities/state.dart';
 import 'package:userapp/firebase_options.dart';
 

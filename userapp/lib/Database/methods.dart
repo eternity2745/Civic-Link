@@ -62,11 +62,16 @@ class DatabaseMethods {
 
   Future addComment(Map<String, dynamic> comment, String postID) async {
     try{
-      await database.collection("posts").doc(postID).collection("comment").add(comment);
+      await database.collection("posts").doc(postID).collection("comments").add(comment);
+      await database.collection("posts").doc(postID).update({"comments":FieldValue.increment(1)});
       return true;
     }catch(e){
       return false;
     }
+  }
+
+  Future<QuerySnapshot> getComments(String postID) async {
+    return await database.collection("posts").doc(postID).collection("comments").orderBy("dateTime", descending: true).limit(5).get();
   }
 
 }
