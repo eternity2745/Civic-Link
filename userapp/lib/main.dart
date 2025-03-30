@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
@@ -8,8 +9,8 @@ import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Utilities/state.dart';
 import 'package:userapp/firebase_options.dart';
 
-void main() async {
-  
+Future main() async {
+  await DotEnv().load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   RiveFile.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

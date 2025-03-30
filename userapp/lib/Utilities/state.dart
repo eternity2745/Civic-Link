@@ -25,7 +25,7 @@ class StateManagement with ChangeNotifier {
   int mainPostID = 0;
 
   List<Map<String, dynamic>>? comments = [{}];
-  bool commentsLoading = true;
+  bool commentsLoading = false;
 
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {
     this.username = username;

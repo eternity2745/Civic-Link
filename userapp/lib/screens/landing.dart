@@ -33,7 +33,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
 
     if(mounted) {
       Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
-      Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+      // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
     }
     
   }
