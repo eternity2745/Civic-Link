@@ -129,8 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
         emailError = false;
         QuerySnapshot result = await DatabaseMethods().getUserPosts(userID);
         List<Map<String, dynamic>> userPosts = [];
+        int i = 0;
         for(var doc in result.docs) {
           userPosts.add(doc.data() as Map<String, dynamic>);
+          userPosts[i]['postID'] = doc.id;
+          i++;
         }
         log("$userPosts");
         signInPressed = false;

@@ -136,6 +136,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                           Map<String, dynamic> posts = {};
                           if(value.mainPostID == -1) {
                             posts = value.userPosts[value.userPostsID];
+                            log("$posts");
                           }else{
                             posts = value.mainPosts![value.mainPostID];
                           }
@@ -270,7 +271,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                           ),
                                         ],
                                       )
-                                      )
+                                    )
                                   ],
                                 ),
                               ]

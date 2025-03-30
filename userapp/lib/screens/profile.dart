@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,12 +20,10 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void initState() {
-    log(Provider.of<StateManagement>(context, listen:false).profilePic);
-    log(Provider.of<StateManagement>(context, listen:false).username);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   void getComments() async {
     Provider.of<StateManagement>(context, listen: false).commentsLoading = true;

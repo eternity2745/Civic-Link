@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -118,12 +116,9 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                               },
                           child: Column(
                             children: [
+                              
                               // ignore: avoid_unnecessary_containers
                               Container(
-                              // height: 30.h,
-                              // decoration: BoxDecoration(
-                              //   color: Colors.grey.shade900
-                              // ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
                                 child: Column(
