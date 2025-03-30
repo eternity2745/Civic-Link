@@ -88,7 +88,7 @@ class StateManagement with ChangeNotifier {
       userPosts[postIndex]['liked'] = true;
     }else{
       mainPosts![postIndex]['likes']++;
-      mainPosts![postIndex]['liked'] = false;
+      mainPosts![postIndex]['liked'] = true;
     }
     notifyListeners();
   }
