@@ -1,7 +1,9 @@
 import 'dart:developer';
-
+import 'package:lottie/lottie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+// import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -19,10 +21,11 @@ class PostScreen extends StatefulWidget {
   State<PostScreen> createState() => _PostScreenState();
 }
 
-class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMixin{
+class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
 
   final TextEditingController _commentController = TextEditingController();
   int fakeCounter = 0;
+  late final AnimationController _likeController;
 
   void addCommment() async {
     String postID = "";
@@ -90,6 +93,42 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
     }
   }
 
+  void addLike(int index) async {
+    String postID = "";
+    int mainPostID = -1;
+    int userID = Provider.of<StateManagement>(context, listen: false).id;
+    if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
+      mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
+      postID = Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['postID'];
+    }else{
+      mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+      postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    }
+
+    bool result = await DatabaseMethods().addLike(postID, userID);
+    if(result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).addLike(index);
+    }
+  }
+
+  void removeLike(int index) async {
+    String postID = "";
+    int mainPostID = -1;
+    int userID = Provider.of<StateManagement>(context, listen: false).id;
+    if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
+      mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
+      postID = Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['postID'];
+    }else{
+      mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+      postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
+    }
+
+    bool result = await DatabaseMethods().removeLike(postID, userID);
+    if(result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).removeLike(index);
+    }
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -103,6 +142,12 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
   //   }
   //   super.initState();
   // }
+
+  @override
+  void initState() {
+    super.initState();
+    _likeController = AnimationController(vsync: this, duration: Duration(seconds: 1));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,11 +179,14 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                           // String postID = "";
                           // int mainPostID = -1;
                           Map<String, dynamic> posts = {};
+                          int id = -1;
                           if(value.mainPostID == -1) {
-                            posts = value.userPosts[value.userPostsID];
+                            id = value.userPostsID;
+                            posts = value.userPosts[id];
                             log("$posts");
                           }else{
-                            posts = value.mainPosts![value.mainPostID];
+                            id = value.mainPostID;
+                            posts = value.mainPosts![id];
                           }
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,8 +231,6 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                   SizedBox(height: 2.h,),
                                     Center(
                                       child: Container(
-                                                                        // height: 35.h,
-                                                                        // width: 85.w,
                                         constraints: BoxConstraints(
                                         maxWidth: 95.w,
                                         maxHeight: 30.h
@@ -211,9 +257,28 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                   Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {}, 
-                                        icon: Icon(Icons.favorite_border_rounded)
+                                        onPressed: () {
+                                          if (_likeController.status ==
+                                              AnimationStatus.dismissed) {
+                                              addLike(id);
+                                              _likeController.reset();
+                                              _likeController.animateTo(0.6);
+                                          } else {
+                                            removeLike(id);
+                                            _likeController.reverse();
+                                          }
+                                        },
+                                      icon: Lottie.asset(Icons8.heart_color,
+                                        controller: _likeController, 
+                                        height: 3.8.h,
+                                        onLoaded: (p0) {
+                                          if(posts['liked'] == true) {
+                                            _likeController.animateTo(0.6);
+                                          }
+                                        },
                                         ),
+                                      color: Colors.red,
+                                      ),
                                       Text(posts['likes'].toString())
                                     ], 
                                   ),

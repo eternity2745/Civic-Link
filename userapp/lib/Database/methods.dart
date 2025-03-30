@@ -74,4 +74,22 @@ class DatabaseMethods {
     return await database.collection("posts").doc(postID).collection("comments").orderBy("dateTime", descending: true).limit(5).get();
   }
 
+  Future addLike(String postID, int userID) async {
+    try{
+      await database.collection("posts").doc(postID).update({"likes":FieldValue.increment(1), "likesId":FieldValue.arrayUnion([userID])});
+      return true;
+    }catch(e) {
+      return false;
+    }
+  }
+
+  Future removeLike(String postID, int userID) async {
+    try{
+      await database.collection("posts").doc(postID).update({"likes":FieldValue.increment(-1), "likesId":FieldValue.arrayRemove([userID])});
+      return true;
+    }catch(e) {
+      return false;
+    }
+  }
+
 }

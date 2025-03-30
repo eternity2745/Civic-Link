@@ -82,4 +82,26 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void addLike(int postIndex) {
+    if(mainPostID == -1) {
+      userPosts[postIndex]['likes']++;
+      userPosts[postIndex]['liked'] = true;
+    }else{
+      mainPosts![postIndex]['likes']++;
+      mainPosts![postIndex]['liked'] = false;
+    }
+    notifyListeners();
+  }
+
+  void removeLike(int postIndex) {
+    if(mainPostID == -1) {
+      userPosts[postIndex]['likes']--;
+      userPosts[postIndex]['liked'] = false;
+    }else{
+      mainPosts![postIndex]['likes']--;
+      mainPosts![postIndex]['liked'] = false;
+    }
+    notifyListeners();
+  }
+
 }

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -18,10 +20,12 @@ class LandingScreen extends StatefulWidget {
   State<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin {
+class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
 
   @override
   bool get wantKeepAlive => true;
+
+  late final AnimationController likesController;
 
   void getPosts() async {
     QuerySnapshot posts = await DatabaseMethods().getMainPosts();
@@ -30,6 +34,13 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     for(var doc in posts.docs) {
       mainPosts.add(doc.data() as Map<String, dynamic>);
       mainPosts[i]['postID'] = doc.id;
+      if(mounted) {      
+        if(mainPosts[i]['likesId'].contains(Provider.of<StateManagement>(context, listen: false).id)) {
+          mainPosts[i]['liked'] = true;
+        }else{
+          mainPosts[i]['liked'] = false;
+        }
+      }
       i++;
     }
 
@@ -69,6 +80,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
 
   @override
   void initState() {
+    likesController = AnimationController(vsync: this, duration: Duration(milliseconds: 100));
     getPosts();
     super.initState();
   }
@@ -205,7 +217,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                       child: Skeleton.shade(
                                         child: Row(
                                           children: [
-                                            Icon(Icons.favorite_border_rounded),
+                                            Icon(value.mainPostsLoading ? Icons.favorite_border_rounded : value.mainPosts![index]['liked'] == true ? Icons.favorite : Icons.favorite_border_rounded, color: value.mainPostsLoading ? null : value.mainPosts![index]['liked'] == true ? Colors.red : null,),
                                             SizedBox(width: 1.w,),
                                             Text(value.mainPostsLoading ? "" : value.mainPosts![index]['likes'].toString()),
                                             SizedBox(width: 8.w,),
