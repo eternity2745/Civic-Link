@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -175,6 +177,29 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                         ),
                                     ),
                                     SizedBox(height: 2.h,),
+                                    if(value.mainPostsLoading == false && value.mainPosts![index]['image'] != '')...{
+                                    Center(
+                                      child: Container(
+                                                                        // height: 35.h,
+                                                                        // width: 85.w,
+                                        constraints: BoxConstraints(
+                                        maxWidth: 95.w,
+                                        maxHeight: 30.h
+                                        ),
+                                        decoration: BoxDecoration(
+                                        // image: DecorationImage(image: FileImage(File(imagePath)), fit: BoxFit.fill),
+                                        borderRadius: BorderRadius.circular(10),
+                                        // border: Border.all(color: Colors.grey.shade900)
+                                        ),
+                                        child:
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Image.network(value.mainPosts![index]['image'], fit: BoxFit.cover,),
+                                          )
+                                      ),
+                                    ),
+                                    SizedBox(height: 2.h,),
+                                    },
                                     Padding(
                                       padding: EdgeInsets.only(left: 5.w),
                                       child: Skeleton.shade(

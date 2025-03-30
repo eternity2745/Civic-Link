@@ -179,6 +179,29 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                     color: Colors.white
                                   ),                      
                                 ),
+                                if(posts['image'] != '')...{
+                                  SizedBox(height: 2.h,),
+                                    Center(
+                                      child: Container(
+                                                                        // height: 35.h,
+                                                                        // width: 85.w,
+                                        constraints: BoxConstraints(
+                                        maxWidth: 95.w,
+                                        maxHeight: 30.h
+                                        ),
+                                        decoration: BoxDecoration(
+                                        // image: DecorationImage(image: FileImage(File(imagePath)), fit: BoxFit.fill),
+                                        borderRadius: BorderRadius.circular(10),
+                                        // border: Border.all(color: Colors.grey.shade900)
+                                        ),
+                                        child:
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Image.network(posts['image'], fit: BoxFit.cover,),
+                                          )
+                                      ),
+                                    ),
+                                },
                                 SizedBox(height: 1.h,),
                                 Divider(thickness: 0.8,),
                                 // SizedBox(height: 0.5.h,),
