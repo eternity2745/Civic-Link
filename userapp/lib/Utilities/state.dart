@@ -104,4 +104,9 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void filterPosts() {
+    mainPostsLoading = true;
+    notifyListeners();
+  }
+
 }

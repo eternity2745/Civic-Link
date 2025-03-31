@@ -52,6 +52,7 @@ dependencies:
   cloudinary_public: ^0.23.1
   flutter_dotenv: ^5.2.1
   flutter_animated_icons: ^1.0.1
+  geoflutterfire_plus: ^0.0.32
 
 
   # The following adds the Cupertino Icons font to your application.

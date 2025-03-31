@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 // import 'package:random_string/random_string.dart';
 
 class DatabaseMethods {
@@ -90,6 +91,39 @@ class DatabaseMethods {
     }catch(e) {
       return false;
     }
+  }
+
+  Future<QuerySnapshot> getLocalityPosts(String locality) async {
+    return await database.collection("posts").where("locality", isEqualTo: locality).orderBy("dateTime", descending: true).limit(5).get();
+  }
+
+  Future<Object?> getNearLocationPosts(double latitude, double longitude) async {
+
+    GeoFirePoint geo = GeoFirePoint(GeoPoint(latitude, longitude));
+    GeoPoint geopointFrom(Map<String, dynamic> data) {
+     return data['location'] as GeoPoint;
+    }
+    final Stream<List<DocumentSnapshot<Map<String, dynamic>>>> result =
+    GeoCollectionReference<Map<String, dynamic>>(database.collection("posts"))
+        .subscribeWithin(
+              center: geo,
+              radiusInKm: 20,
+              field: "location",
+              geopointFrom: geopointFrom,
+            );
+    // return await GeoCollectionReference(collectionReference)
+    Object? data;
+    result.listen((List<DocumentSnapshot> event) {
+      int length = event.length;
+      log("$length");
+      log("$event");
+      for (int i = 0; i < length; i++) {
+        data = event[i].data();
+        // Process the data as needed
+      }
+      log("$data");
+    });
+    return data;
   }
 
 }
