@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "222609899053",
+    "project_id": "civic-link",
+    "storage_bucket": "civic-link.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222609899053:android:03783a53ee858b1d6302a4",
+        "android_client_info": {
+          "package_name": "com.example.authorityapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyAZAVlqYqoeCuSeVnuVzEanGduqxMJzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222609899053:android:9bc41babb4060beb6302a4",
+        "android_client_info": {
+          "package_name": "com.example.userapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyAZAVlqYqoeCuSeVnuVzEanGduqxMJzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
