@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:authorityapp/Database/methods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -106,39 +107,38 @@ class _LoginScreenState extends State<LoginScreen> {
     isHandsUp?.change(false);
 
     if (emailController.text.isNotEmpty && passController.text.isNotEmpty) {
-      bool result = await DatabaseMethods().signIn(emailController.text, passController.text);
+      List details = await DatabaseMethods().signIn(emailController.text, passController.text);
 
-      if(result) {
+      if(details.isNotEmpty) {
         successTrigger?.fire();
-        QuerySnapshot details = await DatabaseMethods().getUserInfo(emailController.text);
-        log("${details.docs[0]}");
-        String username = "${details.docs[0]["username"]}";
-        String displayname = "${details.docs[0]["displayname"]}";
-        String email = "${details.docs[0]["email"]}";
-        String profilePic = "${details.docs[0]["profilePic"]}";
-        int userID= details.docs[0]['id'];
-        int posts = details.docs[0]['posts'];
-        int reports = details.docs[0]['reports'];
-        int ranking = details.docs[0]['ranking'];
-        String docID = details.docs[0].id;
+        log("${details[0]}");
+        String username = "${details[0]["username"]}";
+        String displayname = "${details[0]["displayname"]}";
+        String email = "${details[0]["email"]}";
+        String profilePic = "${details[0]["profilePic"]}";
+        int userID= details[0]['id'];
+        int posts = details[0]['posts'];
+        int reports = details[0]['reports'];
+        int ranking = details[0]['ranking'];
+        String docID = details[1];
         passError = false;
         emailError = false;
-        QuerySnapshot result = await DatabaseMethods().getUserPosts(userID);
-        List<Map<String, dynamic>> userPosts = [];
-        int i = 0;
-        for(var doc in result.docs) {
-          userPosts.add(doc.data() as Map<String, dynamic>);
-          userPosts[i]['postID'] = doc.id;
-          i++;
-        }
-        log("$userPosts");
+        // QuerySnapshot result = await DatabaseMethods().getUserPosts(userID);
+        // List<Map<String, dynamic>> userPosts = [];
+        // int i = 0;
+        // for(var doc in result.docs) {
+        //   userPosts.add(doc.data() as Map<String, dynamic>);
+        //   userPosts[i]['postID'] = doc.id;
+        //   i++;
+        // }
+        // log("$userPosts");
         signInPressed = false;
         setState(() {
         });
         if (mounted) {
-          Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
-          Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          // Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
+          // Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
+          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
         
       } else {
@@ -208,10 +208,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Center(
                           child: Text(
-                            "Civic Link",
+                            "Authority Link",
                             style: TextStyle(
                               letterSpacing: 2.w,
-                              fontSize: 0.5.dp,
+                              fontSize: 0.42.dp,
                               fontWeight: FontWeight.w900,
                               color: Color(int.parse('0xff739072'))
                             ),
@@ -243,15 +243,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: rive.Rive(artboard: artboard!)),).animate(effects: [SlideEffect(duration: Duration(seconds: 1), begin: Offset(0, 1), end: Offset(0,0))]),
                 Container(
                   margin: EdgeInsets.only(left: 4.w, right: 4.w, top: 25.h),
-                  height: 60.h,
+                  height: 50.h,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [Color(int.parse('0xff4F6F52')),Color(int.parse('0xff3A4D39'))], begin: Alignment.topLeft, end: Alignment.bottomRight),
                     borderRadius: BorderRadius.circular(25),
                     boxShadow: [BoxShadow(color: Colors.black, blurRadius: 3)]
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 4.w, right: 4.w, top:3.h, bottom: 2.h),
+                    padding: EdgeInsets.only(left: 4.w, right: 4.w),
                     child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 height: 10.h,
@@ -453,47 +454,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             )
                             ),
-                            SizedBox(height: 3.h),
-                            Row(
-                              children: [
-                                Expanded(child: Divider(thickness: 3, endIndent: 10, color: Color(int.parse('0xffECE3CE')),)),
-                                Text("Or Continue With", style: TextStyle(fontSize: 0.3.dp, color: Colors.green),),
-                                Expanded(child: Divider(thickness: 3, indent: 10, color: Color(int.parse('0xffECE3CE')),))
-                              ],
-                            ),
-                            SizedBox(height: 3.h),
-                            ElevatedButton(onPressed: () => {
-        
-                            }, 
-                            style: ButtonStyle(
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                              padding: WidgetStateProperty.all(EdgeInsets.only(top: 2.h, bottom: 2.h, left: 5.w, right: 5.w))
-                            ),
-                            child: Image.asset('assets/google.png', fit: BoxFit.fitHeight, height: 5.h,)
-                            ),
                             ]
                           ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 3.h,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [ 
-                  Text("Dont Have An Account?  ",
-                  style: TextStyle(
-                    fontSize: 0.27.dp
-                  ),),
-                  GestureDetector(
-                    onTap: signInPressed ? null : () {
-                      Navigator.push(context, MaterialPageRoute(builder: ((context) =>  SignUpScreen())));
-                    },
-                    child: Text("Sign Up Now!", 
-                    style: TextStyle(fontSize: 0.36.dp, color: Colors.blue.shade200),),
-                  )
-                ],
-              )
+              
               ],
             )
         

@@ -21,6 +21,20 @@ class DatabaseMethods {
   }
 
   Future signIn(String email, String password) async {
+    List finalResult = [];
+    try {
+      QuerySnapshot result = await database.collection("authorities").where("email", isEqualTo: email).where("password", isEqualTo: password).get();
+      if(result.docs.isNotEmpty) {
+        finalResult.add(result.docs[0]);
+        finalResult.add(result.docs[0].id);
+      }
+      return finalResult;
+    } catch(e) {
+      return finalResult;
+    }
+  }
+
+  Future getUserInfo(String email, String password) async {
     try {
       credential = await auth.signInWithEmailAndPassword(email: email, password: password);
       return true;
