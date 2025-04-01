@@ -31,6 +31,25 @@ dependencies:
   flutter:
     sdk: flutter
 
+  sizer: ^3.0.5
+  rive: ^0.13.20
+  flutter_animate: ^4.5.2
+  salomon_bottom_bar: ^3.3.2
+  timelines_plus: ^1.0.6
+  firebase_core: ^3.12.1
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.5
+  provider: ^6.1.2
+  permission_handler: ^11.4.0
+  location: ^8.0.0
+  intl: ^0.20.2
+  skeletonizer: ^1.4.3
+  flutter_icon_snackbar: ^1.2.1
+  cloudinary_public: ^0.23.1
+  flutter_dotenv: ^5.2.1
+  flutter_animated_icons: ^1.0.1
+  geoflutterfire_plus: ^0.0.32
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8

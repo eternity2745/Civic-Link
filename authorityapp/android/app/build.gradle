@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.authorityapp"
-    compileSdk = flutter.compileSdkVersion
+    minSdkVersion 23
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
