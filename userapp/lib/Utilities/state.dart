@@ -17,14 +17,14 @@ class StateManagement with ChangeNotifier {
   String addressName = "";
   String reportAdministrativeArea = "";
 
-  List<Map<String, dynamic>> userPosts = [{}];
+  List<Map<String, dynamic>> userPosts = [];
   int userPostsID = 0;
 
-  List<Map<String, dynamic>>? mainPosts = [{}];
+  List<Map<String, dynamic>>? mainPosts = [];
   bool mainPostsLoading = true;
   int mainPostID = 0;
 
-  List<Map<String, dynamic>>? comments = [{}];
+  List<Map<String, dynamic>>? comments = [];
   bool commentsLoading = false;
 
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {

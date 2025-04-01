@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                           Text(
                             Provider.of<StateManagement>(context).displayname,
                             style: TextStyle(
-                              fontSize: 0.36.dp,
+                              fontSize: 0.34.dp,
                               fontWeight: FontWeight.bold,
                               color: Colors.white
                             ),
@@ -200,7 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                           Text(
                                             value.displayname,
                                             style: TextStyle(
-                                              fontSize: 0.36.dp,
+                                              fontSize: 0.34.dp,
                                               fontWeight: FontWeight.bold
                                             ),
                                             )

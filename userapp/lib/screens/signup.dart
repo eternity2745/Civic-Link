@@ -101,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => HomeScreen()), 
               (Route<dynamic> route) => false
-              );
+            );
           }
         }else{
           if(mounted) {
@@ -116,10 +116,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
 
-  }
-
-  void signUp() async {
-    
   }
 
 
