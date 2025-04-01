@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:sizer/sizer.dart';
 import 'package:userapp/Screens/landing.dart';
 import 'package:userapp/Screens/createPost.dart';
 import 'package:userapp/Screens/profile.dart';
@@ -40,7 +41,21 @@ class _HomeScreenState extends State<HomeScreen> {
           SalomonBottomBarItem(icon: selectedIndex == 0? Icon(Icons.home) : Icon(Icons.home_outlined), title: Text("Home")),
           SalomonBottomBarItem(icon: Icon(Icons.search_rounded), title: Text("Search")),
           SalomonBottomBarItem(icon: Icon(Icons.add_box_rounded), title: Text("Create")),
-          SalomonBottomBarItem(icon: CircleAvatar(backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic), maxRadius: 10, minRadius: 10,), title: Text("Profile")),
+          SalomonBottomBarItem(icon: CircleAvatar(backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic), maxRadius: 10, minRadius: 10,),
+          activeIcon: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey, width: 0.5.w)
+                        ),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          maxRadius: 10,
+                          minRadius: 10,
+                          backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
+                          // child: Image.network("https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900"),
+                        ),
+                      ),
+          title: Text("Profile")),
           
         ],
         currentIndex: selectedIndex,

@@ -96,6 +96,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
   void addLike(int index) async {
     String postID = "";
     int mainPostID = -1;
+    Provider.of<StateManagement>(context, listen: false).addLike(index);
     int userID = Provider.of<StateManagement>(context, listen: false).id;
     if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
       mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
@@ -106,14 +107,15 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
     }
 
     bool result = await DatabaseMethods().addLike(postID, userID);
-    if(result && mounted) {
-      Provider.of<StateManagement>(context, listen: false).addLike(index);
+    if(!result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).removeLike(index);
     }
   }
 
   void removeLike(int index) async {
     String postID = "";
     int mainPostID = -1;
+    Provider.of<StateManagement>(context, listen: false).removeLike(index);
     int userID = Provider.of<StateManagement>(context, listen: false).id;
     if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
       mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
@@ -124,8 +126,8 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
     }
 
     bool result = await DatabaseMethods().removeLike(postID, userID);
-    if(result && mounted) {
-      Provider.of<StateManagement>(context, listen: false).removeLike(index);
+    if(!result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).addLike(index);
     }
   }
 

@@ -218,7 +218,6 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                   controller: filterController,
                                   dropdownMenuEntries: [
                                   DropdownMenuEntry(value: Text("All"), label: "All"),
-                                  DropdownMenuEntry(value: Text("Near My Location"), label: "Near My Location"),
                                   DropdownMenuEntry(value: Text("In My Locality"), label: "In My Locality")
                                 ])
                               ],

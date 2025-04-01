@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -147,6 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
               ),
               Consumer<StateManagement>(
                 builder: (context, value, child) {
+                  log("User Posts: ${value.userPosts.isEmpty}");
                   if (value.userPosts.isEmpty) {
                     return Padding(
                       padding: EdgeInsets.only(top: 10.h),
