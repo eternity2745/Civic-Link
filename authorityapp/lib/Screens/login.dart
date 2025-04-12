@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:authorityapp/Database/methods.dart';
+import 'package:authorityapp/Utilities/state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -113,13 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
         successTrigger?.fire();
         log("${details[0]}");
         String username = "${details[0]["username"]}";
-        String displayname = "${details[0]["displayname"]}";
         String email = "${details[0]["email"]}";
         String profilePic = "${details[0]["profilePic"]}";
+        String locality = "${details[0]['locality']}";
         int userID= details[0]['id'];
-        int posts = details[0]['posts'];
-        int reports = details[0]['reports'];
-        int ranking = details[0]['ranking'];
         String docID = details[1];
         passError = false;
         emailError = false;
@@ -136,9 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
         });
         if (mounted) {
-          // Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
+          Provider.of<StateManagement>(context, listen: false).setProfile(username, email, profilePic, locality, userID, docID);
           // Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
         
       } else {
