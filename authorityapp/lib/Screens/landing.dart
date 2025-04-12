@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:authorityapp/Database/methods.dart';
+import 'package:authorityapp/Utilities/dateTimeHandler.dart';
+import 'package:authorityapp/Utilities/descriptionTrimmer.dart';
 import 'package:authorityapp/Utilities/state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
   late LocationData locationData;
 
   void getPosts() async {
-    QuerySnapshot posts = await DatabaseMethods().getMainPosts();
+    QuerySnapshot posts = await DatabaseMethods().getMainPosts(Provider.of<StateManagement>(context, listen: false).locality);
     List<Map<String, dynamic>> mainPosts = [];
     int i = 0;
     for(var doc in posts.docs) {
@@ -58,13 +60,8 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
     String postID = "";
     int mainPostID = -1;
-    if(Provider.of<StateManagement>(context, listen: false).mainPostID == -1) {
-      mainPostID = Provider.of<StateManagement>(context, listen: false).userPostsID;
-      postID = Provider.of<StateManagement>(context, listen: false).userPosts[mainPostID]['postID'];
-    }else{
-      mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
-      postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
-    }
+    mainPostID = Provider.of<StateManagement>(context, listen: false).mainPostID;
+    postID = Provider.of<StateManagement>(context, listen: false).mainPosts![mainPostID]['postID'];
 
     QuerySnapshot result = await DatabaseMethods().getComments(postID);
     List<Map<String, dynamic>> comments = [];
@@ -130,7 +127,6 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                       onTap: () {
                                             Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
                                             Provider.of<StateManagement>(context, listen: false).mainPostID = index;
-                                            Provider.of<StateManagement>(context, listen: false).userPostsID = -1;
                                             getComments();
                                           },
                                       child: Column(

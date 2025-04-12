@@ -1,4 +1,5 @@
 import 'package:authorityapp/Screens/landing.dart';
+import 'package:authorityapp/Screens/profile.dart';
 import 'package:authorityapp/Utilities/state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
