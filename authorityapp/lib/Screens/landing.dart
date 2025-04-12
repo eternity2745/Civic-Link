@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:authorityapp/Database/methods.dart';
+import 'package:authorityapp/Screens/post.dart';
 import 'package:authorityapp/Utilities/dateTimeHandler.dart';
 import 'package:authorityapp/Utilities/descriptionTrimmer.dart';
 import 'package:authorityapp/Utilities/state.dart';
@@ -74,7 +75,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
 
     if(mounted) {
       Provider.of<StateManagement>(context, listen: false).setComments(comments);
-      // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+      Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
     }
   }
 

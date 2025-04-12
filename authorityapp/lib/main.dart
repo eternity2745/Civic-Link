@@ -1,6 +1,6 @@
 import 'package:authorityapp/Screens/login.dart';
 import 'package:authorityapp/Utilities/state.dart';
-import 'package:authorityapp/firebase_options.dart';
+import 'package:authorityapp/firebase_options.dart';  
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
