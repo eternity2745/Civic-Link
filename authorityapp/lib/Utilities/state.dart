@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StateManagement with ChangeNotifier {
@@ -15,7 +16,7 @@ class StateManagement with ChangeNotifier {
   List<Map<String, dynamic>>? comments = [];
   bool commentsLoading = false;
 
-  List<Map<String, dynamic>> progress = [];
+  List<Map<String, dynamic>> progress = [{"progContent":["", "Not Started"]}];
   bool tookAction = false;
   bool isCompleted = false;
   bool isReported = false;
@@ -42,8 +43,20 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
-  void startAction() {
+  void startAction(Timestamp time) {
     tookAction = true;
+    mainPosts![mainPostID]['action'] = true;
+    mainPosts![mainPostID]['progress'].add({"progContent" : [time, "Issued Order"]});
+    notifyListeners();
+  }
+
+  void completed() {
+    isCompleted = true;
+    notifyListeners();
+  }
+
+  void reportPost() {
+    isReported = true;
     notifyListeners();
   }
 

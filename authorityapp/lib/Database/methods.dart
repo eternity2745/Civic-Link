@@ -1,4 +1,6 @@
 // import 'dart:developer';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
@@ -49,6 +51,16 @@ class DatabaseMethods {
 
   Future<QuerySnapshot> getComments(String postID) async {
     return await database.collection("posts").doc(postID).collection("comments").orderBy("dateTime", descending: true).limit(5).get();
+  }
+
+  Future startAction(String postID, Timestamp time) async {
+    try{
+      log("Starting action");
+      await database.collection("posts").doc(postID).update({"action" : true, "progress" : FieldValue.arrayUnion([{"progContent":[time, "Issued Order"]}])});
+      return true;
+    }catch(e) {
+      return false;
+    }
   }
 
 }
