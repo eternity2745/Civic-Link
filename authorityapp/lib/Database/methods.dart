@@ -63,4 +63,13 @@ class DatabaseMethods {
     }
   }
 
+  Future addProgress(String postID, Timestamp time, String content) async {
+    try{
+      await database.collection("posts").doc(postID).update({"progress" : FieldValue.arrayUnion([{"progContent":[time, content]}])});
+      return true;
+    }catch(e) {
+      return false;
+    }
+  }
+
 }

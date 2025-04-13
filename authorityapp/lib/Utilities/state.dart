@@ -50,6 +50,11 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void addProgress(Timestamp time, String content) {
+    mainPosts![mainPostID]['progress'].add({"progContent" : [time, content]});
+    notifyListeners();
+  }
+
   void completed() {
     isCompleted = true;
     notifyListeners();

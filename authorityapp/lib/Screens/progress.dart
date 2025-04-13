@@ -20,30 +20,9 @@ class ProgressScreen extends StatefulWidget {
 
 class _ProgressScreenState extends State<ProgressScreen> {
 
-  List<List<String>> progress = [
-    [
-      "27/03/2025",
-      "4:06 PM",
-      "Issued Order"
-    ],
-    [
-      "29/03/2025",
-      "7:00 AM",
-      "Started Tarring Process"
-    ],
-    [
-      "30/03/2025",
-      "5:00 PM",
-      "50% Tarring Completed"
-    ],
-    [
-      "01/04/2025",
-      "6:00 PM",
-      "Completed Tarring Process" 
-    ]
-  ];
+  final TextEditingController _progressController = TextEditingController();
 
-  void startAction(postID) async {
+  void startAction(String postID) async {
     Timestamp time = Timestamp.now();
     bool result = await DatabaseMethods().startAction(postID, time);
     if(result && mounted) {
@@ -62,6 +41,34 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 snackBarType: SnackBarType.fail,
                 labelTextStyle: TextStyle(color: Colors.white)
               );
+      }
+    }
+  }
+
+  void addProgress(String postID) async {
+    if(_progressController.text.isEmpty) {
+      return;
+    }
+    Timestamp time = Timestamp.now();
+    bool result = await DatabaseMethods().addProgress(postID, time, _progressController.text);
+    if(result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).addProgress(time, _progressController.text);
+      IconSnackBar.show(
+              context,
+              label: "Issue Order Successfully",
+              snackBarType: SnackBarType.success,
+              labelTextStyle: TextStyle(color: Colors.white)
+            );
+      Navigator.of(context).pop();
+    }else{
+      if(mounted){
+        IconSnackBar.show(
+                context,
+                label: "Failed in Issuing Order! Try Again!!",
+                snackBarType: SnackBarType.fail,
+                labelTextStyle: TextStyle(color: Colors.white)
+              );
+        Navigator.of(context).pop();
       }
     }
   }
@@ -89,45 +96,72 @@ class _ProgressScreenState extends State<ProgressScreen> {
             children: [
               IconButton(
                 onPressed: () {
-                  showModalBottomSheet(context: context, builder: (context) => Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Issued Order?",
-                          style: TextStyle(
-                            fontSize: 0.3.dp,
+                  if (value.mainPosts![value.mainPostID]["action"] == true) {
+                    IconSnackBar.show(
+                      context,
+                      label: "Action Already Taken",
+                      snackBarType: SnackBarType.fail,
+                      labelTextStyle: TextStyle(color: Colors.white)
+                    );
+                  } else {
+                    showModalBottomSheet(context: context, builder: (context) => Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Issued Order?",
+                            style: TextStyle(
+                              fontSize: 0.3.dp,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 3.w,),
-                        IconButton(
-                          onPressed: () {
-                            startAction(value.mainPosts![value.mainPostID]['postID']);
-                            Navigator.of(context).pop();
-                          }, 
-                          icon: Icon(Icons.check_rounded, color: Colors.green,)
-                        ),
-                        IconButton(
-                          onPressed: () => Navigator.of(context).pop(), 
-                          icon: Icon(Icons.close, color: Colors.red,)
-                        )
-                      ],
+                          SizedBox(width: 3.w,),
+                          IconButton(
+                            onPressed: () {
+                              startAction(value.mainPosts![value.mainPostID]['postID']);
+                              Navigator.of(context).pop();
+                            }, 
+                            icon: Icon(Icons.check_rounded, color: Colors.green,)
+                          ),
+                          IconButton(
+                            onPressed: () => Navigator.of(context).pop(), 
+                            icon: Icon(Icons.close, color: Colors.red,)
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  backgroundColor: Colors.grey.shade800,
-                  constraints: BoxConstraints(
-                    minHeight: 5.h,
-                    minWidth: 100.w
-                  ),
-                  isScrollControlled: true,
-                  useSafeArea: true
-                  );
+                    backgroundColor: Colors.grey.shade800,
+                    constraints: BoxConstraints(
+                      minHeight: 5.h,
+                      minWidth: 100.w
+                    ),
+                    isScrollControlled: true,
+                    useSafeArea: true
+                    );
+                  }
                 }, 
                 icon: Icon(Icons.start_rounded, color: value.mainPosts![value.mainPostID]["action"] == true ? Colors.green : null,),
                 tooltip: "Start Action",
                 ),
               IconButton(
                 onPressed: () {
+                  if(value.mainPosts![value.mainPostID]["action"] == false) {
+                    IconSnackBar.show(
+                      context,
+                      label: "Please Start Action First",
+                      snackBarType: SnackBarType.fail,
+                      labelTextStyle: TextStyle(color: Colors.white)
+                    );
+                    return;
+                  }
+                  if(value.mainPosts![value.mainPostID]["completed"] == true) {
+                    IconSnackBar.show(
+                      context,
+                      label: "Issue Already Completed",
+                      snackBarType: SnackBarType.fail,
+                      labelTextStyle: TextStyle(color: Colors.white)
+                    );
+                    return;
+                  }
                   showModalBottomSheet(context: context, builder: (context) => Padding(
                     padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -137,6 +171,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextField(
+                            controller: _progressController,
                             minLines: 1,
                             maxLines: 4,
                             decoration: InputDecoration(
@@ -150,11 +185,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                onPressed: () {}, 
+                                onPressed: () {
+                                  addProgress(value.mainPosts![value.mainPostID]['postID']);
+                                }, 
                                 icon: Icon(Icons.check_rounded, color: Colors.green,)
                               ),
                               IconButton(
-                                onPressed: () {}, 
+                                onPressed: () => Navigator.of(context).pop(), 
                                 icon: Icon(Icons.close, color: Colors.red,)
                               )
                           ],
