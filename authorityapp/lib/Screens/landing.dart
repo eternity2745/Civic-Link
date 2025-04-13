@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:authorityapp/Database/methods.dart';
 import 'package:authorityapp/Screens/post.dart';
 import 'package:authorityapp/Utilities/dateTimeHandler.dart';
@@ -8,10 +5,7 @@ import 'package:authorityapp/Utilities/descriptionTrimmer.dart';
 import 'package:authorityapp/Utilities/state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_icons/icons8.dart';
-// import 'package:geocoding/geocoding.dart' as g;
 import 'package:location/location.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';

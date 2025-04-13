@@ -1,9 +1,7 @@
 import 'dart:developer';
-
 import 'package:authorityapp/Database/methods.dart';
 import 'package:authorityapp/Screens/home.dart';
 import 'package:authorityapp/Utilities/state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';

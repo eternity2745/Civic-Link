@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:authorityapp/Database/methods.dart';
 import 'package:authorityapp/Utilities/dateTimeHandler.dart';
 import 'package:authorityapp/Utilities/state.dart';
