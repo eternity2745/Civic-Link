@@ -72,4 +72,14 @@ class DatabaseMethods {
     }
   }
 
+  Future completed(String postID, Timestamp time) async {
+    try{
+      log("Starting action");
+      await database.collection("posts").doc(postID).update({"completed" : true, "progress" : FieldValue.arrayUnion([{"progContent":[time, "Completed"]}])});
+      return true;
+    }catch(e) {
+      return false;
+    }
+  }
+
 }

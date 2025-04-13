@@ -44,7 +44,6 @@ class StateManagement with ChangeNotifier {
   }
 
   void startAction(Timestamp time) {
-    tookAction = true;
     mainPosts![mainPostID]['action'] = true;
     mainPosts![mainPostID]['progress'].add({"progContent" : [time, "Issued Order"]});
     notifyListeners();
@@ -55,8 +54,9 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
-  void completed() {
-    isCompleted = true;
+  void completed(Timestamp time) {
+    mainPosts![mainPostID]['completed'] = true;
+    mainPosts![mainPostID]['progress'].add({"progContent" : [time, "Completed"]});
     notifyListeners();
   }
 

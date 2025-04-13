@@ -33,6 +33,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               snackBarType: SnackBarType.success,
               labelTextStyle: TextStyle(color: Colors.white)
             );
+      Navigator.of(context).pop();
     }else{
       if(mounted){
         IconSnackBar.show(
@@ -41,6 +42,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 snackBarType: SnackBarType.fail,
                 labelTextStyle: TextStyle(color: Colors.white)
               );
+        Navigator.of(context).pop();
       }
     }
   }
@@ -55,7 +57,34 @@ class _ProgressScreenState extends State<ProgressScreen> {
       Provider.of<StateManagement>(context, listen: false).addProgress(time, _progressController.text);
       IconSnackBar.show(
               context,
-              label: "Issue Order Successfully",
+              label: "Added Progress Successfully",
+              snackBarType: SnackBarType.success,
+              labelTextStyle: TextStyle(color: Colors.white)
+            );
+      _progressController.clear();
+      Navigator.of(context).pop();
+    }else{
+      if(mounted){
+        IconSnackBar.show(
+                context,
+                label: "Failed in Adding Progress! Try Again!!",
+                snackBarType: SnackBarType.fail,
+                labelTextStyle: TextStyle(color: Colors.white)
+              );
+        _progressController.clear();
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  void completed(String postID) async {
+    Timestamp time = Timestamp.now();
+    bool result = await DatabaseMethods().completed(postID, time);
+    if(result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).completed(time);
+      IconSnackBar.show(
+              context,
+              label: "Issue Completed Successfully",
               snackBarType: SnackBarType.success,
               labelTextStyle: TextStyle(color: Colors.white)
             );
@@ -64,7 +93,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       if(mounted){
         IconSnackBar.show(
                 context,
-                label: "Failed in Issuing Order! Try Again!!",
+                label: "Failed in Completing Issue! Try Again!!",
                 snackBarType: SnackBarType.fail,
                 labelTextStyle: TextStyle(color: Colors.white)
               );
@@ -118,7 +147,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           IconButton(
                             onPressed: () {
                               startAction(value.mainPosts![value.mainPostID]['postID']);
-                              Navigator.of(context).pop();
                             }, 
                             icon: Icon(Icons.check_rounded, color: Colors.green,)
                           ),
@@ -191,7 +219,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                 icon: Icon(Icons.check_rounded, color: Colors.green,)
                               ),
                               IconButton(
-                                onPressed: () => Navigator.of(context).pop(), 
+                                onPressed: () {
+                                  _progressController.clear();
+                                  Navigator.of(context).pop();
+                                  }, 
                                 icon: Icon(Icons.close, color: Colors.red,)
                               )
                           ],
@@ -214,6 +245,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 ),
               IconButton(
                 onPressed: () {
+                  if (value.mainPosts![value.mainPostID]["completed"] == true) {
+                    IconSnackBar.show(
+                      context,
+                      label: "Issue Already Completed",
+                      snackBarType: SnackBarType.fail,
+                      labelTextStyle: TextStyle(color: Colors.white)
+                    );
+                    return;
+                  }
                   showModalBottomSheet(context: context, builder: (context) => Container(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
@@ -226,11 +266,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         ),
                         SizedBox(width: 3.w,),
                         IconButton(
-                          onPressed: () {}, 
+                          onPressed: () {
+                            completed(value.mainPosts![value.mainPostID]['postID']);
+                          }, 
                           icon: Icon(Icons.check_rounded, color: Colors.green,)
                         ),
                         IconButton(
-                          onPressed: () {}, 
+                          onPressed: ()=>Navigator.of(context).pop(), 
                           icon: Icon(Icons.close, color: Colors.red,)
                         )
                       ],
@@ -245,7 +287,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   useSafeArea: true
                   );
                 }, 
-                icon: Icon(Icons.check, color: value.isCompleted ? Colors.green : null,),
+                icon: Icon(Icons.check, color: value.mainPosts![value.mainPostID]["completed"] == true ? Colors.green : null,),
                 tooltip: "Mark As Completed",
                 ),
               IconButton(
@@ -291,7 +333,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 2.h, right: 20.w),
+          padding: EdgeInsets.only(top: 2.h, right: 20.w, bottom: 4.h),
           child: Consumer<StateManagement>(
             builder: (context, value, child) {
             return FixedTimeline.tileBuilder(
