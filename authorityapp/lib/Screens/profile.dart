@@ -58,7 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                           maxRadius: 35,
                           minRadius: 35,
                           backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
-                          // child: Image.network("https://img.freepik.com/free-vector/mans-face-flat-style_90220-2877.jpg?t=st=1742383909~exp=1742387509~hmac=0131701366007062d1e104fe4dac9b7953670db65383cf80fe00003bc07896f6&w=900"),
                         ),
                       ),
                       Column(

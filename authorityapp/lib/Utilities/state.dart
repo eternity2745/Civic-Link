@@ -15,6 +15,11 @@ class StateManagement with ChangeNotifier {
   List<Map<String, dynamic>>? comments = [];
   bool commentsLoading = false;
 
+  List<Map<String, dynamic>> progress = [];
+  bool tookAction = false;
+  bool isCompleted = false;
+  bool isReported = false;
+
   void setProfile(String username, String email, String profilePic, String locality, int id, String docID) {
     this.username = username;
     this.email = email;
@@ -34,6 +39,11 @@ class StateManagement with ChangeNotifier {
   void setComments(List<Map<String, dynamic>>? comments) {
     this.comments = comments;
     commentsLoading = false;
+    notifyListeners();
+  }
+
+  void startAction() {
+    tookAction = true;
     notifyListeners();
   }
 

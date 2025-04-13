@@ -1,14 +1,11 @@
 import 'dart:developer';
 import 'package:authorityapp/Database/methods.dart';
+import 'package:authorityapp/Screens/progress.dart';
 import 'package:authorityapp/Utilities/dateTimeHandler.dart';
 import 'package:authorityapp/Utilities/descriptionTrimmer.dart';
 import 'package:authorityapp/Utilities/state.dart';
-import 'package:lottie/lottie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_icons/icons8.dart';
-// import 'package:flutter_animated_icons/lottiefiles.dart';
-import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -159,7 +156,6 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                 IconButton(
                                 onPressed: () {},
                                 icon: Icon(Icons.favorite_border_rounded),
-                                color: Colors.red,
                                 ),
                                 Text(posts['likes'].toString())
                               ], 
@@ -227,7 +223,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ProgressScreen()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProgressScreen()));
                                 }, 
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(color: Colors.green.shade900))
