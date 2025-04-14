@@ -126,4 +126,13 @@ class DatabaseMethods {
     return data;
   }
 
+  Future updateProfilePic(String imagePath, String docID) async{
+    try {
+      await database.collection("users").doc(docID).update({"profilePic":imagePath});
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
 }

@@ -124,4 +124,8 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProfilePic(String secureUrl) {
+    profilePic = secureUrl;
+    notifyListeners();
+  }
 }

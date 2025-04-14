@@ -1,8 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
@@ -23,10 +29,27 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
   @override
   bool get wantKeepAlive => true;
 
+  late CloudinaryPublic cloudinary;
+  String imagePath = "";
+
   // @override
   // void initState() {
   //   super.initState();
   // }
+
+
+  Future loadDotEnv() async {
+    await dotenv.load();
+    final cloudName = dotenv.get("CLOUDNAME");
+    final uploadPreset = dotenv.get("UPLOADPRESET");
+    cloudinary = CloudinaryPublic(cloudName, uploadPreset);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadDotEnv();
+  }
 
   void getComments() async {
     Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
@@ -52,6 +75,55 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
     if(mounted) {
       Provider.of<StateManagement>(context, listen: false).setComments(comments);
       Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+    }
+  }
+
+  Future<void> setImage() async {
+    var status = await Permission.mediaLibrary.status;
+    if(status.isGranted) {
+      final ImagePicker imagePicker = ImagePicker();
+
+      final XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if(image != null) {
+        imagePath = image.path;
+        setState(() {
+          
+        });
+      }
+    }else{
+      await Permission.mediaLibrary.request();
+    }
+  }
+
+  Future uploadImage() async {
+    String secureUrl;
+    final response = await cloudinary.uploadFile(CloudinaryFile.fromFile(imagePath));
+    if(response.secureUrl != "" ) {
+      secureUrl = response.secureUrl;
+      // publicID = response.publicId;
+      if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).profilePicHide();
+      Provider.of<StateManagement>(context, listen: false).updateProfilePic(secureUrl);
+      DatabaseMethods().updateProfilePic(secureUrl, Provider.of<StateManagement>(context, listen: false).docID);
+      imagePath = "";
+      setState(() {
+        
+      });
+      }
+    }else{
+      secureUrl = "error";
+      if(mounted) {
+        IconSnackBar.show(
+            context,
+            label: "Couldnt upload image! Try Again!!",
+            snackBarType: SnackBarType.fail,
+            labelTextStyle: TextStyle(color: Colors.white)
+          );
+      }
+      setState(() {
+        
+      });
     }
   }
   
@@ -325,7 +397,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                 CircleAvatar(
                   radius: 100,
                   backgroundColor: Colors.transparent,
-                  backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
+                  backgroundImage: imagePath == "" ? NetworkImage(Provider.of<StateManagement>(context).profilePic) : FileImage(File(imagePath)),
                   // child: Image.network(value.profilePic),
                 ),
                 Positioned(
@@ -333,6 +405,13 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                   child: 
                 ElevatedButton(
                 onPressed: () {
+                  if(imagePath != "") {
+                    imagePath = "";
+                    setState(() {
+                      
+                    });
+                    return;
+                  }
                   Provider.of<StateManagement>(context, listen: false).profilePicHide();
                 }, 
                 style: ElevatedButton.styleFrom(
@@ -342,6 +421,26 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                   iconSize: 0.35.dp
                 ),
                 child: Icon(Icons.close, color: Colors.red),
+                ),),
+                Positioned(
+                  top: 20.h,
+                  left: 40.w,
+                  child: 
+                ElevatedButton(
+                onPressed: () {
+                  if(imagePath != "") {
+                    uploadImage();
+                    return;
+                  }
+                  setImage();
+                }, 
+                style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(),
+                  backgroundColor: Colors.black.withValues(alpha: 0.5),
+                  padding: EdgeInsets.all(10),
+                  iconSize: 0.35.dp
+                ),
+                child: Icon(imagePath == "" ? Icons.edit : Icons.check, color: Colors.green),
                 ),)
               ]
             ),
