@@ -27,6 +27,9 @@ class StateManagement with ChangeNotifier {
   List<Map<String, dynamic>>? comments = [];
   bool commentsLoading = false;
 
+  bool showProfilePic = false;
+  double showPicOpacity = 1.0;
+
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {
     this.username = username;
     this.displayname = displayname;
@@ -106,6 +109,18 @@ class StateManagement with ChangeNotifier {
 
   void filterPosts() {
     mainPostsLoading = true;
+    notifyListeners();
+  }
+
+  void profilePicShow() {
+    showProfilePic = true;
+    showPicOpacity = 0.05;
+    notifyListeners();
+  }
+
+  void profilePicHide() {
+    showProfilePic = false;
+    showPicOpacity = 1.0;
     notifyListeners();
   }
 

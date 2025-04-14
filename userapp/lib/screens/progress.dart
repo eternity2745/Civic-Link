@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sizer/sizer.dart';
 import 'package:timelines_plus/timelines_plus.dart';
+import 'package:userapp/Utilities/dateTimeHandler.dart';
+import 'package:userapp/Utilities/state.dart';
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
@@ -11,29 +14,6 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
-
-  List<List<String>> progress = [
-    [
-      "27/03/2025",
-      "4:06 PM",
-      "Issued Order"
-    ],
-    [
-      "29/03/2025",
-      "7:00 AM",
-      "Started Tarring Process"
-    ],
-    [
-      "30/03/2025",
-      "5:00 PM",
-      "50% Tarring Completed"
-    ],
-    [
-      "01/04/2025",
-      "6:00 PM",
-      "Completed Tarring Process" 
-    ]
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +30,45 @@ class _ProgressScreenState extends State<ProgressScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 2.h, right: 20.w),
-          child: FixedTimeline.tileBuilder(
-              builder: TimelineTileBuilder.connectedFromStyle(
-              contentsAlign: ContentsAlign.basic,
-              oppositeContentsBuilder: (context, index) => Padding(
-              padding: EdgeInsets.all(2.h),
-              child: Text('${progress[index][0]}\n${progress[index][1]}'),
-              ),
-              contentsBuilder: (context, index) => Padding(
-              padding: EdgeInsets.all(2.h),
-              child: Text(progress[index][2],
-                          style: TextStyle(
-                            fontSize: 0.3.dp
-                          ),
-                          ),
-              ),
-              lastConnectorStyle: ConnectorStyle.transparent,
-              firstConnectorStyle: ConnectorStyle.transparent,
-              connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
-              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
-              itemCount: progress.length,
-              ),
-              ),
+          padding: EdgeInsets.only(top: 2.h, right: 20.w, bottom: 4.h),
+          child: Consumer<StateManagement>(
+            builder: (context, value, child) {
+            return FixedTimeline.tileBuilder(
+                theme: TimelineThemeData(
+                  color: value.mainPosts![value.mainPostID]["action"] == false ? Colors.red : Colors.green
+                ),
+                builder: TimelineTileBuilder.connectedFromStyle(
+                contentsAlign: ContentsAlign.basic,
+                oppositeContentsBuilder: (context, index) => Padding(
+                padding: EdgeInsets.all(2.h),
+                child: value.mainPosts![value.mainPostID]["action"] == false ? Text("")
+                :
+                Text('${DateTimeHandler.getFormattedDate(value.mainPosts![value.mainPostID]["progress"][index]["progContent"][0])}\n${DateTimeHandler.getFormattedTime(value.mainPosts![value.mainPostID]["progress"][index]["progContent"][0])}'),
+                ),
+                contentsBuilder: (context, index) => Padding(
+                padding: EdgeInsets.all(2.h),
+                child: value.mainPosts![value.mainPostID]["action"] == false ? Text("No Action Taken", style: TextStyle(
+                              fontSize: 0.3.dp
+                            ),) : 
+                Text(value.mainPosts![value.mainPostID]["progress"][index]["progContent"][1],
+                            style: TextStyle(
+                              fontSize: 0.3.dp
+                            ),
+                            ),
+                ),
+                lastConnectorStyle: value.mainPosts![value.mainPostID]["completed"]==false ? ConnectorStyle.dashedLine : ConnectorStyle.transparent,
+                firstConnectorStyle: ConnectorStyle.transparent,
+                connectorStyleBuilder: (context, index) { 
+                  return ConnectorStyle.solidLine;
+                  },
+                indicatorStyleBuilder: (context, index) { 
+                  return value.mainPosts![value.mainPostID]["action"]==false ? IndicatorStyle.outlined : IndicatorStyle.dot;
+                  },
+                itemCount: value.mainPosts![value.mainPostID]["progress"].length == 0 ? 1 : value.mainPosts![value.mainPostID]["progress"].length,
+                ),
+              );
+            }
+          ),
         ),
       ),
     );
