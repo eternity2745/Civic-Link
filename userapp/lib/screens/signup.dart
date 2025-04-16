@@ -5,6 +5,8 @@ import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/home.dart';
 import 'package:userapp/Utilities/state.dart';
+
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
