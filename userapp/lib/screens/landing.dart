@@ -268,7 +268,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                                         Text(
                                                           value.mainPostsLoading ? "" : value.mainPosts![index]['username'],
                                                           style: TextStyle(
-                                                            fontSize: 0.34.dp,
+                                                            fontSize: 0.32.dp,
                                                             fontWeight: FontWeight.bold
                                                           ),
                                                           )

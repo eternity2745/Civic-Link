@@ -207,7 +207,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                         Text(
                                           posts['username'],
                                           style: TextStyle(
-                                            fontSize: 0.34.dp,
+                                            fontSize: 0.32.dp,
                                             fontWeight: FontWeight.bold
                                           ),
                                           )
@@ -439,7 +439,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                                 Text(
                                                   value.commentsLoading ? "" : value.comments![index]['username'],
                                                   style: TextStyle(
-                                                    fontSize: 0.34.dp,
+                                                    fontSize: 0.32.dp,
                                                     fontWeight: FontWeight.bold
                                                   ),
                                                   )

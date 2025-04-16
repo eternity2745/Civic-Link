@@ -11,6 +11,7 @@ class StateManagement with ChangeNotifier {
   int posts = 0;
   int id = 0;
   String docID = "";
+  String tempName = "";
 
   List<double> reportCoordinates = [];
   String reportLocality = "";
@@ -128,4 +129,25 @@ class StateManagement with ChangeNotifier {
     profilePic = secureUrl;
     notifyListeners();
   }
+
+  void updateUserName(String username) {
+    if(tempName == "") {
+      tempName = displayname;
+    }
+    displayname = username;
+    notifyListeners();
+  }
+
+  void cancelUpdateUserName() {
+    displayname = tempName;
+    tempName = "";
+    notifyListeners();
+  }
+
+  void finalUpdateUserName() {
+    displayname = tempName;
+    tempName = "";
+    notifyListeners();
+  }
+
 }

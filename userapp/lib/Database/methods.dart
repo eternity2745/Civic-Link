@@ -135,4 +135,13 @@ class DatabaseMethods {
     }
   }
 
+  Future updateUserName(String username, String docID) async{
+    try {
+      await database.collection("users").doc(docID).update({"displayname":username});
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
 }

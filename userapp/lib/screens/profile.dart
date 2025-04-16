@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,6 +33,8 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
 
   late CloudinaryPublic cloudinary;
   String imagePath = "";
+
+  final TextEditingController _usernameController = TextEditingController();
 
   // @override
   // void initState() {
@@ -126,6 +130,15 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
       });
     }
   }
+
+void changeUserName() {
+  if(_usernameController.text != "") {
+    DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID);
+    Provider.of<StateManagement>(context, listen: false).finalUpdateUserName();
+    _usernameController.clear();
+    Navigator.of(context).pop();
+  }
+}
   
   @override
   Widget build(BuildContext context) {
@@ -178,14 +191,77 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                Provider.of<StateManagement>(context).displayname,
-                                style: TextStyle(
-                                  fontSize: 0.34.dp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
-                                ),
+                              GestureDetector(
+                                onLongPress: () {
+                                  HapticFeedback.mediumImpact();
+                                  showModalBottomSheet(context: context, builder: (context) => SingleChildScrollView(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                      child: Container(
+                                        padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 3.h, bottom: 1.h),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            TextField(
+                                              cursorColor: Colors.green,
+                                              controller: _usernameController,
+                                              maxLength: 20,
+                                              decoration: InputDecoration(
+                                                hintText: "Enter New Username...",
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.green),
+                                                  borderRadius: BorderRadius.circular(20)
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.green),
+                                                  borderRadius: BorderRadius.circular(20)
+                                                )
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: 0.3.dp,
+                                              ),
+                                              onChanged: (value) {
+                                                Provider.of<StateManagement>(context, listen: false).updateUserName(value);
+                                              },
+                                            ),
+                                            SizedBox(width: 2.h,),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    changeUserName();
+                                                  }, 
+                                                  icon: Icon(Icons.check_rounded, color: Colors.green,)
+                                                ),
+                                                IconButton(
+                                                  onPressed: () { 
+                                                    if(Provider.of<StateManagement>(context, listen: false).tempName != "") {
+                                                      Provider.of<StateManagement>(context, listen: false).cancelUpdateUserName();
+                                                    }
+                                                    Navigator.of(context).pop();
+                                                    }, 
+                                                  icon: Icon(Icons.close, color: Colors.red,)
+                                                )
+                                              ],
+                                              ),
+                                          ],
+                                        )
+                                        ),
+                                    ),
+                                  )
+                                  );
+                                },
+                                child: AutoSizeText(
+                                  Provider.of<StateManagement>(context).displayname,
+                                  // minFontSize: 16,
+                                  style: TextStyle(
+                                    fontSize: 0.31.dp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                  ),
+                                  ),
+                              ),
                                 Text(
                                 "@${Provider.of<StateManagement>(context).username}",
                                 style: TextStyle(
@@ -289,7 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                               Text(
                                                 value.displayname,
                                                 style: TextStyle(
-                                                  fontSize: 0.34.dp,
+                                                  fontSize: 0.3.dp,
                                                   fontWeight: FontWeight.bold
                                                 ),
                                                 )
