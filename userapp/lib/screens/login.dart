@@ -135,6 +135,13 @@ class _LoginScreenState extends State<LoginScreen> {
         for(var doc in result.docs) {
           userPosts.add(doc.data() as Map<String, dynamic>);
           userPosts[i]['postID'] = doc.id;
+          if(mounted) {      
+            if(userPosts[i]['likesId'].contains(userID)) {
+              userPosts[i]['liked'] = true;
+            }else{
+              userPosts[i]['liked'] = false;
+            }
+          }
           i++;
         }
         log("$userPosts");
@@ -203,6 +210,11 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       _forgotPasswordController.clear();
     }
+  }
+
+  Future signInWithGoogle() async {
+    var result = await DatabaseMethods().signInWithGoogle();
+    log("$result");
   }
 
   @override
@@ -551,8 +563,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                             SizedBox(height: 3.h),
-                            ElevatedButton(onPressed: () => {
-        
+                            ElevatedButton(onPressed: () {
+                              signInWithGoogle();
                             }, 
                             style: ButtonStyle(
                               shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),

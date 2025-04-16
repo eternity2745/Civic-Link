@@ -54,6 +54,7 @@ dependencies:
   flutter_animated_icons: ^1.0.1
   geoflutterfire_plus: ^0.0.32
   auto_size_text: ^3.0.0
+  google_sign_in: ^6.3.0
 
 
   # The following adds the Cupertino Icons font to your application.

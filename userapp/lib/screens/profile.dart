@@ -109,11 +109,12 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
       if(mounted) {
       Provider.of<StateManagement>(context, listen: false).profilePicHide();
       Provider.of<StateManagement>(context, listen: false).updateProfilePic(secureUrl);
-      DatabaseMethods().updateProfilePic(secureUrl, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
       imagePath = "";
       setState(() {
         
       });
+      DatabaseMethods().updateProfilePic(secureUrl, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
+      Provider.of<StateManagement>(context, listen: false).finalUpdateProfilePic(secureUrl);
       }
     }else{
       secureUrl = "error";
@@ -133,10 +134,12 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
 
 void changeUserName() {
   if(_usernameController.text != "") {
-    DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
+    // DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
     Provider.of<StateManagement>(context, listen: false).finalUpdateUserName(_usernameController.text);
     _usernameController.clear();
     Navigator.of(context).pop();
+    DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
+    Provider.of<StateManagement>(context, listen: false).finalchangeProfileUsername(_usernameController.text);
   }
 }
   
@@ -445,7 +448,7 @@ void changeUserName() {
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.favorite_border_rounded),
+                                            Icon(value.userPosts[index]['liked'] == true ? Icons.favorite : Icons.favorite_border_rounded, color: value.userPosts[index]['liked'] == true ? Colors.red : null),
                                             SizedBox(width: 1.w,),
                                             Text(value.userPosts[index]['likes'].toString()),
                                             SizedBox(width: 8.w,),

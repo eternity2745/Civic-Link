@@ -148,4 +148,36 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void finalUpdateProfilePic(String secureUrl) {
+    for(var i = 0; i < userPosts.length; i++) {
+      userPosts[i]['profilePic'] = secureUrl;
+    }
+    for(var i = 0; i < mainPosts!.length; i++) {
+      if(mainPosts![i]['userID'] == id) {
+        mainPosts![i]['profilePic'] = secureUrl;
+      }
+    }
+    for(var i = 0; i < comments!.length; i++) {
+      if(comments![i]['userID'] == id) {
+        comments![i]['profilePic'] = secureUrl;
+      }
+    }
+  }
+
+  void finalchangeProfileUsername(String username) {
+    for(var i = 0; i < userPosts.length; i++) {
+      userPosts[i]['displayname'] = username;
+    }
+    for(var i = 0; i < mainPosts!.length; i++) {
+      if(mainPosts![i]['userID'] == id) {
+        mainPosts![i]['displayname'] = username;
+      }
+    }
+    for(var i = 0; i < comments!.length; i++) {
+      if(comments![i]['userID'] == id) {
+        comments![i]['displayname'] = username;
+      }
+    }
+  }
+
 }

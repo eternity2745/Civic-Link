@@ -519,9 +519,14 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
               controller: _commentController,
               maxLines: 5,
               minLines: 1,
+              cursorColor: Colors.green,
               decoration: InputDecoration(
                 suffixIcon: IconButton(onPressed: () {addCommment();}, icon: Icon(Icons.send)),
                 hintText: "Enter Comment...",
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(color: Colors.green, width: 0.7.w)
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15)
                 )
