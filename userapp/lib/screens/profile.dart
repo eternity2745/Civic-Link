@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
       if(mounted) {
       Provider.of<StateManagement>(context, listen: false).profilePicHide();
       Provider.of<StateManagement>(context, listen: false).updateProfilePic(secureUrl);
-      DatabaseMethods().updateProfilePic(secureUrl, Provider.of<StateManagement>(context, listen: false).docID);
+      DatabaseMethods().updateProfilePic(secureUrl, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
       imagePath = "";
       setState(() {
         
@@ -133,8 +133,8 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
 
 void changeUserName() {
   if(_usernameController.text != "") {
-    DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID);
-    Provider.of<StateManagement>(context, listen: false).finalUpdateUserName();
+    DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
+    Provider.of<StateManagement>(context, listen: false).finalUpdateUserName(_usernameController.text);
     _usernameController.clear();
     Navigator.of(context).pop();
   }
@@ -236,9 +236,10 @@ void changeUserName() {
                                                 ),
                                                 IconButton(
                                                   onPressed: () { 
-                                                    if(Provider.of<StateManagement>(context, listen: false).tempName != "") {
+                                                    if(Provider.of<StateManagement>(context, listen: false).tempName != null) {
                                                       Provider.of<StateManagement>(context, listen: false).cancelUpdateUserName();
                                                     }
+                                                    _usernameController.clear();
                                                     Navigator.of(context).pop();
                                                     }, 
                                                   icon: Icon(Icons.close, color: Colors.red,)
@@ -249,24 +250,35 @@ void changeUserName() {
                                         )
                                         ),
                                     ),
-                                  )
-                                  );
+                                  ),
+                                  // isDismissible: false
+                                  ).whenComplete(() {
+                                    if(mounted) {
+                                      if(Provider.of<StateManagement>(mounted ? context : context, listen: false).tempName != null && mounted) {
+                                        Provider.of<StateManagement>(mounted ? context : context, listen: false).cancelUpdateUserName();
+                                      }
+                                      _usernameController.clear();
+                                    }
+                                  });
                                 },
-                                child: AutoSizeText(
-                                  Provider.of<StateManagement>(context).displayname,
-                                  // minFontSize: 16,
-                                  style: TextStyle(
-                                    fontSize: 0.31.dp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                  ),
-                                  ),
+                                child: SizedBox(
+                                  width: 54.w,
+                                  child: Text(
+                                    Provider.of<StateManagement>(context).displayname,
+                                    // minFontSize: 16,
+                                    style: TextStyle(
+                                      fontSize: 0.31.dp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                    ),
+                                    ),
+                                ),
                               ),
                                 Text(
                                 "@${Provider.of<StateManagement>(context).username}",
                                 style: TextStyle(
                                   fontSize: 0.3.dp,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: Colors.white70
                                 ),
                                 )
@@ -354,7 +366,7 @@ void changeUserName() {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
-                                            spacing: 4.w,
+                                            spacing: 3.w,
                                             children: [
                                               CircleAvatar(
                                                 radius: 15,
@@ -365,7 +377,7 @@ void changeUserName() {
                                               Text(
                                                 value.displayname,
                                                 style: TextStyle(
-                                                  fontSize: 0.3.dp,
+                                                  fontSize: 0.305.dp,
                                                   fontWeight: FontWeight.bold
                                                 ),
                                                 )
@@ -373,8 +385,8 @@ void changeUserName() {
                                           ),
                                           Column(
                                             children: [
-                                              Text(DateTimeHandler.getFormattedDate(value.userPosts[index]['dateTime'])),
-                                              Text(DateTimeHandler.getFormattedTime(value.userPosts[index]['dateTime']))
+                                              Text(DateTimeHandler.getFormattedDate(value.userPosts[index]['dateTime']), style: TextStyle(fontSize: 0.26.dp),),
+                                              Text(DateTimeHandler.getFormattedTime(value.userPosts[index]['dateTime']), style: TextStyle(fontSize: 0.26.dp),)
                                               // Text(value.userPosts[index]['dateTime'].runtimeType.toString()),
                                               // Text(value.userPosts[index]['dateTime'].runtimeType.toString())
                                             ],

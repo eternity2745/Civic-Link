@@ -268,7 +268,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                                         Text(
                                                           value.mainPostsLoading ? "" : value.mainPosts![index]['username'],
                                                           style: TextStyle(
-                                                            fontSize: 0.32.dp,
+                                                            fontSize: 0.305.dp,
                                                             fontWeight: FontWeight.bold
                                                           ),
                                                           )
@@ -276,8 +276,8 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                                     ),
                                                     Column(
                                                       children: [
-                                                        Text(value.mainPostsLoading ? "" : DateTimeHandler.getFormattedDate(value.mainPosts![index]['dateTime'])),
-                                                        Text(value.mainPostsLoading ? "" : DateTimeHandler.getFormattedTime(value.mainPosts![index]['dateTime']))
+                                                        Text(value.mainPostsLoading ? "" : DateTimeHandler.getFormattedDate(value.mainPosts![index]['dateTime']), style: TextStyle(fontSize: 0.26.dp),),
+                                                        Text(value.mainPostsLoading ? "" : DateTimeHandler.getFormattedTime(value.mainPosts![index]['dateTime']), style: TextStyle(fontSize: 0.26.dp),)
                                                       ],
                                                     )
                                                   ],

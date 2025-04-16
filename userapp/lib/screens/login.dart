@@ -40,6 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
   var emailController = TextEditingController();
   var passController = TextEditingController();
 
+  final TextEditingController _forgotPasswordController = TextEditingController();
+
 
   var animationLink = 'assets/animated_login_character.riv';
   rive.StateMachineController? stateMachineController;
@@ -172,6 +174,34 @@ class _LoginScreenState extends State<LoginScreen> {
         passerrorText = (passController.text.isEmpty? "Password cannot be empty": "");
         emailerrorText = (emailController.text.isEmpty? "Email cannot be empty": "");
       });
+    }
+  }
+
+  Future forgotPassword() async {
+    if(_forgotPasswordController.text != "") {
+      bool result = await DatabaseMethods().forgotPassword(_forgotPasswordController.text);
+      if(result) {
+        if(mounted) {
+          Navigator.of(context).pop();
+          IconSnackBar.show(
+            context,
+            label: "Password Reset Link Sent",
+            snackBarType: SnackBarType.success,
+            labelTextStyle: TextStyle(color: Colors.white)
+          );
+        }
+      } else {
+        if(mounted) {
+          Navigator.of(context).pop();
+          IconSnackBar.show(
+            context,
+            label: "Error Occured",
+            snackBarType: SnackBarType.fail,
+            labelTextStyle: TextStyle(color: Colors.white)
+          );
+        }
+      }
+      _forgotPasswordController.clear();
     }
   }
 
@@ -417,13 +447,68 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: 0.1.h),
                               Align(
                                 alignment: Alignment.centerRight,
-                                child: Text(
-                                  "Forgot Password?",
-                                  style: TextStyle(
-                                    fontSize: 0.32.dp,
-                                    color: Colors.blue.shade400
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(context: context, builder: (context) => SingleChildScrollView(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                      child: Container(
+                                        padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 3.h, bottom: 1.h),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            TextField(
+                                              cursorColor: Colors.green,
+                                              controller: _forgotPasswordController,
+                                              decoration: InputDecoration(
+                                                hintText: "Enter Email...",
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.green),
+                                                  borderRadius: BorderRadius.circular(20)
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.green),
+                                                  borderRadius: BorderRadius.circular(20)
+                                                )
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: 0.3.dp,
+                                              ),
+                                            ),
+                                            SizedBox(width: 2.h,),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    forgotPassword();
+                                                  }, 
+                                                  icon: Icon(Icons.check_rounded, color: Colors.green,)
+                                                ),
+                                                IconButton(
+                                                  onPressed: () { 
+                                                    _forgotPasswordController.clear();
+                                                    Navigator.of(context).pop();
+                                                    }, 
+                                                  icon: Icon(Icons.close, color: Colors.red,)
+                                                )
+                                              ],
+                                              ),
+                                          ],
+                                        )
+                                        ),
+                                    ),
+                                  )
+                                  );
+                                  },
+                                  child: Text(
+                                    "Forgot Password?",
+                                    style: TextStyle(
+                                      fontSize: 0.32.dp,
+                                      color: Colors.blue.shade400
+                                    ),
+                                    
                                   ),
-                                  
                                 ),
                               ),
                             SizedBox(height: 3.h),

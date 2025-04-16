@@ -11,7 +11,7 @@ class StateManagement with ChangeNotifier {
   int posts = 0;
   int id = 0;
   String docID = "";
-  String tempName = "";
+  String? tempName;
 
   List<double> reportCoordinates = [];
   String reportLocality = "";
@@ -131,22 +131,20 @@ class StateManagement with ChangeNotifier {
   }
 
   void updateUserName(String username) {
-    if(tempName == "") {
-      tempName = displayname;
-    }
+    tempName ??= displayname;
     displayname = username;
     notifyListeners();
   }
 
   void cancelUpdateUserName() {
-    displayname = tempName;
-    tempName = "";
+    displayname = tempName!;
+    tempName = null;
     notifyListeners();
   }
 
-  void finalUpdateUserName() {
-    displayname = tempName;
-    tempName = "";
+  void finalUpdateUserName(String username) {
+    displayname = username;
+    tempName = null;
     notifyListeners();
   }
 

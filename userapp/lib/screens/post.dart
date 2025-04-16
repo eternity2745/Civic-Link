@@ -204,19 +204,22 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                           backgroundColor: Colors.transparent,
                                           backgroundImage: NetworkImage(posts['profilePic']),
                                         ),
-                                        Text(
-                                          posts['username'],
-                                          style: TextStyle(
-                                            fontSize: 0.32.dp,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                          )
+                                        SizedBox(
+                                          width: 58.w,
+                                          child: Text(
+                                            posts['username'],
+                                            style: TextStyle(
+                                              fontSize: 0.33.dp,
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                            ),
+                                        )
                                       ],
                                     ),
                                     Column(
                                       children: [
-                                        Text(DateTimeHandler.getFormattedDate(posts['dateTime'])),
-                                        Text(DateTimeHandler.getFormattedTime(posts['dateTime']))
+                                        Text(DateTimeHandler.getFormattedDate(posts['dateTime']), style: TextStyle(fontSize: 0.26.dp),),
+                                        Text(DateTimeHandler.getFormattedTime(posts['dateTime']), style: TextStyle(fontSize: 0.26.dp),)
                                       ],
                                     )
                                   ],
@@ -439,7 +442,7 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                                 Text(
                                                   value.commentsLoading ? "" : value.comments![index]['username'],
                                                   style: TextStyle(
-                                                    fontSize: 0.32.dp,
+                                                    fontSize: 0.305.dp,
                                                     fontWeight: FontWeight.bold
                                                   ),
                                                   )
@@ -447,8 +450,8 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                             ),
                                             Column(
                                               children: [
-                                                Text(value.commentsLoading ? "" : DateTimeHandler.getFormattedDate(value.comments![index]['dateTime'])),
-                                                Text(value.commentsLoading ? "" : DateTimeHandler.getFormattedTime(value.comments![index]['dateTime']))
+                                                Text(value.commentsLoading ? "" : DateTimeHandler.getFormattedDate(value.comments![index]['dateTime']), style: TextStyle(fontSize: 0.26.dp),),
+                                                Text(value.commentsLoading ? "" : DateTimeHandler.getFormattedTime(value.comments![index]['dateTime']), style: TextStyle(fontSize: 0.26.dp),)
                                               ],
                                             )
                                           ],

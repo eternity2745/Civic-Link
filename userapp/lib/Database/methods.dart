@@ -126,20 +126,53 @@ class DatabaseMethods {
     return data;
   }
 
-  Future updateProfilePic(String imagePath, String docID) async{
+  Future updateProfilePic(String imagePath, String docID, int userID) async{
     try {
       await database.collection("users").doc(docID).update({"profilePic":imagePath});
+      QuerySnapshot querySnapshot = await database.collection("posts").where("userID", isEqualTo: userID).get();
+      for (var doc in querySnapshot.docs) {
+        await database.collection("posts").doc(doc.id).update({"profilePic":imagePath});
+      }
+      querySnapshot = await database.collection("posts").where("comments", isGreaterThan: 0).get();
+      for (var doc in querySnapshot.docs) {
+        await database.collection("posts").doc(doc.id).collection("comments").where("userID", isEqualTo: userID).get().then((value) async {
+          for (var commentDoc in value.docs) {
+            await database.collection("posts").doc(doc.id).collection("comments").doc(commentDoc.id).update({"profilePic": imagePath});
+          }
+        });
+      }
       return true;
     }catch(e){
       return false;
     }
   }
 
-  Future updateUserName(String username, String docID) async{
+  Future updateUserName(String username, String docID, int userID) async{
     try {
       await database.collection("users").doc(docID).update({"displayname":username});
+      QuerySnapshot querySnapshot = await database.collection("posts").where("userID", isEqualTo: userID).get();
+      for (var doc in querySnapshot.docs) {
+        await database.collection("posts").doc(doc.id).update({"username":username});
+      }
+      querySnapshot = await database.collection("posts").where("comments", isGreaterThan: 0).get();
+      for (var doc in querySnapshot.docs) {
+        await database.collection("posts").doc(doc.id).collection("comments").where("userID", isEqualTo: userID).get().then((value) async {
+          for (var commentDoc in value.docs) {
+            await database.collection("posts").doc(doc.id).collection("comments").doc(commentDoc.id).update({"username": username});
+          }
+        });
+      }
       return true;
     }catch(e){
+      return false;
+    }
+  }
+
+  Future forgotPassword(String email) async {
+    try{
+      await auth.sendPasswordResetEmail(email: email);
+      return true;
+    }catch(e) {
       return false;
     }
   }
