@@ -185,10 +185,17 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
               ),
               ),
           ),
-          body: CustomMaterialIndicator(
-            onRefresh: () async {
+          body: Padding(
+                    padding: EdgeInsets.only(top: 2.h),
+                    child: CustomMaterialIndicator(
+                      onRefresh: () async {
+              log("REFRESHING");
               Provider.of<StateManagement>(context, listen: false).mainPostsisLoading();
-              getPosts();
+              if(filterController.text == "In My Locality") {
+                filterPosts();
+              }else{
+                getPosts();
+              }
               Provider.of<StateManagement>(context, listen: false).mainPostsisLoading();
             },
             indicatorBuilder: (context, controller) {
@@ -214,8 +221,6 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
             },
             backgroundColor: Color(int.parse('0xffECE3CE')),
             autoRebuild: false,
-            child: Padding(
-                      padding: EdgeInsets.only(top: 2.h),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -389,7 +394,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                         ),
                                       );
                                     },
-                                    ),
+                                    )
                                 );
                               }
                             ),
@@ -397,7 +402,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                         ),
                       ),
                     ),
-          ),
+                  ),
           ),
         ),
       if(Provider.of<StateManagement>(context).commentsLoading)...{

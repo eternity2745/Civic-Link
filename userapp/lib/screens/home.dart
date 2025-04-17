@@ -76,8 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       bottomNavigationBar: SalomonBottomBar(
         backgroundColor: Colors.green.shade900,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
+        selectedItemColor: Color(int.parse('0xffECE3CE')),
+        unselectedItemColor: Color(int.parse('0xffECE3CE')).withValues(alpha: 0.6),
         
         items: [
           SalomonBottomBarItem(icon: selectedIndex == 0? Icon(Icons.home) : Icon(Icons.home_outlined), title: Text("Home")),
