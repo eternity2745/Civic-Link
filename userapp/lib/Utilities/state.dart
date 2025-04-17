@@ -180,6 +180,15 @@ class StateManagement with ChangeNotifier {
     }
   }
 
+  void mainPostsisLoading() {
+    if(mainPostsLoading) {
+      mainPostsLoading = false;
+    }else{
+      mainPostsLoading = true;
+    }
+    notifyListeners();
+  }
+
   void logout() {
     username = "";
     displayname = "";
