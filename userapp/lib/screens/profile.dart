@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
+import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Screens/post.dart';
 import 'package:userapp/Utilities/dateTimeHandler.dart';
 import 'package:userapp/Utilities/descriptionTrimmer.dart';
@@ -144,7 +145,23 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
   }
 
   Future logout() async {
-    
+    bool result = await DatabaseMethods().logout();
+    if(result && mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()), 
+        (route) => false
+      );
+    }else{
+      if(mounted) {
+        IconSnackBar.show(
+          context,
+          label: "Couldnt Logout! Try Again!!",
+          snackBarType: SnackBarType.fail,
+          labelTextStyle: TextStyle(color: Colors.white)
+        );
+      }
+    }
   }
   
   @override

@@ -226,4 +226,13 @@ class DatabaseMethods {
     }
   }
 
+  Future logout() async {
+    try {
+      await auth.signOut();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
 }
