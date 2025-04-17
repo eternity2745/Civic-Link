@@ -16,6 +16,7 @@ import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Screens/post.dart';
+import 'package:userapp/Screens/welcome.dart';
 import 'package:userapp/Utilities/dateTimeHandler.dart';
 import 'package:userapp/Utilities/descriptionTrimmer.dart';
 import 'package:userapp/Utilities/state.dart';
@@ -150,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
       Provider.of<StateManagement>(context, listen: false).logout();
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()), 
+        MaterialPageRoute(builder: (context) => WelcomeScreen()), 
         (route) => false
       );
     }else{

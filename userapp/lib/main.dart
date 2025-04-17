@@ -10,6 +10,7 @@ import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Screens/home.dart';
 import 'package:userapp/Screens/login.dart';
+import 'package:userapp/Screens/welcome.dart';
 import 'package:userapp/Utilities/state.dart';
 import 'package:userapp/firebase_options.dart';
 
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
               ),
               debugShowCheckedModeBanner: false,
-              home: snapshot.hasData && snapshot.data != null ? HomeScreen(email: snapshot.data!.email!) : const LoginScreen(),
+              home: snapshot.hasData && snapshot.data != null ? HomeScreen(email: snapshot.data!.email!) : const WelcomeScreen(),
               );
           }
         );
