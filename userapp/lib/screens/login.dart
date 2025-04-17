@@ -214,7 +214,47 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future signInWithGoogle() async {
     var result = await DatabaseMethods().signInWithGoogle();
-    log("$result");
+    signInPressed = true;
+    setState(() {
+      
+    });
+    log("RESULT: $result");
+    if(result != null) {
+      successTrigger?.fire();
+      String username = "${result["username"]}";
+      String displayname = "${result["displayname"]}";
+      String email = "${result["email"]}";
+      String profilePic = "${result["profilePic"]}";
+      int userID= result['userID'];
+      int posts = result['posts'];
+      int reports = result['reports'];
+      int ranking = result['ranking'];
+      String docID = result['docID'];
+      passError = false;
+      emailError = false;
+      signInPressed = false;
+      setState(() {
+        
+      });
+      if (mounted) {
+        Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
+    } else {
+      signInPressed = false;
+      failTrigger?.fire();
+      setState(() {
+        
+      });
+      if(mounted) {
+        IconSnackBar.show(
+          context,
+          label: "Couldnt Sign In!! Try Again!",
+          snackBarType: SnackBarType.fail,
+          labelTextStyle: TextStyle(color: Colors.white)
+        );
+      }
+    }
   }
 
   @override

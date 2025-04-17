@@ -32,19 +32,49 @@ class DatabaseMethods {
 
   Future<dynamic> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      log("Started");
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(scopes: ["profile", "email"]).signIn();
+
+      log("Google user: $googleUser");
 
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
+
+      log("Google auth: $googleAuth");
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
 
-      return await auth.signInWithCredential(credential);
+      log("Google Credential: $credential");
+
+      await auth.signInWithCredential(credential);
+      List<Map<String, dynamic>> userInfo = [];
+      QuerySnapshot<Map<String, dynamic>> userData = await database.collection("users").where("email", isEqualTo: googleUser?.email).get();
+      log("User data: $userData");
+      if(userData.docs.isEmpty) {
+        int id = DateTime.now().millisecondsSinceEpoch;
+        int? length = googleUser?.displayName!.length;
+        userInfo.add({
+          "email": googleUser?.email,
+          "displayname": (length! > 20) ? googleUser?.displayName!.substring(0, 19) : googleUser?.displayName,
+          "profilePic": googleUser?.photoUrl,
+          "posts": 0,
+          "ranking": 0,
+          "reports" : 0,
+          "username" : googleUser?.email.split("@")[0],
+          "userID": id
+        });
+        log("User Info: $userInfo");
+        String infoId = await addUserInfo(userInfo[0]);
+        userInfo[0].addAll({"docID" : infoId});
+        return userInfo[0];
+      }else{
+        return userData.docs[0].data();
+      }
     } catch (e) {
-      return e;
+      return null;
     }
   }
 

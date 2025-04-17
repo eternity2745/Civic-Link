@@ -132,16 +132,20 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
     }
   }
 
-void changeUserName() {
-  if(_usernameController.text != "") {
-    // DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
-    Provider.of<StateManagement>(context, listen: false).finalUpdateUserName(_usernameController.text);
-    _usernameController.clear();
-    Navigator.of(context).pop();
-    DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
-    Provider.of<StateManagement>(context, listen: false).finalchangeProfileUsername(_usernameController.text);
+  void changeUserName() {
+    if(_usernameController.text != "") {
+      // DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
+      Provider.of<StateManagement>(context, listen: false).finalUpdateUserName(_usernameController.text);
+      _usernameController.clear();
+      Navigator.of(context).pop();
+      DatabaseMethods().updateUserName(_usernameController.text, Provider.of<StateManagement>(context, listen: false).docID, Provider.of<StateManagement>(context, listen: false).id);
+      Provider.of<StateManagement>(context, listen: false).finalchangeProfileUsername(_usernameController.text);
+    }
   }
-}
+
+  Future logout() async {
+    
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -156,6 +160,54 @@ void changeUserName() {
             fontWeight: FontWeight.bold
           ),
           ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 2.w),
+            child: IconButton(
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                showModalBottomSheet(context: context, builder: (context) => Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 3.h, bottom: 1.h),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Are You Sure You Want To Logout?",
+                        style: TextStyle(
+                          fontSize: 0.3.dp,
+                          fontWeight: FontWeight.w700
+                        ),
+                        ),
+                        SizedBox(width: 2.h,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                logout();
+                              }, 
+                              icon: Icon(Icons.check_rounded, color: Colors.green,)
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                }, 
+                              icon: Icon(Icons.close, color: Colors.red,)
+                            )
+                          ],
+                          ),
+                      ],
+                    )
+                    ),
+                ),
+                                  // isDismissible: false
+                  );
+              },
+              icon: Icon(Icons.logout),
+            ),
+          )
+        ],
       ),
       body: Stack(
         children: [Opacity(

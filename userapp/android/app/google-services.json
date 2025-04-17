@@ -6,6 +6,12 @@
   },
   "client": [
     {
+      "client_info": {
+        "mobilesdk_app_id": "1:222609899053:android:03783a53ee858b1d6302a4",
+        "android_client_info": {
+          "package_name": "com.example.authorityapp"
+        }
+      },
       "oauth_client": [
         {
           "client_id": "222609899053-1b617bvko7h2fe6s257nr4lbms04bir6.apps.googleusercontent.com",
@@ -44,11 +50,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "222609899053-d5hafuemnlvcfelidagpue7ja9q7tnj8.apps.googleusercontent.com",
+          "client_id": "222609899053-qobqj4o4jvr5bgm4bb0balrgjaq8muqi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.userapp",
-            "certificate_hash": "eeeb682c937506a1849753410e6c999ea29cf810"
+            "certificate_hash": "398a0fbbe4872df473aaa947f41f54541176933c"
           }
         },
         {

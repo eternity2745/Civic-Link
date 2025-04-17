@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '222609899053',
     projectId: 'civic-link',
     storageBucket: 'civic-link.firebasestorage.app',
+    androidClientId: '222609899053-bhq6otked3457fj6l4k909nqotk8buv2.apps.googleusercontent.com',
+    iosClientId: '222609899053-ajagmsp2qg9ttic15h3crvpjc8f1s297.apps.googleusercontent.com',
     iosBundleId: 'com.example.userapp',
   );
+
 }
