@@ -180,4 +180,22 @@ class StateManagement with ChangeNotifier {
     }
   }
 
+  void logout() {
+    username = "";
+    displayname = "";
+    email = "";
+    profilePic = "";
+    ranking = 0;
+    reports = 0;
+    posts = 0;
+    id = 0;
+    docID = "";
+    userPosts.clear();
+    mainPosts!.clear();
+    comments!.clear();
+    showProfilePic = false;
+    showPicOpacity = 1.0;
+    notifyListeners();
+  }
+
 }

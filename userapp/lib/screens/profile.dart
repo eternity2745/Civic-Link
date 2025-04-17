@@ -147,6 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
   Future logout() async {
     bool result = await DatabaseMethods().logout();
     if(result && mounted) {
+      Provider.of<StateManagement>(context, listen: false).logout();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()), 
