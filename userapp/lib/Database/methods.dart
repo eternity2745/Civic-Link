@@ -64,7 +64,7 @@ class DatabaseMethods {
           "ranking": 0,
           "reports" : 0,
           "username" : googleUser?.email.split("@")[0],
-          "userID": id
+          "id": id
         });
         log("User Info: $userInfo");
         String infoId = await addUserInfo(userInfo[0]);
@@ -96,9 +96,9 @@ class DatabaseMethods {
 
   Future createPost(Map<String, dynamic> post, String id) async {
     try {
-      await database.collection("posts").add(post);
+      var info = await database.collection("posts").add(post);
       await database.collection("users").doc(id).update({"posts" : FieldValue.increment(1)});
-      return true;
+      return info.id;
     }catch(e) {
       return false;
     }

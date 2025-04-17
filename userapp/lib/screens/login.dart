@@ -225,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String displayname = "${result["displayname"]}";
       String email = "${result["email"]}";
       String profilePic = "${result["profilePic"]}";
-      int userID= result['userID'];
+      int userID= result['id'];
       int posts = result['posts'];
       int reports = result['reports'];
       int ranking = result['ranking'];

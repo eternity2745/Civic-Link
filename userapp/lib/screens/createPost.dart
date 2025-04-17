@@ -88,8 +88,9 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
           "username" : Provider.of<StateManagement>(context, listen: false).displayname,
           "profilePic" : Provider.of<StateManagement>(context, listen: false).profilePic
         };
-        bool result = await DatabaseMethods().createPost(post, Provider.of<StateManagement>(context, listen: false).docID);
-        if (result) {
+        var result = await DatabaseMethods().createPost(post, Provider.of<StateManagement>(context, listen: false).docID);
+        if (result != false) {
+          post.addAll({"postID" : result});
           if(mounted) {
             Provider.of<StateManagement>(context, listen: false).setUserPosts(post: post);
             Provider.of<StateManagement>(context, listen: false).posts += 1; 
