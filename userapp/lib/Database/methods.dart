@@ -71,7 +71,9 @@ class DatabaseMethods {
         userInfo[0].addAll({"docID" : infoId});
         return userInfo[0];
       }else{
-        return userData.docs[0].data();
+        userInfo.add(userData.docs[0].data());
+        userInfo[0].addAll({"docID":userData.docs[0].id});
+        return userInfo[0];
       }
     } catch (e) {
       return null;

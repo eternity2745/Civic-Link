@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/landing.dart';
 import 'package:userapp/Screens/createPost.dart';
 import 'package:userapp/Screens/profile.dart';
@@ -9,7 +13,8 @@ import 'package:userapp/Screens/search.dart';
 import 'package:userapp/Utilities/state.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.email});
+  final String? email;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,10 +24,47 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _pageController = PageController();
 
+
+  Future getUserDetails() async {
+    QuerySnapshot details = await DatabaseMethods().getUserInfo(widget.email!);
+    log("${details.docs[0]}");
+    String username = "${details.docs[0]["username"]}";
+    String displayname = "${details.docs[0]["displayname"]}";
+    String email = "${details.docs[0]["email"]}";
+    String profilePic = "${details.docs[0]["profilePic"]}";
+    int userID= details.docs[0]['id'];
+    int posts = details.docs[0]['posts'];
+    int reports = details.docs[0]['reports'];
+    int ranking = details.docs[0]['ranking'];
+    String docID = details.docs[0].id;
+    QuerySnapshot result = await DatabaseMethods().getUserPosts(userID);
+    List<Map<String, dynamic>> userPosts = [];
+    int i = 0;
+    for(var doc in result.docs) {
+      userPosts.add(doc.data() as Map<String, dynamic>);
+      userPosts[i]['postID'] = doc.id;
+      if(mounted) {      
+        if(userPosts[i]['likesId'].contains(userID)) {
+          userPosts[i]['liked'] = true;
+        }else{
+          userPosts[i]['liked'] = false;
+        }
+      }
+      i++;
+    }
+    log("$userPosts");
+    if (mounted) {
+      Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
+      Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
+    }
+  }
+
   @override
   void initState() {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
-
+    if(widget.email != null) {
+      getUserDetails();
+    }
     super.initState();
   }
 

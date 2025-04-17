@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
+import 'package:userapp/Screens/home.dart';
 import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Utilities/state.dart';
 import 'package:userapp/firebase_options.dart';
@@ -38,18 +42,23 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => StateManagement(),
       child: Sizer(builder: (context, orientation, screenType) {
-        return MaterialApp(
-          title: 'Civic Link',
-          darkTheme: ThemeData.dark(),
-          // highContrastDarkTheme: ThemeData.dark(),
-          theme: ThemeData(
-      
-            // primaryColor: Colors.green.shade900,
-            useMaterial3: true,
-          ),
-          debugShowCheckedModeBanner: false,
-          home: const LoginScreen(),
-          );
+        return StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            return MaterialApp(
+              title: 'Civic Link',
+              darkTheme: ThemeData.dark(),
+              // highContrastDarkTheme: ThemeData.dark(),
+              theme: ThemeData(
+                  
+                // primaryColor: Colors.green.shade900,
+                useMaterial3: true,
+              ),
+              debugShowCheckedModeBanner: false,
+              home: snapshot.hasData && snapshot.data != null ? HomeScreen(email: snapshot.data!.email!) : const LoginScreen(),
+              );
+          }
+        );
         }
       ),
     );
