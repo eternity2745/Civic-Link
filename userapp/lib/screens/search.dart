@@ -30,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
               cursorColor: Colors.green,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search_rounded),
-                hintText: "Search for users, posts",
+                hintText: "Search for users",
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(color: Colors.green, width: 0.7.w)

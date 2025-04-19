@@ -33,38 +33,47 @@ class _ProgressScreenState extends State<ProgressScreen> {
           padding: EdgeInsets.only(top: 2.h, right: 20.w, bottom: 4.h),
           child: Consumer<StateManagement>(
             builder: (context, value, child) {
+            List<Map<String, dynamic>>? posts = [];
+            int postID = 0;
+            if(value.mainPostID == -1) {
+              posts = value.userPosts;
+              postID = value.userPostsID;
+            }else{
+              posts = value.mainPosts!;
+              postID = value.mainPostID;
+            }
             return FixedTimeline.tileBuilder(
                 theme: TimelineThemeData(
-                  color: value.mainPosts![value.mainPostID]["action"] == false ? Colors.red : Colors.green
+                  color: posts[postID]["action"] == false ? Colors.red : Colors.green
                 ),
                 builder: TimelineTileBuilder.connectedFromStyle(
                 contentsAlign: ContentsAlign.basic,
                 oppositeContentsBuilder: (context, index) => Padding(
                 padding: EdgeInsets.all(2.h),
-                child: value.mainPosts![value.mainPostID]["action"] == false ? Text("")
+                child: posts![postID]["action"] == false ? Text("")
                 :
-                Text('${DateTimeHandler.getFormattedDate(value.mainPosts![value.mainPostID]["progress"][index]["progContent"][0])}\n${DateTimeHandler.getFormattedTime(value.mainPosts![value.mainPostID]["progress"][index]["progContent"][0])}'),
+                Text('${DateTimeHandler.getFormattedDate(posts[postID]["progress"][index]["progContent"][0])}\n${DateTimeHandler.getFormattedTime(posts[postID]["progress"][index]["progContent"][0])}'),
                 ),
                 contentsBuilder: (context, index) => Padding(
                 padding: EdgeInsets.all(2.h),
-                child: value.mainPosts![value.mainPostID]["action"] == false ? Text("No Action Taken", style: TextStyle(
+                child: posts![postID]["action"] == false ? Text("No Action Taken", style: TextStyle(
                               fontSize: 0.3.dp
                             ),) : 
-                Text(value.mainPosts![value.mainPostID]["progress"][index]["progContent"][1],
+                Text(posts[postID]["progress"][index]["progContent"][1],
                             style: TextStyle(
                               fontSize: 0.3.dp
                             ),
                             ),
                 ),
-                lastConnectorStyle: value.mainPosts![value.mainPostID]["completed"]==false ? ConnectorStyle.dashedLine : ConnectorStyle.transparent,
+                lastConnectorStyle: posts[postID]["completed"]==false ? ConnectorStyle.dashedLine : ConnectorStyle.transparent,
                 firstConnectorStyle: ConnectorStyle.transparent,
                 connectorStyleBuilder: (context, index) { 
                   return ConnectorStyle.solidLine;
                   },
                 indicatorStyleBuilder: (context, index) { 
-                  return value.mainPosts![value.mainPostID]["action"]==false ? IndicatorStyle.outlined : IndicatorStyle.dot;
+                  return posts![postID]["action"]==false ? IndicatorStyle.outlined : IndicatorStyle.dot;
                   },
-                itemCount: value.mainPosts![value.mainPostID]["progress"].length == 0 ? 1 : value.mainPosts![value.mainPostID]["progress"].length,
+                itemCount: posts[postID]["progress"].length == 0 ? 1 : posts[postID]["progress"].length,
                 ),
               );
             }
