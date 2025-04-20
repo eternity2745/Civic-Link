@@ -1,12 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +11,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Database/methods.dart';
-import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Screens/post.dart';
 import 'package:userapp/Screens/welcome.dart';
 import 'package:userapp/Utilities/dateTimeHandler.dart';

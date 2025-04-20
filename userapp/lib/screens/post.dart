@@ -1,9 +1,6 @@
 import 'dart:developer';
-import 'package:lottie/lottie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_icons/icons8.dart';
-// import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +23,13 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
 
   final TextEditingController _commentController = TextEditingController();
   int fakeCounter = 0;
-  late final AnimationController _likeController;
+  // late final AnimationController _likeController;
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
 
   void addCommment() async {
     String postID = "";
@@ -139,23 +142,6 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
   @override
   bool get wantKeepAlive => true;
 
-  // @override
-  // void initState() {
-  //   log("INIT STATE");
-  //   if(fakeCounter != 0) {
-  //     getComments();
-  //   }else{
-  //     fakeCounter++;
-  //   }
-  //   super.initState();
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    _likeController = AnimationController(vsync: this, duration: Duration(seconds: 1));
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -195,6 +181,11 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                             id = value.mainPostID;
                             posts = value.mainPosts![id];
                           }
+                          // if(posts['liked'] == true) {
+                          //   value.setAddedLike(true);
+                          // }else{
+                          //   value.setAddedLike(false);
+                          // }
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -289,26 +280,34 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          if (_likeController.status ==
-                                              AnimationStatus.dismissed) {
-                                              addLike(id);
-                                              _likeController.reset();
-                                              _likeController.animateTo(0.6);
-                                          } else {
+                                          // if (_likeController.status ==
+                                          //     AnimationStatus.dismissed) {
+                                          //     addLike(id);
+                                          //     _likeController.reset();
+                                          //     _likeController.animateTo(0.6);
+                                          // } else {
+                                          //   removeLike(id);
+                                          //   _likeController.reverse();
+                                          // }
+                                          if(posts['liked'] == false) {
+                                            addLike(id);
+                                            // Provider.of<StateManagement>(context, listen: false).setAddedLike(true);
+                                          }else{
                                             removeLike(id);
-                                            _likeController.reverse();
+                                            // Provider.of<StateManagement>(context, listen: false).setAddedLike(false);
                                           }
                                         },
-                                      icon: Lottie.asset(Icons8.heart_color,
-                                        controller: _likeController, 
-                                        height: 3.8.h,
-                                        onLoaded: (p0) {
-                                          if(posts['liked'] == true) {
-                                            _likeController.animateTo(0.6);
-                                          }
-                                        },
-                                        ),
-                                      color: Colors.red,
+                                      // icon: Lottie.asset(Icons8.heart_color,
+                                      //   controller: _likeController, 
+                                      //   height: 3.8.h,
+                                      //   onLoaded: (p0) {
+                                      //     if(posts['liked'] == true) {
+                                      //       _likeController.animateTo(0.6);
+                                      //     }
+                                      //   },
+                                      //   ),
+                                      icon: posts['liked'] ? Icon(Icons.favorite_rounded) : Icon(Icons.favorite_border_rounded),
+                                      color: posts['liked'] ? Colors.red : null,
                                       ),
                                       Text(posts['likes'].toString())
                                     ], 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
 import 'package:userapp/Screens/home.dart';
-import 'package:userapp/Screens/login.dart';
 import 'package:userapp/Screens/welcome.dart';
 import 'package:userapp/Utilities/state.dart';
 import 'package:userapp/firebase_options.dart';

@@ -35,6 +35,8 @@ class StateManagement with ChangeNotifier {
   int searchUserIndex = 0;
   List<Map<String, dynamic>>? searchUserPosts = [];
 
+  bool addedLike = false;
+
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {
     this.username = username;
     this.displayname = displayname;
@@ -228,6 +230,11 @@ class StateManagement with ChangeNotifier {
 
   void removeSearchUserPosts() {
     searchUserPosts!.clear();
+    notifyListeners();
+  }
+
+  void setAddedLike(bool value) {
+    addedLike = value;
     notifyListeners();
   }
 
