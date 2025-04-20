@@ -24,6 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _pageController = PageController();
 
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
 
   Future getUserDetails() async {
     QuerySnapshot details = await DatabaseMethods().getUserInfo(widget.email!);

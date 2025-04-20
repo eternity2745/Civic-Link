@@ -22,12 +22,10 @@ class LandingScreen extends StatefulWidget {
   State<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin {
 
   @override
   bool get wantKeepAlive => true;
-
-  late final AnimationController likesController;
 
   final TextEditingController filterController = TextEditingController();
 
@@ -163,9 +161,14 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
 
   @override
   void initState() {
-    likesController = AnimationController(vsync: this, duration: Duration(milliseconds: 100));
     getPosts();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    filterController.dispose();
   }
 
   @override

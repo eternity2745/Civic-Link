@@ -51,6 +51,14 @@ class _LoginScreenState extends State<LoginScreen> {
   rive.SMINumber? lookNum;
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    _forgotPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
       rootBundle.load(animationLink).then((value) {
         final file = rive.RiveFile.import(value);

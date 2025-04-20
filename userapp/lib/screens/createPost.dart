@@ -40,6 +40,12 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
     loadDotEnv();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _postController.dispose();
+  }
+
   void createPost() async {
     if(_postController.text != "" && Provider.of<StateManagement>(context, listen: false).reportCoordinates.isNotEmpty) {
       createPostPressed = true;

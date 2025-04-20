@@ -40,6 +40,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var usernameController = TextEditingController();
   var confpassController = TextEditingController();
 
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passController.dispose();
+    usernameController.dispose();
+    confpassController.dispose();
+    
+  }
+
   void accountVerification() async {
     if (usernameController.text.isEmpty) {
       errorname = true;

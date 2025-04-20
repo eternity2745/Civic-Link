@@ -39,6 +39,11 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
   //   super.initState();
   // }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+  }
 
   Future loadDotEnv() async {
     await dotenv.load();
