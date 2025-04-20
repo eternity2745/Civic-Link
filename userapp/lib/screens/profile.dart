@@ -366,7 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                         children: [
                           Icon(Icons.leaderboard_rounded),
                           SizedBox(width: 1.w,),
-                          Text(Provider.of<StateManagement>(context).ranking.toString()),
+                          Text(Provider.of<StateManagement>(context).ranking == 0 ? "unranked" : Provider.of<StateManagement>(context).ranking.toString()),
                           SizedBox(width: 10.w),
                           Icon(Icons.edit_document),
                           SizedBox(width: 1.w,),

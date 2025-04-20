@@ -31,6 +31,10 @@ class StateManagement with ChangeNotifier {
   bool showProfilePic = false;
   double showPicOpacity = 1.0;
 
+  List<Map<String, dynamic>> searchUsersData = [];
+  int searchUserIndex = 0;
+  List<Map<String, dynamic>>? searchUserPosts = [];
+
   void setProfile(String username, String displayname, String email, String profilePic, int ranking, int reports, int posts, int id, String docID) {
     this.username = username;
     this.displayname = displayname;
@@ -189,6 +193,11 @@ class StateManagement with ChangeNotifier {
     notifyListeners();
   }
 
+  void setSearchUsersData(List<Map<String, dynamic>> data) {
+    searchUsersData = data;
+    notifyListeners();
+  }
+
   void logout() {
     username = "";
     displayname = "";
@@ -204,6 +213,21 @@ class StateManagement with ChangeNotifier {
     comments!.clear();
     showProfilePic = false;
     showPicOpacity = 1.0;
+    notifyListeners();
+  }
+
+  void setSearchUserIndex(int index) {
+    searchUserIndex = index;
+    notifyListeners();
+  }
+
+  void setSearchUserPosts(List<Map<String, dynamic>>? posts) {
+    searchUserPosts = posts;
+    notifyListeners();
+  }
+
+  void removeSearchUserPosts() {
+    searchUserPosts!.clear();
     notifyListeners();
   }
 
