@@ -10,6 +10,7 @@ import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:userapp/Database/methods.dart';
 import 'package:userapp/Screens/progress.dart';
+import 'package:userapp/Screens/searchUserProfile.dart';
 import 'package:userapp/Utilities/dateTimeHandler.dart';
 import 'package:userapp/Utilities/descriptionTrimmer.dart';
 import 'package:userapp/Utilities/state.dart';
@@ -142,6 +143,19 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
     MapsLauncher.launchCoordinates(latitude, longitude);
   }
 
+  void goToUserProfile(int userId) async {
+    List<Map<String, dynamic>> userInfo = [];
+    QuerySnapshot result = await DatabaseMethods().getUserInfoById(userId);
+    for(var doc in result.docs) {
+      userInfo.add(doc.data() as Map<String, dynamic>);
+    }
+    if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).setSearchUserIndex(0);
+      Provider.of<StateManagement>(context, listen: false).setSearchUsersData(userInfo);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchUserScreen()));
+    }
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -196,25 +210,30 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      spacing: 4.w,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 15,
-                                          backgroundColor: Colors.transparent,
-                                          backgroundImage: NetworkImage(posts['profilePic']),
-                                        ),
-                                        SizedBox(
-                                          width: 58.w,
-                                          child: Text(
-                                            posts['username'],
-                                            style: TextStyle(
-                                              fontSize: 0.33.dp,
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                            ),
-                                        )
-                                      ],
+                                    GestureDetector(
+                                      onTap: () {
+                                        goToUserProfile(posts['userID']);
+                                      },
+                                      child: Row(
+                                        spacing: 4.w,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 15,
+                                            backgroundColor: Colors.transparent,
+                                            backgroundImage: NetworkImage(posts['profilePic']),
+                                          ),
+                                          SizedBox(
+                                            width: 58.w,
+                                            child: Text(
+                                              posts['username'],
+                                              style: TextStyle(
+                                                fontSize: 0.33.dp,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                              ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                     Column(
                                       children: [

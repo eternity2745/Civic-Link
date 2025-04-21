@@ -85,15 +85,12 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
           i++;
         }
 
-        log("MAINPOSTS: $mainPosts");
-
         if(mounted) {
           Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
           // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
         }
       }
     }else if(filterController.text == "Near My Location") {
-      log("hello");
       List<double> locationData = await currentLocation();
       await DatabaseMethods().getNearLocationPosts(locationData[0], locationData[1]);
     }else{

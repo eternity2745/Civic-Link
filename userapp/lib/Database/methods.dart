@@ -94,6 +94,10 @@ class DatabaseMethods {
     return await database.collection("users").where("email", isEqualTo: email).get();
   }
 
+  Future<QuerySnapshot> getUserInfoById(int id) async {
+    return await database.collection("users").where("id", isEqualTo: id).get();
+  }
+
   Future createPost(Map<String, dynamic> post, String id) async {
     try {
       var info = await database.collection("posts").add(post);
