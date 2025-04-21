@@ -94,9 +94,9 @@ flutter:
     - .env
 
   fonts:
-    - family: Playwrite
+    - family: Manrope
       fonts:
-        - asset: fonts/PlaywriteAUSA-Regular.ttf
+        - asset: fonts/Manrope-Bold.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
