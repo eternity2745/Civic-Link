@@ -113,7 +113,7 @@ class DatabaseMethods {
   }
 
   Future<QuerySnapshot> getMainPosts() async {
-    return await database.collection("posts").orderBy("dateTime", descending: true).limit(5).get();
+    return await database.collection("posts").orderBy("likes", descending: true).limit(5).get();
   }
 
   Future addComment(Map<String, dynamic> comment, String postID) async {
