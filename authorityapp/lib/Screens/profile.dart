@@ -39,43 +39,34 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+              padding: EdgeInsets.only(left: 22.w, top: 15.h),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    spacing: 3.w,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey.shade900, width: 1.35.w)
-                        ),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          maxRadius: 35,
-                          minRadius: 35,
-                          backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            Provider.of<StateManagement>(context).username,
-                            style: TextStyle(
-                              fontSize: 0.34.dp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                            ),
-                            ),
-                        ],
-                      )
-                    ],
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey.shade900, width: 1.35.w)
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      maxRadius: 75,
+                      minRadius: 75,
+                      backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
+                    ),
                   ),
-                  Divider(thickness: 0.8,),
-            SizedBox(height: 3.h,),
-            ],
-          ),
+                  SizedBox(height: 2.h,),
+                  Text(
+                    Provider.of<StateManagement>(context).username,
+                    style: TextStyle(
+                      fontSize: 0.45.dp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                    ),
+                    ),
+                    ],
+                        ),
         ),
       ]
         )

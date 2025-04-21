@@ -3,6 +3,7 @@ import 'package:authorityapp/Utilities/state.dart';
 import 'package:authorityapp/firebase_options.dart';  
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 import 'package:sizer/sizer.dart';
@@ -11,6 +12,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RiveFile.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.black.withOpacity(0.002)
+    ),
+  );
   runApp(const MyApp());
 }
 

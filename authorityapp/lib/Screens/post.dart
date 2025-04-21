@@ -6,6 +6,7 @@ import 'package:authorityapp/Utilities/descriptionTrimmer.dart';
 import 'package:authorityapp/Utilities/state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -39,6 +40,10 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
     if(mounted) {
       Provider.of<StateManagement>(context, listen: false).setComments(comments);
     }
+  }
+
+  void goToMaps(double latitude, double longitude) {
+    MapsLauncher.launchCoordinates(latitude, longitude);
   }
 
   @override
@@ -146,6 +151,27 @@ class _PostScreenState extends State<PostScreen> with AutomaticKeepAliveClientMi
                               ),
                           },
                           SizedBox(height: 1.h,),
+                                GestureDetector(
+                                  onTap: () {
+                                    goToMaps(posts['location'].latitude, posts['location'].longitude);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.shade900,
+                                      // boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 2)]
+                                    ),
+                                    child: Row(
+                                      spacing: 2.w,
+                                      children: [
+                                        Icon(Icons.location_on,),
+                                        Expanded(child: Text(posts['locality'])),
+                                      ],
+                                      ),
+                                    ),
+                                ),
+                          SizedBox(height: 1.5.h,),
                           Divider(thickness: 0.8,),
                           // SizedBox(height: 0.5.h,),
                           Row(
