@@ -102,6 +102,19 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          RichText(text: TextSpan(text: "Showing Posts from ", style: TextStyle(
+                            fontSize: 0.32.dp
+                          ),
+                          children: [TextSpan(
+                            text: Provider.of<StateManagement>(context).locality,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold
+                            )
+                          )
+                          ]
+                          ), 
+                          textAlign: TextAlign.start,
+                          ),
                           Consumer<StateManagement>(
                             builder: (context, value, child) {
                             return Skeletonizer(

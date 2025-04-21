@@ -262,6 +262,22 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                             SizedBox(height: 1.h,),
                             Consumer<StateManagement>(
                               builder: (context, value, child) {
+                              if(value.mainPosts!.isEmpty) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20.h),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/Civic Link.png", fit: BoxFit.cover,),
+                                      SizedBox(height: 2.h,),
+                                      Text("No Posts Found", style: TextStyle(
+                                        fontSize: 0.3.dp,
+                                        fontWeight: FontWeight.bold
+                                      ),)
+                                    ],
+                                  ),
+                                  );
+                              }
                               return Skeletonizer(
                                 effect: ShimmerEffect(
                                   duration: Duration(seconds: 1),

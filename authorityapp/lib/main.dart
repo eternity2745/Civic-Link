@@ -27,10 +27,11 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Civic Authority',
             darkTheme: ThemeData.dark(),
+            
             // highContrastDarkTheme: ThemeData.dark(),
             theme: ThemeData(
-        
               // primaryColor: Colors.green.shade900,
+              brightness: Brightness.dark,
               useMaterial3: true,
             ),
             debugShowCheckedModeBanner: false,
