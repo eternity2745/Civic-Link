@@ -92,6 +92,11 @@ flutter:
   assets:
     - assets/
     - .env
+
+  fonts:
+    - family: Playwrite
+      fonts:
+        - asset: fonts/PlaywriteAUSA-Regular.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

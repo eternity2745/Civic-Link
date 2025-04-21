@@ -232,7 +232,9 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
               "Civic Link",
               style: TextStyle(
                 fontSize: 0.4.dp,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
+                fontFamily: "Playwrite",
+                color: Colors.green
               ),
               ),
           ),
