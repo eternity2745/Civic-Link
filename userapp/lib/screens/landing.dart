@@ -35,6 +35,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     QuerySnapshot posts = await DatabaseMethods().getMainPosts();
     List<Map<String, dynamic>> mainPosts = [];
     int i = 0;
+    
     for(var doc in posts.docs) {
       mainPosts.add(doc.data() as Map<String, dynamic>);
       mainPosts[i]['postID'] = doc.id;
@@ -62,7 +63,11 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
       String locality = "";
       locality = await currentLocation();
       if(locality == "") {
-
+        log(locality);
+        if(mounted) {
+          Provider.of<StateManagement>(context, listen: false).setPosts([]);
+          // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+        }
       }else{
         QuerySnapshot posts = await DatabaseMethods().getLocalityPosts(locality);
         List<Map<String, dynamic>> mainPosts = [];
@@ -70,7 +75,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
         for(var doc in posts.docs) {
           mainPosts.add(doc.data() as Map<String, dynamic>);
           mainPosts[i]['postID'] = doc.id;
-          if(mounted) {      
+          if(mounted) {
             if(mainPosts[i]['likesId'].contains(Provider.of<StateManagement>(context, listen: false).id)) {
               mainPosts[i]['liked'] = true;
             }else{
@@ -79,6 +84,8 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
           }
           i++;
         }
+
+        log("MAINPOSTS: $mainPosts");
 
         if(mounted) {
           Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
@@ -99,15 +106,12 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     PermissionStatus permissionGranted;
 
     Location location = Location();
-    log("1");
     serviceEnabled = await location.serviceEnabled();
     log("$serviceEnabled");
     if (!serviceEnabled) {
-      log("ENTERED");
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        log("HHEE");
-        return;
+        return "";
       }
     }
 
@@ -115,7 +119,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
-        return;
+        return "";
       }
     }
 
@@ -192,7 +196,6 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                     padding: EdgeInsets.only(top: 2.h),
                     child: CustomMaterialIndicator(
                       onRefresh: () async {
-              log("REFRESHING");
               Provider.of<StateManagement>(context, listen: false).mainPostsisLoading();
               if(filterController.text == "In My Locality") {
                 filterPosts();
@@ -264,15 +267,15 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                               builder: (context, value, child) {
                               if(value.mainPosts!.isEmpty) {
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20.h),
+                                  padding: EdgeInsets.only(left: 2.w, top: 12.h),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset("assets/Civic Link.png", fit: BoxFit.cover,),
-                                      SizedBox(height: 2.h,),
+                                      Image.asset("assets/Civic Link.png", fit: BoxFit.cover, height: 30.h, width: 35.w,),
                                       Text("No Posts Found", style: TextStyle(
-                                        fontSize: 0.3.dp,
-                                        fontWeight: FontWeight.bold
+                                        fontSize: 0.4.dp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade400
                                       ),)
                                     ],
                                   ),

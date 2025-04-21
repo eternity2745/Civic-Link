@@ -26,32 +26,27 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
 
   getUserLocation(double latitude, double longitude) async {
 
-      var addresses = await GeocodingPlatform.instance!.placemarkFromCoordinates(
-          latitude, longitude
-          );
-      var first = addresses.first;
-      // log("$addresses");
-      if (mounted) {
-      log("$first");
-      String? locality = first.subAdministrativeArea != "" ? first.subAdministrativeArea : first.subLocality != "" ? first.subLocality : first.locality != "" ? first.locality : first.administrativeArea;
-      Provider.of<StateManagement>(context, listen: false).setReportLocationAddress([latitude, longitude], locality!, first.thoroughfare != "" ? first.thoroughfare! : first.name!, first.administrativeArea!);
-        Navigator.of(context).pop();
-      }
+    var addresses = await GeocodingPlatform.instance!.placemarkFromCoordinates(
+        latitude, longitude
+        );
+    var first = addresses.first;
+    // log("$addresses");
+    if (mounted) {
+    String? locality = first.subAdministrativeArea != "" ? first.subAdministrativeArea : first.subLocality != "" ? first.subLocality : first.locality != "" ? first.locality : first.administrativeArea;
+    Provider.of<StateManagement>(context, listen: false).setReportLocationAddress([latitude, longitude], locality!, first.thoroughfare != "" ? first.thoroughfare! : first.name!, first.administrativeArea!);
+      Navigator.of(context).pop();
     }
+  }
 
   Future currentLocation() async {
     bool serviceEnabled;
     l.PermissionStatus permissionGranted;
 
     l.Location location = l.Location();
-    log("1");
     serviceEnabled = await location.serviceEnabled();
-    log("$serviceEnabled");
     if (!serviceEnabled) {
-      log("ENTERED");
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        log("HHEE");
         return;
       }
     }

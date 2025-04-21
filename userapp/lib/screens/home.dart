@@ -62,6 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
     if (mounted) {
       Provider.of<StateManagement>(context, listen: false).setProfile(username, displayname, email, profilePic, ranking, reports, posts, userID, docID);
       Provider.of<StateManagement>(context, listen: false).setUserPosts(posts: userPosts);
+      List<Map<String, dynamic>> mainPosts = Provider.of<StateManagement>(context, listen: false).mainPosts!;
+      for(var i =0; i < mainPosts.length; i++) {
+        if(mainPosts[i]['likesId'].contains(userID)) {
+          mainPosts[i]['liked'] = true;
+        }
+      }
+      Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
     }
   }
 
