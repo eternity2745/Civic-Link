@@ -94,7 +94,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
               style: TextStyle(
                 fontSize: 0.4.dp,
                 fontWeight: FontWeight.bold,
-                fontFamily: "Playwrite",
+                fontFamily: "Manrope",
                 color: Colors.green
               ),
               ),

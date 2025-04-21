@@ -38,36 +38,38 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(left: 22.w, top: 15.h),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.shade900, width: 1.35.w)
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 20.h),
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey.shade900, width: 1.35.w)
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        maxRadius: 75,
+                        minRadius: 75,
+                        backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
+                      ),
                     ),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      maxRadius: 75,
-                      minRadius: 75,
-                      backgroundImage: NetworkImage(Provider.of<StateManagement>(context).profilePic),
-                    ),
-                  ),
-                  SizedBox(height: 2.h,),
-                  Text(
-                    Provider.of<StateManagement>(context).username,
-                    style: TextStyle(
-                      fontSize: 0.45.dp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                    ),
-                    ),
-                    ],
-                        ),
-        ),
+                    SizedBox(height: 2.h,),
+                    Text(
+                      Provider.of<StateManagement>(context).username,
+                      style: TextStyle(
+                        fontSize: 0.45.dp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                      ),
+                      ),
+                      ],
+                          ),
+              ),
+            ),
       ]
         )
       )
