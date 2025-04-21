@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StateManagement with ChangeNotifier {
@@ -24,6 +25,7 @@ class StateManagement with ChangeNotifier {
   List<Map<String, dynamic>>? mainPosts = [];
   bool mainPostsLoading = true;
   int mainPostID = 0;
+  bool reachedEnd = false;
 
   List<Map<String, dynamic>>? comments = [];
   bool commentsLoading = false;
@@ -34,6 +36,8 @@ class StateManagement with ChangeNotifier {
   List<Map<String, dynamic>> searchUsersData = [];
   int searchUserIndex = 0;
   List<Map<String, dynamic>>? searchUserPosts = [];
+
+  QuerySnapshot? collectionState;
 
   bool addedLike = false;
 
@@ -78,6 +82,21 @@ class StateManagement with ChangeNotifier {
   void setPosts(List<Map<String, dynamic>>? posts) {
     mainPosts = posts;
     mainPostsLoading = false;
+    notifyListeners();
+  }
+
+  void setCollectionState(QuerySnapshot? collectionState){
+    this.collectionState = collectionState;
+    notifyListeners();
+  }
+
+  void setReachedEnd(bool value) {
+    reachedEnd = value;
+    notifyListeners();
+  }
+
+  void addMainPosts(List<Map<String, dynamic>>? posts) {
+    mainPosts!.addAll(posts!);
     notifyListeners();
   }
 

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart' as flutter_animate;
 import 'package:geocoding/geocoding.dart' as g;
 import 'package:location/location.dart';
@@ -22,17 +23,22 @@ class LandingScreen extends StatefulWidget {
   State<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin {
+class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
 
   @override
   bool get wantKeepAlive => true;
 
   final TextEditingController filterController = TextEditingController();
+  late final AnimationController _loadAnimationController;
 
   late LocationData locationData;
 
   void getPosts() async {
     QuerySnapshot posts = await DatabaseMethods().getMainPosts();
+    HapticFeedback.mediumImpact();
+    if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).setCollectionState(posts);
+    }
     List<Map<String, dynamic>> mainPosts = [];
     int i = 0;
     
@@ -50,6 +56,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     }
 
     if(mounted) {
+      HapticFeedback.mediumImpact();
       Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
       // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
     }
@@ -57,6 +64,8 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
   }
 
   void filterPosts() async {
+    HapticFeedback.mediumImpact();
+    Provider.of<StateManagement>(context, listen: false).setReachedEnd(false);
     log(filterController.text);
     Provider.of<StateManagement>(context, listen: false).filterPosts();
     if(filterController.text == "In My Locality") {
@@ -70,6 +79,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
         }
       }else{
         QuerySnapshot posts = await DatabaseMethods().getLocalityPosts(locality);
+        HapticFeedback.mediumImpact();
         List<Map<String, dynamic>> mainPosts = [];
         int i = 0;
         for(var doc in posts.docs) {
@@ -84,8 +94,8 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
           }
           i++;
         }
-
         if(mounted) {
+          HapticFeedback.mediumImpact();
           Provider.of<StateManagement>(context, listen: false).setPosts(mainPosts);
           // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
         }
@@ -160,9 +170,45 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
     }
   }
 
+  void loadMore(Map<String, dynamic> lastDoc) async {
+    _loadAnimationController.forward();
+    QuerySnapshot posts = await DatabaseMethods().getNextPosts(Provider.of<StateManagement>(context, listen: false).collectionState!);
+    if(mounted) {
+      Provider.of<StateManagement>(context, listen: false).setCollectionState(posts);
+    }
+    List<Map<String, dynamic>> mainPosts = [];
+    int i = 0;
+
+    if(posts.docs.isEmpty && mounted) {
+      Provider.of<StateManagement>(context, listen: false).setReachedEnd(true);
+      _loadAnimationController.reset();
+      return;
+    }
+    
+    for(var doc in posts.docs) {
+      mainPosts.add(doc.data() as Map<String, dynamic>);
+      mainPosts[i]['postID'] = doc.id;
+      if(mounted) {      
+        if(mainPosts[i]['likesId'].contains(Provider.of<StateManagement>(context, listen: false).id)) {
+          mainPosts[i]['liked'] = true;
+        }else{
+          mainPosts[i]['liked'] = false;
+        }
+      }
+      i++;
+    }
+
+    if(mounted) {
+      _loadAnimationController.reset();
+      Provider.of<StateManagement>(context, listen: false).addMainPosts(mainPosts);
+      // Navigator.push(context, MaterialPageRoute(builder: ((context) => PostScreen())));
+    }
+  }
+
   @override
   void initState() {
     getPosts();
+    _loadAnimationController = AnimationController(vsync: this);
     super.initState();
   }
 
@@ -170,6 +216,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
   void dispose() {
     super.dispose();
     filterController.dispose();
+    _loadAnimationController.dispose();
   }
 
   @override
@@ -295,6 +342,7 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                           onTap: () {
+                                                HapticFeedback.mediumImpact();
                                                 Provider.of<StateManagement>(context, listen: false).commentsLoading = true;
                                                 Provider.of<StateManagement>(context, listen: false).mainPostID = index;
                                                 Provider.of<StateManagement>(context, listen: false).userPostsID = -1;
@@ -409,7 +457,42 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                               ),
                                                               ),
                                             // SizedBox(height: 1.h,)
-                                            Divider(thickness: 0.8,)
+                                            if(index == value.mainPosts!.length - 1 && value.reachedEnd == false && filterController.text != "In My Locality")...{
+                                              Divider(thickness: 0.8,),
+                                              Center(child: IconButton(
+                                                onPressed: () {
+                                                  loadMore(value.mainPosts![value.mainPosts!.length - 1]);
+                                                }, icon: Icon(
+                                                  Icons.add_circle_outline_rounded, 
+                                                  color: Colors.grey.shade600,
+                                                  ),
+                                                  iconSize: 0.5.dp,
+                                                ).animate(
+                                                  autoPlay: false,
+                                                  controller: _loadAnimationController,
+                                                  onPlay: (controller) => controller.repeat(),
+                                                  effects: [
+                                                    flutter_animate.RotateEffect(
+                                                      duration: 1.seconds
+                                                    )
+                                                  ]
+                                                ),
+                                              )
+                                            }else if(index == value.mainPosts!.length - 1 && value.reachedEnd == true && filterController.text != "In My Locality")...{
+                                              Divider(thickness: 0.8,),
+                                              Center(
+                                                child: Text(
+                                                  "You've Reached The End",
+                                                  style: TextStyle(
+                                                    fontSize: 0.3.dp,
+                                                    color: Colors.grey.shade600
+                                                  ),
+                                                ),
+                                              ),
+                                            SizedBox(height: 1.h,)
+                                            }else...{
+                                              Divider(thickness: 0.8,)
+                                            }
                                             ]
                                           ),
                                         );

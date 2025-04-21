@@ -113,7 +113,15 @@ class DatabaseMethods {
   }
 
   Future<QuerySnapshot> getMainPosts() async {
-    return await database.collection("posts").orderBy("likes", descending: true).limit(5).get();
+    QuerySnapshot result = await database.collection("posts").orderBy("likes", descending: true).limit(5).get();
+    return result;
+  }
+
+  Future<QuerySnapshot> getNextPosts(QuerySnapshot collectionState) async {
+    var lastVisible = collectionState.docs[collectionState.docs.length-1];
+    QuerySnapshot result =  await database.collection("posts").orderBy("likes", descending: true).startAfterDocument(lastVisible).limit(5).get();
+    return result;
+
   }
 
   Future addComment(Map<String, dynamic> comment, String postID) async {
@@ -149,7 +157,7 @@ class DatabaseMethods {
   }
 
   Future<QuerySnapshot> getLocalityPosts(String locality) async {
-    return await database.collection("posts").where("locality", isEqualTo: locality).orderBy("dateTime", descending: true).limit(5).get();
+    return await database.collection("posts").where("locality", isEqualTo: locality).orderBy("likes", descending: true).get();
   }
 
   Future<Object?> getNearLocationPosts(double latitude, double longitude) async {

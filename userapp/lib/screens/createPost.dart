@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -212,6 +213,7 @@ class _PostCreateScreenState extends State<PostCreateScreen> {
               ),
             ElevatedButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 createPost();
               }, 
               style: ElevatedButton.styleFrom(
