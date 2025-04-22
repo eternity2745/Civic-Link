@@ -172,7 +172,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> with AutomaticKeepA
                             children: [
                               Icon(Icons.leaderboard_rounded),
                               SizedBox(width: 1.w,),
-                              Text(value.searchUsersData[value.searchUserIndex]['ranking'] == 0 ? "unranked" : value.searchUsersData[value.searchUserIndex]['ranking'].toString()),
+                              Text(value.searchUsersData[value.searchUserIndex]['ranking'] == 0 ? "Unranked" : value.searchUsersData[value.searchUserIndex]['ranking'].toString()),
                               SizedBox(width: 10.w),
                               Icon(Icons.edit_document),
                               SizedBox(width: 1.w,),
@@ -283,17 +283,17 @@ class _SearchUserScreenState extends State<SearchUserScreen> with AutomaticKeepA
                                           Padding(
                                             padding: EdgeInsets.only(left: 5.w),
                                             child: RichText(
-                                              text: TextSpan(text: value.searchUserPosts!.isEmpty ? "" : DescriptionTrimmer.trimDescription(value.searchUserPosts![index]['description'], 430),
+                                              text: TextSpan(text: value.searchUserPosts!.isEmpty ? "" : DescriptionTrimmer.trimDescription(value.searchUserPosts![index]['description'], 500),
                                               style: TextStyle(
-                                                fontSize: 0.3.dp,
+                                                fontSize: 0.28.dp,
                                                 // color: Colors.white
                                               ),
-                                              children: value.searchUserPosts!.isEmpty ? null : value.searchUserPosts![index]['description'].length > 430
+                                              children: value.searchUserPosts!.isEmpty ? null : value.searchUserPosts![index]['description'].length > 500
                                                 ? [
                                                     TextSpan(
                                                       text: " See More",
                                                       style: TextStyle(
-                                                        fontSize: 0.3.dp,
+                                                        fontSize: 0.28.dp,
                                                         color: Colors.blue
                                                       ), 
                                                     )
@@ -365,7 +365,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> with AutomaticKeepA
           ),
           if(Provider.of<StateManagement>(context).showProfilePic)...{
             Positioned(
-              top: 25.h,
+              top: 20.h,
               left: 20.w,
               child: Stack(
                 children: [

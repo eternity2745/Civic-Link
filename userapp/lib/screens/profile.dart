@@ -472,17 +472,17 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                                       Padding(
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: RichText(
-                                          text: TextSpan(text: DescriptionTrimmer.trimDescription(value.userPosts[index]['description'], 430),
+                                          text: TextSpan(text: DescriptionTrimmer.trimDescription(value.userPosts[index]['description'], 500),
                                           style: TextStyle(
-                                            fontSize: 0.3.dp,
+                                            fontSize: 0.28.dp,
                                             // color: Colors.white
                                           ),
-                                          children: value.userPosts[index]['description'].length > 430
+                                          children: value.userPosts[index]['description'].length > 500
                                             ? [
                                                 TextSpan(
                                                   text: " See More",
                                                   style: TextStyle(
-                                                    fontSize: 0.3.dp,
+                                                    fontSize: 0.28.dp,
                                                     color: Colors.blue
                                                   ), 
                                                 )
@@ -553,7 +553,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
         ),
         if(Provider.of<StateManagement>(context).showProfilePic)...{
           Positioned(
-            top: 25.h,
+            top: 20.h,
             left: 20.w,
             child: Stack(
               children: [
@@ -586,7 +586,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                 child: Icon(Icons.close, color: Colors.red),
                 ),),
                 Positioned(
-                  top: 20.h,
+                  top: 19.h,
                   left: 40.w,
                   child: 
                 ElevatedButton(

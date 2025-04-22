@@ -393,15 +393,15 @@ class _LandingScreenState extends State<LandingScreen> with AutomaticKeepAliveCl
                                                     Padding(
                                                       padding: EdgeInsets.only(left: 5.w),
                                                       child: RichText(
-                                                        text: TextSpan(text: value.mainPostsLoading ? "" : DescriptionTrimmer.trimDescription(value.mainPosts![index]['description'], 390),
+                                                        text: TextSpan(text: value.mainPostsLoading ? "" : DescriptionTrimmer.trimDescription(value.mainPosts![index]['description'], 500),
                                                         style: TextStyle(
-                                                          fontSize: 0.3.dp
+                                                          fontSize: 0.28.dp
                                                         ),
-                                                        children: value.mainPostsLoading ? [] : value.mainPosts![index]['description'].length < 390 ? [] : [
+                                                        children: value.mainPostsLoading ? [] : value.mainPosts![index]['description'].length < 500 ? [] : [
                                                           TextSpan(
                                                             text: "See More",
                                                             style: TextStyle(
-                                                              fontSize: 0.3.dp,
+                                                              fontSize: 0.28.dp,
                                                               color: Colors.blue
                                                         ), 
                                                           )
