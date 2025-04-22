@@ -50,7 +50,7 @@ class DatabaseMethods {
   }
 
   Future<QuerySnapshot> getComments(String postID) async {
-    return await database.collection("posts").doc(postID).collection("comments").orderBy("dateTime", descending: true).limit(5).get();
+    return await database.collection("posts").doc(postID).collection("comments").orderBy("dateTime", descending: true).get();
   }
 
   Future startAction(String postID, Timestamp time) async {
