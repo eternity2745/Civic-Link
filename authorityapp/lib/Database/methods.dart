@@ -46,7 +46,7 @@ class DatabaseMethods {
   }
 
   Future<QuerySnapshot> getMainPosts(String locality) async {
-    return await database.collection("posts").where("locality", isEqualTo: locality).where("completed", isEqualTo: false).orderBy("dateTime", descending: true).limit(5).get();
+    return await database.collection("posts").where("locality", isEqualTo: locality).where("completed", isEqualTo: false).orderBy("likes", descending: true).get();
   }
 
   Future<QuerySnapshot> getComments(String postID) async {
