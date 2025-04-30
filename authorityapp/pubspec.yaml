@@ -47,7 +47,6 @@ dependencies:
   flutter_icon_snackbar: ^1.2.1
   cloudinary_public: ^0.23.1
   flutter_dotenv: ^5.2.1
-  flutter_animated_icons: ^1.0.1
   geoflutterfire_plus: ^0.0.32
   maps_launcher: ^3.0.0+1
   flutter_launcher_icons: ^0.14.3
