@@ -7,7 +7,7 @@ resolve them efficiently. The platform promotes transparency,
 accountability, and stronger community engagement.
 </p>
 
-<h2><a href="User App/">User App</a></h2>
+<h2><a href="userapp/">User App</a></h2>
 
 <p>The User App allows citizens to report local issues such as:</p>
 
@@ -34,7 +34,7 @@ This process accelerates problem resolution and builds trust by keeping
 citizens informed of progress.
 </p>
 
-<h2>Authority App</h2>
+<h2><a href="authorityapp/">Authority App</a></h2>
 
 <p>
 Authorized officials—such as panchayat presidents—can log in to the
